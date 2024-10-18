@@ -189,7 +189,7 @@ public interface Operations {
    * @param currentImage the name of the original image on which the sepia
    *                     color transformation is to be applied.
    * @param newImage     the name of the new image obtained after applying
-   *                     sepia transofrmation on th original image.
+   *                     sepia transformation on th original image.
    */
   void sepia(String currentImage, String newImage);
 
