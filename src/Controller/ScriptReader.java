@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,7 +17,7 @@ import java.util.Scanner;
  */
 
 public class ScriptReader {
-    Handler e;
+  Handler handle;
 
   /**
    * Constructs a new ScriptReader instance.
@@ -25,9 +25,9 @@ public class ScriptReader {
    * used to execute commands read from the script.
    */
 
-    ScriptReader(){
-      e = new CommandHandler();
-    }
+  ScriptReader() {
+    handle = new CommandHandler();
+  }
 
   /**
    * Reads commands from the specified script file and executes them.
@@ -40,23 +40,23 @@ public class ScriptReader {
    * @throws IOException if an error occurs while reading the file.
    */
 
-    public void scriptReader(String filepath) throws IOException {
-      File file = new File(filepath);
-      BufferedReader br = new BufferedReader(new FileReader(file));
-      String st;
-      while ((st = br.readLine()) != null) {
-        if(!st.isEmpty() && st.charAt(0)!='#'){
-          st = st.trim();
-          st = st.replaceAll("\\s+"," ");
-          String [] tokens = st.split(" ");
-          for(int i=0;i<tokens.length;i++){
-            tokens[i] = tokens[i].trim();
-          }
-          tokens[0] = tokens[0].toLowerCase();
-          e.readCommand(tokens);
+  public void scriptReader(String filepath) throws IOException {
+    File file = new File(filepath);
+    BufferedReader br = new BufferedReader(new FileReader(file));
+    String st;
+    while ((st = br.readLine()) != null) {
+      if (!st.isEmpty() && st.charAt(0) != '#') {
+        st = st.trim();
+        st = st.replaceAll("\\s+", " ");
+        String[] tokens = st.split(" ");
+        for (int i = 0; i < tokens.length; i++) {
+          tokens[i] = tokens[i].trim();
         }
+        tokens[0] = tokens[0].toLowerCase();
+        handle.readCommand(tokens);
       }
     }
+  }
 
   /**
    * Prompts the user for a script file path and validates the input.
@@ -71,16 +71,16 @@ public class ScriptReader {
    *                                  the file.
    */
 
-    public void getScriptPath() throws IllegalArgumentException, IOException {
-      Scanner scn = new Scanner(System.in);
-      System.out.println("Enter Script file path : ");
-      String script = scn.nextLine();
-      String extension = script.substring(script.lastIndexOf(".")+1);
-      if (!extension.equals("txt")){
-        throw new IllegalArgumentException("Provide txt File only");
-      }
-      this.scriptReader(script);
+  public void getScriptPath() throws IllegalArgumentException, IOException {
+    Scanner scn = new Scanner(System.in);
+    System.out.println("Enter Script file path : ");
+    String script = scn.nextLine();
+    String extension = script.substring(script.lastIndexOf(".") + 1);
+    if (!extension.equals("txt")) {
+      throw new IllegalArgumentException("Provide txt File only");
     }
+    this.scriptReader(script);
+  }
 
   /**
    * The main method that initiates the script reading process.
@@ -91,8 +91,8 @@ public class ScriptReader {
    * @throws IOException if an error occurs while reading the script file.
    */
 
-    public static void main(String[] args) throws IOException {
-      ScriptReader reader = new ScriptReader();
-      reader.getScriptPath();
-    }
+  public static void main(String[] args) throws IOException {
+    ScriptReader reader = new ScriptReader();
+    reader.getScriptPath();
+  }
 }

@@ -1,6 +1,6 @@
-package Controller.Commands;
+package controller.commands;
 
-import Model.Operations;
+import model.Operations;
 
 /**
  * A class that performs the brightened operation on an
@@ -21,20 +21,20 @@ public class Brighten extends AbstractCommandExecuter {
    * Validate the command length and initialize the image
    * names.
    *
-   * @param cmd the command array obtained by splitting
-   *            input using space.
+   * @param cmd           the command array obtained by splitting
+   *                      input using space.
    * @param commandLength the expected length of command array.
    * @throws NumberFormatException if the brightness increment cannot
    *                               be parsed as integer.
    */
-  public Brighten(String[] cmd,int commandLength) throws NumberFormatException{
-    this.validCommandLength(cmd.length,commandLength);
+  public Brighten(String[] cmd, int commandLength) throws NumberFormatException {
+    this.validCommandLength(cmd.length, commandLength);
     this.currentImageName = cmd[2];
     this.newImageName = cmd[3];
 
-    try{
+    try {
       this.increment = Integer.parseInt(cmd[1]);
-    }catch (NumberFormatException e){
+    } catch (NumberFormatException e) {
       System.out.println("Invalid increment value");
     }
   }
@@ -52,7 +52,7 @@ public class Brighten extends AbstractCommandExecuter {
 
   @Override
   public void execute(Operations operations) {
-    this.imageCheck(operations,this.currentImageName);
+    this.imageCheck(operations, this.currentImageName);
     operations.brighten(this.currentImageName, this.newImageName, this.increment);
   }
 }

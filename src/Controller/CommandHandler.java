@@ -1,20 +1,20 @@
-package Controller;
+package controller;
 
-import Controller.Commands.AbstractCommandExecuter;
-import Controller.Commands.Blur;
-import Controller.Commands.Brighten;
-import Controller.Commands.BrightnessComponent;
-import Controller.Commands.ColorComponent;
-import Controller.Commands.HorizontalFlip;
-import Controller.Commands.Load;
-import Controller.Commands.RGBCombine;
-import Controller.Commands.RGBSplit;
-import Controller.Commands.Save;
-import Controller.Commands.Sepia;
-import Controller.Commands.Sharpen;
-import Controller.Commands.VerticalFlip;
-import Model.ImageOperations;
-import Model.Operations;
+import controller.commands.AbstractCommandExecuter;
+import controller.commands.Blur;
+import controller.commands.Brighten;
+import controller.commands.BrightnessComponent;
+import controller.commands.ColorComponent;
+import controller.commands.HorizontalFlip;
+import controller.commands.Load;
+import controller.commands.RGBCombine;
+import controller.commands.RGBSplit;
+import controller.commands.Save;
+import controller.commands.Sepia;
+import controller.commands.Sharpen;
+import controller.commands.VerticalFlip;
+import model.ImageOperations;
+import model.Operations;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +74,6 @@ public class CommandHandler implements Handler {
    * @param input An array of strings representing the command and its
    *              arguments.
    *              The first element is expected to be the command name.
-   *
    * @throws IllegalArgumentException if the command is unknown or not
    *                                  found in the command map.
    */

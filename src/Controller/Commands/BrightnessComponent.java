@@ -1,6 +1,7 @@
-package Controller.Commands;
+package controller.commands;
 
-import Model.Operations;
+import model.Operations;
+
 
 /**
  * A class that performs the task of obtaining the
@@ -19,12 +20,12 @@ public class BrightnessComponent extends AbstractCommandExecuter {
    * Validate the command length and initializes the image
    * names.
    *
-   * @param cmd the command array obtained by splitting
-   *            input using space.
+   * @param cmd           the command array obtained by splitting
+   *                      input using space.
    * @param commandLength the expected length of command array.
    */
-  public BrightnessComponent(String[] cmd,int commandLength) {
-    this.validCommandLength(cmd.length,commandLength);
+  public BrightnessComponent(String[] cmd, int commandLength) {
+    this.validCommandLength(cmd.length, commandLength);
     this.currentImageName = cmd[1];
     this.newImageName = cmd[2];
     this.handler = cmd[0];
@@ -47,7 +48,7 @@ public class BrightnessComponent extends AbstractCommandExecuter {
    */
   @Override
   public void execute(Operations operations) {
-    this.imageCheck(operations,this.currentImageName);
-    operations.getBrightnessComponent(this.currentImageName,this.newImageName,this.handler);
+    this.imageCheck(operations, this.currentImageName);
+    operations.getBrightnessComponent(this.currentImageName, this.newImageName, this.handler);
   }
 }

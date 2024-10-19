@@ -1,6 +1,7 @@
-package Controller.Commands;
+package controller.commands;
 
-import Model.Operations;
+import model.Operations;
+
 
 /**
  * A class that performs the rgb-combine operation on an
@@ -9,7 +10,7 @@ import Model.Operations;
  * blue channels into a single image.
  */
 
-public class RGBCombine extends AbstractCommandExecuter{
+public class RGBCombine extends AbstractCommandExecuter {
   String newImageName;
   String redImage;
   String greenImage;
@@ -20,12 +21,12 @@ public class RGBCombine extends AbstractCommandExecuter{
    * Validate the command length and initialize the image
    * names.
    *
-   * @param cmd the command array obtained by splitting
-   *            input using space.
+   * @param cmd           the command array obtained by splitting
+   *                      input using space.
    * @param commandLength the expected length of command array.
    */
-  public RGBCombine(String[] cmd,int commandLength) {
-    this.validCommandLength(cmd.length,commandLength);
+  public RGBCombine(String[] cmd, int commandLength) {
+    this.validCommandLength(cmd.length, commandLength);
     this.newImageName = cmd[1];
     this.redImage = cmd[2];
     this.greenImage = cmd[3];
@@ -45,9 +46,9 @@ public class RGBCombine extends AbstractCommandExecuter{
    */
   @Override
   public void execute(Operations operations) {
-    this.imageCheck(operations,this.redImage);
-    this.imageCheck(operations,this.greenImage);
-    this.imageCheck(operations,this.blueImage);
-    operations.combineRGB(this.redImage,this.greenImage,this.blueImage,this.newImageName);
+    this.imageCheck(operations, this.redImage);
+    this.imageCheck(operations, this.greenImage);
+    this.imageCheck(operations, this.blueImage);
+    operations.combineRGB(this.redImage, this.greenImage, this.blueImage, this.newImageName);
   }
 }

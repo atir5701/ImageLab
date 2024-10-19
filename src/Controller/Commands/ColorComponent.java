@@ -1,6 +1,7 @@
-package Controller.Commands;
+package controller.commands;
 
-import Model.Operations;
+import model.Operations;
+
 
 /**
  * A class that performs the task of obtaining the
@@ -9,7 +10,7 @@ import Model.Operations;
  * from the image.
  */
 
-public class ColorComponent extends AbstractCommandExecuter{
+public class ColorComponent extends AbstractCommandExecuter {
   String currentImageName;
   String newImageName;
   String handler;
@@ -19,12 +20,12 @@ public class ColorComponent extends AbstractCommandExecuter{
    * Validate the command length and initializes the image
    * names.
    *
-   * @param cmd the command array obtained by splitting
-   *            input using space.
+   * @param cmd           the command array obtained by splitting
+   *                      input using space.
    * @param commandLength the expected length of command array.
    */
 
-  public ColorComponent(String[] cmd,int commandLength) {
+  public ColorComponent(String[] cmd, int commandLength) {
     this.validCommandLength(cmd.length, commandLength);
     this.currentImageName = cmd[1];
     this.newImageName = cmd[2];
@@ -45,11 +46,11 @@ public class ColorComponent extends AbstractCommandExecuter{
    */
   @Override
   public void execute(Operations operations) throws IllegalArgumentException {
-    this.imageCheck(operations,this.currentImageName);
+    this.imageCheck(operations, this.currentImageName);
     int color;
-    switch (handler){
+    switch (handler) {
       case "red-component":
-        color=0;
+        color = 0;
         break;
       case "green-component":
         color = 1;
@@ -60,7 +61,7 @@ public class ColorComponent extends AbstractCommandExecuter{
       default:
         throw new IllegalArgumentException("Invalid command provided");
     }
-    operations.getColorComponent(this.currentImageName,this.newImageName,color);
+    operations.getColorComponent(this.currentImageName, this.newImageName, color);
   }
 
 }

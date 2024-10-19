@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 /**
  * This class represents an image, so the class

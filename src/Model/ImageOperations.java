@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +7,6 @@ import java.util.Map;
  * The ImageOperations class implements the {@link Operations} interface,
  * providing implementations for various image manipulation and
  * processing tasks.
- * <p>
  * This class also maintains a map that stores instances of all images
  * loaded and processed during the execution of the application,
  * allowing efficient access and manipulation throughout the
@@ -213,7 +212,8 @@ public class ImageOperations implements Operations {
    *                     intensity-component.
    */
   @Override
-  public void getBrightnessComponent(String currentImage, String newImage, String handle) throws IllegalArgumentException {
+  public void getBrightnessComponent(String currentImage, String newImage,
+                                     String handle) throws IllegalArgumentException {
     ImageModel imageOld = this.imageMap.get(currentImage);
     ImageModel imageNew = this.getNewImageModel(imageOld);
     switch (handle) {

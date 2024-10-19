@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 /**
  * This interface represents the contract which

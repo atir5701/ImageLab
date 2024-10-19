@@ -1,6 +1,6 @@
-package Controller.Commands;
+package controller.commands;
 
-import Model.Operations;
+import model.Operations;
 
 /**
  * This interface defines the necessary method for
@@ -23,7 +23,7 @@ public interface CommandExecuter {
    *                command.
    * @throws IllegalArgumentException if the lengths do not match.
    */
-  void validCommandLength(int length1,int length2)
+  void validCommandLength(int length1, int length2)
           throws IllegalArgumentException;
 
   /**
@@ -35,7 +35,7 @@ public interface CommandExecuter {
    *                   checked.
    * @throws IllegalArgumentException if the image is not found.
    */
-  void imageCheck(Operations operations,String imageName) throws IllegalArgumentException;
+  void imageCheck(Operations operations, String imageName) throws IllegalArgumentException;
 
   /**
    * Method to execute the command provided as input.

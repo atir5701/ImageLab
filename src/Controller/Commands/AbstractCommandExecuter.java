@@ -1,6 +1,6 @@
-package Controller.Commands;
+package controller.commands;
 
-import Model.Operations;
+import model.Operations;
 
 /**
  * An Abstract class that implements the {@link CommandExecuter} interface.
@@ -10,7 +10,7 @@ import Model.Operations;
  * abstract for subclasses to implement specific behavior.
  */
 
-public abstract class AbstractCommandExecuter implements CommandExecuter{
+public abstract class AbstractCommandExecuter implements CommandExecuter {
 
   /**
    * Method to validate the length of the input
@@ -22,10 +22,10 @@ public abstract class AbstractCommandExecuter implements CommandExecuter{
    * @throws IllegalArgumentException if the lengths do not match.
    */
   @Override
-  public void validCommandLength(int length1,int length2) throws IllegalArgumentException{
-     if(length1 != length2){
-       throw new IllegalArgumentException("Invalid Command");
-     }
+  public void validCommandLength(int length1, int length2) throws IllegalArgumentException {
+    if (length1 != length2) {
+      throw new IllegalArgumentException("Invalid Command");
+    }
   }
 
   /**
@@ -38,7 +38,7 @@ public abstract class AbstractCommandExecuter implements CommandExecuter{
    * @throws IllegalArgumentException if the image is not found.
    */
   @Override
-  public void imageCheck(Operations operations,String imageName) throws IllegalArgumentException {
+  public void imageCheck(Operations operations, String imageName) throws IllegalArgumentException {
     if (!(operations.checkImage(imageName))) {
       throw new IllegalArgumentException("The image to be processed is not present");
     }

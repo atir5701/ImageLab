@@ -1,6 +1,6 @@
-package Controller.Commands;
+package controller.commands;
 
-import Model.Operations;
+import model.Operations;
 
 /**
  * A class that performs the task of performing
@@ -9,7 +9,7 @@ import Model.Operations;
  * which is rotated on x-axis.
  */
 
-public class VerticalFlip extends AbstractCommandExecuter{
+public class VerticalFlip extends AbstractCommandExecuter {
   String currentImageName;
   String newImageName;
 
@@ -18,13 +18,13 @@ public class VerticalFlip extends AbstractCommandExecuter{
    * Validate the command length and initialize the image
    * names.
    *
-   * @param cmd the command array obtained by splitting
-   *            input using space.
+   * @param cmd           the command array obtained by splitting
+   *                      input using space.
    * @param commandLength the expected length of command array.
    */
 
-  public VerticalFlip(String[] cmd,int commandLength) {
-    this.validCommandLength(cmd.length,commandLength);
+  public VerticalFlip(String[] cmd, int commandLength) {
+    this.validCommandLength(cmd.length, commandLength);
     this.currentImageName = cmd[1];
     this.newImageName = cmd[2];
   }
@@ -42,7 +42,7 @@ public class VerticalFlip extends AbstractCommandExecuter{
    */
   @Override
   public void execute(Operations operations) {
-    this.imageCheck(operations,this.currentImageName);
-    operations.verticalFlip(this.currentImageName,this.newImageName);
+    this.imageCheck(operations, this.currentImageName);
+    operations.verticalFlip(this.currentImageName, this.newImageName);
   }
 }

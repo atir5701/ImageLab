@@ -1,6 +1,6 @@
-package Controller.Commands;
+package controller.commands;
 
-import Model.Operations;
+import model.Operations;
 
 /**
  * A class that performs the sharpen operation on an
@@ -8,7 +8,7 @@ import Model.Operations;
  * in the command and result is saved as a new image.
  */
 
-public class Sharpen extends AbstractCommandExecuter{
+public class Sharpen extends AbstractCommandExecuter {
   String currentImageName;
   String newImageName;
 
@@ -17,11 +17,11 @@ public class Sharpen extends AbstractCommandExecuter{
    * Validate the command length and initialize the image
    * names.
    *
-   * @param cmd the command array obtained by splitting
-   *            input using space.
+   * @param cmd           the command array obtained by splitting
+   *                      input using space.
    * @param commandLength the expected length of command array.
    */
-  public Sharpen(String[] cmd,int commandLength) {
+  public Sharpen(String[] cmd, int commandLength) {
     this.validCommandLength(cmd.length, commandLength);
     this.currentImageName = cmd[1];
     this.newImageName = cmd[2];
@@ -39,8 +39,8 @@ public class Sharpen extends AbstractCommandExecuter{
    */
   @Override
   public void execute(Operations operations) {
-    this.imageCheck(operations,this.currentImageName);
-    operations.sharpen(this.currentImageName,this.newImageName);
+    this.imageCheck(operations, this.currentImageName);
+    operations.sharpen(this.currentImageName, this.newImageName);
   }
 
 }

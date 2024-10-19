@@ -1,4 +1,7 @@
-package Controller.Commands;
+package controller.commands;
+
+import model.Operations;
+
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -11,8 +14,6 @@ import java.util.Scanner;
 import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
-
-import Model.Operations;
 
 /**
  * A class that performs the load operation on an
@@ -39,7 +40,7 @@ public class Load extends AbstractCommandExecuter {
   public Load(String[] cmd, int commandLength) {
     this.validCommandLength(cmd.length, commandLength);
     this.filePath = cmd[1];
-    this.extension = this.filePath.substring(this.filePath.lastIndexOf(".") + 1);
+    this.extension = this.filePath.substring(this.filePath.lastIndexOf(".") + 1).toLowerCase();
     this.currentImageName = cmd[2];
     this.loadingImage = new HashMap<>();
     this.loadingImage.put("png", this::loadPngJpeg);
@@ -115,7 +116,7 @@ public class Load extends AbstractCommandExecuter {
     while (sc.hasNextLine()) {
       String s = sc.nextLine();
       if (s.charAt(0) != '#') {
-        builder.append(s + System.lineSeparator());
+        builder.append(s).append(System.lineSeparator());
       }
     }
     sc = new Scanner(builder.toString());

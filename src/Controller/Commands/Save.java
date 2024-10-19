@@ -1,4 +1,7 @@
-package Controller.Commands;
+package controller.commands;
+
+import model.Operations;
+
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
@@ -11,15 +14,13 @@ import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 
-import Model.Operations;
-
 /**
  * A class that performs the Save operation on an
  * image. Image needs to be saves in a specified file
  * path with the suitable extension.
  */
 
-public class Save extends AbstractCommandExecuter{
+public class Save extends AbstractCommandExecuter {
   private final String filePath;
   private final String currentImageName;
   private final String extension;
@@ -30,15 +31,15 @@ public class Save extends AbstractCommandExecuter{
    * Validate the command length and initialize the image
    * names.
    *
-   * @param cmd the command array obtained by splitting
-   *            input using space.
+   * @param cmd           the command array obtained by splitting
+   *                      input using space.
    * @param commandLength the expected length of command array.
    */
 
-  public Save(String[] cmd,int commandLength){
-    this.validCommandLength(cmd.length,commandLength);
+  public Save(String[] cmd, int commandLength) {
+    this.validCommandLength(cmd.length, commandLength);
     this.filePath = cmd[1];
-    this.extension = this.filePath.substring(this.filePath.lastIndexOf(".")+1);
+    this.extension = this.filePath.substring(this.filePath.lastIndexOf(".") + 1).toLowerCase();
     this.currentImageName = cmd[2];
     this.savingImage = new HashMap<>();
     this.savingImage.put("png", this::savePngJpeg);
@@ -60,7 +61,7 @@ public class Save extends AbstractCommandExecuter{
    */
   @Override
   public void execute(Operations operations) {
-    this.imageCheck(operations,this.currentImageName);
+    this.imageCheck(operations, this.currentImageName);
     Consumer<Operations> cmd = this.savingImage.get(this.extension);
     if (cmd == null) {
       throw new IllegalArgumentException("This extension is not Supported");
@@ -79,8 +80,8 @@ public class Save extends AbstractCommandExecuter{
    *                   be saved.
    */
 
-  private void savePngJpeg(Operations operations){
-    int [][][] arr = operations.getImage(this.currentImageName);
+  private void savePngJpeg(Operations operations) {
+    int[][][] arr = operations.getImage(this.currentImageName);
     File file = new File(this.filePath);
     int width = arr[0].length;
     int height = arr.length;
@@ -111,24 +112,24 @@ public class Save extends AbstractCommandExecuter{
    *                   used to get the image which is to
    *                   be saved.
    */
-  private void savePPM(Operations operations){
-    int [][][] arr = operations.getImage(this.currentImageName);
+  private void savePPM(Operations operations) {
+    int[][][] arr = operations.getImage(this.currentImageName);
     try {
       File output = new File(filePath);
       BufferedWriter bw = new BufferedWriter(new FileWriter(output));
       bw.write("P3\n");
-      bw.write("#"+this.currentImageName +".PPM Image\n");
-      bw.write(arr[0].length +" "+arr.length+"\n");
+      bw.write("#" + this.currentImageName + ".PPM Image\n");
+      bw.write(arr[0].length + " " + arr.length + "\n");
       bw.write("255\n");
 
-      for(int i=0;i<arr.length;i++){
-        for(int j=0;j<arr[i].length;j++){
-          bw.write(arr[i][j][0]+" "+arr[i][j][1]+" "+arr[i][j][2]+" ");
+      for (int i = 0; i < arr.length; i++) {
+        for (int j = 0; j < arr[i].length; j++) {
+          bw.write(arr[i][j][0] + " " + arr[i][j][1] + " " + arr[i][j][2] + " ");
         }
         bw.write("\n");
       }
       bw.close();
-    }catch(IOException e){
+    } catch (IOException e) {
       System.out.println("File Not Found");
     }
   }

@@ -1,6 +1,7 @@
-package Controller.Commands;
+package controller.commands;
 
-import Model.Operations;
+import model.Operations;
+
 
 /**
  * A class that performs the Sepia operation on an
@@ -10,7 +11,7 @@ import Model.Operations;
  * the image.
  */
 
-public class Sepia extends AbstractCommandExecuter{
+public class Sepia extends AbstractCommandExecuter {
   String currentImageName;
   String newImageName;
 
@@ -19,11 +20,11 @@ public class Sepia extends AbstractCommandExecuter{
    * Validate the command length and initialize the image
    * names.
    *
-   * @param cmd the command array obtained by splitting
-   *            input using space.
+   * @param cmd           the command array obtained by splitting
+   *                      input using space.
    * @param commandLength the expected length of command array.
    */
-  public Sepia(String[] cmd,int commandLength) {
+  public Sepia(String[] cmd, int commandLength) {
     this.validCommandLength(cmd.length, commandLength);
     this.currentImageName = cmd[1];
     this.newImageName = cmd[2];
@@ -41,8 +42,8 @@ public class Sepia extends AbstractCommandExecuter{
    */
   @Override
   public void execute(Operations operations) {
-    this.imageCheck(operations,this.currentImageName);
-    operations.sepia(this.currentImageName,this.newImageName);
+    this.imageCheck(operations, this.currentImageName);
+    operations.sepia(this.currentImageName, this.newImageName);
   }
 
 }
