@@ -5,6 +5,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 
@@ -20,6 +23,7 @@ public class Save extends AbstractCommandExecuter{
   private final String filePath;
   private final String currentImageName;
   private final String extension;
+  private final Map<String, Consumer<Operations>> savingImage;
 
   /**
    * Construct a Save command object.
@@ -36,6 +40,10 @@ public class Save extends AbstractCommandExecuter{
     this.filePath = cmd[1];
     this.extension = this.filePath.substring(this.filePath.lastIndexOf(".")+1);
     this.currentImageName = cmd[2];
+    this.savingImage = new HashMap<>();
+    this.savingImage.put("png", this::savePngJpeg);
+    this.savingImage.put("jpeg", this::savePngJpeg);
+    this.savingImage.put("ppm", this::savePPM);
   }
 
   /**
@@ -53,17 +61,11 @@ public class Save extends AbstractCommandExecuter{
   @Override
   public void execute(Operations operations) {
     this.imageCheck(operations,this.currentImageName);
-    switch (this.extension){
-      case "png":
-      case "jpeg":
-        this.savePngJpeg(operations);
-        break;
-      case "ppm":
-        this.savePPM(operations);
-        break;
-      default:
-        throw new IllegalArgumentException("This extension is not Supported");
+    Consumer<Operations> cmd = this.savingImage.get(this.extension);
+    if (cmd == null) {
+      throw new IllegalArgumentException("This extension is not Supported");
     }
+    cmd.accept(operations);
   }
 
   /**

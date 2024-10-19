@@ -5,7 +5,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 
@@ -18,25 +21,30 @@ import Model.Operations;
  * PPM formats only.
  */
 
-public class Load extends AbstractCommandExecuter{
+public class Load extends AbstractCommandExecuter {
   private final String filePath;
   private final String currentImageName;
   private final String extension;
+  private final Map<String, Consumer<Operations>> loadingImage;
 
   /**
    * Construct a load command object.
    * Validate the command length and initialize the image
    * names.
    *
-   * @param cmd the command array obtained by splitting
-   *            input using space.
+   * @param cmd           the command array obtained by splitting
+   *                      input using space.
    * @param commandLength the expected length of command array.
    */
-  public Load(String [] cmd,int commandLength) {
-    this.validCommandLength(cmd.length,commandLength);
+  public Load(String[] cmd, int commandLength) {
+    this.validCommandLength(cmd.length, commandLength);
     this.filePath = cmd[1];
     this.extension = this.filePath.substring(this.filePath.lastIndexOf(".") + 1);
     this.currentImageName = cmd[2];
+    this.loadingImage = new HashMap<>();
+    this.loadingImage.put("png", this::loadPngJpeg);
+    this.loadingImage.put("jpeg", this::loadPngJpeg);
+    this.loadingImage.put("ppm", this::loadPPM);
   }
 
   /**
@@ -50,18 +58,12 @@ public class Load extends AbstractCommandExecuter{
    *                   image.
    */
   @Override
-  public void execute(Operations operations) throws IllegalArgumentException{
-    switch (this.extension){
-      case "png":
-      case "jpeg":
-        this.loadPngJpeg(operations);
-        break;
-      case "ppm":
-        this.loadPPM(operations);
-        break;
-      default:
-        throw new IllegalArgumentException("This extension is not Supported");
+  public void execute(Operations operations) throws IllegalArgumentException {
+    Consumer<Operations> cmd = this.loadingImage.get(this.extension);
+    if (cmd == null) {
+      throw new IllegalArgumentException("This extension is not Supported");
     }
+    cmd.accept(operations);
   }
 
   /**
@@ -73,22 +75,22 @@ public class Load extends AbstractCommandExecuter{
    *                   image.
    */
 
-  private void loadPngJpeg(Operations operations){
+  private void loadPngJpeg(Operations operations) {
     File file = new File(this.filePath);
     try {
       BufferedImage img = ImageIO.read(file);
       int height = img.getHeight();
       int width = img.getWidth();
-      int [][][] arr = new int[height][width][3];
-      for(int i=0;i<height;i++){
-        for(int j=0;j<width;j++){
+      int[][][] arr = new int[height][width][3];
+      for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
           int rgb = img.getRGB(j, i);
-          arr[i][j][0] = (rgb>>16) & 0xff;
-          arr[i][j][1] = (rgb>>8) & 0xff;
+          arr[i][j][0] = (rgb >> 16) & 0xff;
+          arr[i][j][1] = (rgb >> 8) & 0xff;
           arr[i][j][2] = (rgb) & 0xff;
         }
       }
-      operations.loadImages(arr,this.currentImageName);
+      operations.loadImages(arr, this.currentImageName);
     } catch (IOException e) {
       System.out.println("File Not Found");
     }
@@ -101,20 +103,19 @@ public class Load extends AbstractCommandExecuter{
    *
    * @param operations operation interface used to load image.
    */
-  private void loadPPM(Operations operations){
+  private void loadPPM(Operations operations) {
     Scanner sc;
     try {
       sc = new Scanner(new FileInputStream(this.filePath));
-    }
-    catch (FileNotFoundException e) {
+    } catch (FileNotFoundException e) {
       System.out.println("File not found!");
       return;
     }
     StringBuilder builder = new StringBuilder();
     while (sc.hasNextLine()) {
       String s = sc.nextLine();
-      if (s.charAt(0)!='#') {
-        builder.append(s+System.lineSeparator());
+      if (s.charAt(0) != '#') {
+        builder.append(s + System.lineSeparator());
       }
     }
     sc = new Scanner(builder.toString());
@@ -126,14 +127,14 @@ public class Load extends AbstractCommandExecuter{
     int width = sc.nextInt();
     int height = sc.nextInt();
     int maxValue = sc.nextInt();
-    int [][][] arr = new int[height][width][3];
-    for (int i=0;i<height;i++) {
-      for (int j=0;j<width;j++) {
+    int[][][] arr = new int[height][width][3];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
         arr[i][j][0] = sc.nextInt();
         arr[i][j][1] = sc.nextInt();
         arr[i][j][2] = sc.nextInt();
       }
     }
-    operations.loadImages(arr,this.currentImageName);
+    operations.loadImages(arr, this.currentImageName);
   }
 }

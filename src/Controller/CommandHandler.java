@@ -88,6 +88,7 @@ public class CommandHandler implements Handler {
     }
     AbstractCommandExecuter ex = cmd.apply(input, 0);
     ex.execute(operations);
+    System.out.println(command + " executed successfully");
   }
 
 }
