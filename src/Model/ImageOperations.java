@@ -140,8 +140,10 @@ public class ImageOperations implements Operations {
   private void getValueComponent(ImageModel o, ImageModel n) {
     for (int i = 0; i < o.getHeight(); i++) {
       for (int j = 0; j < o.getWidth(); j++) {
-        int value = Math.max(o.getPixelValue(i, j, 0), Math.max(o.getPixelValue(i, j, 1),
-                o.getPixelValue(i, j, 2)));
+        int value = o.getPixelValue(i, j, 0);
+        value = Math.max(o.getPixelValue(i, j, 1), value);
+        value = Math.max(o.getPixelValue(i, j, 2), value);
+
         n.setPixelValue(i, j, 0, value);
         n.setPixelValue(i, j, 1, value);
         n.setPixelValue(i, j, 2, value);
@@ -163,7 +165,10 @@ public class ImageOperations implements Operations {
   private void getIntensityComponent(ImageModel o, ImageModel n) {
     for (int i = 0; i < o.getHeight(); i++) {
       for (int j = 0; j < o.getWidth(); j++) {
-        int value = (o.getPixelValue(i, j, 0) + o.getPixelValue(i, j, 1) + o.getPixelValue(i, j, 2)) / 3;
+        int value = o.getPixelValue(i, j, 0);
+        value += o.getPixelValue(i, j, 1);
+        value += o.getPixelValue(i, j, 2);
+        value /= 3;
         n.setPixelValue(i, j, 0, value);
         n.setPixelValue(i, j, 1, value);
         n.setPixelValue(i, j, 2, value);
@@ -185,8 +190,9 @@ public class ImageOperations implements Operations {
   private void getLumaComponent(ImageModel o, ImageModel n) {
     for (int i = 0; i < o.getHeight(); i++) {
       for (int j = 0; j < o.getWidth(); j++) {
-        double value = 0.2126 * o.getPixelValue(i, j, 0) + 0.7152 * o.getPixelValue(i, j, 1) +
-                0.0722 * o.getPixelValue(i, j, 2);
+        double value = 0.2126 * o.getPixelValue(i, j, 0);
+        value += 0.7152 * o.getPixelValue(i, j, 1);
+        value += 0.0722 * o.getPixelValue(i, j, 2);
         n.setPixelValue(i, j, 0, (int) value);
         n.setPixelValue(i, j, 1, (int) value);
         n.setPixelValue(i, j, 2, (int) value);
@@ -333,7 +339,8 @@ public class ImageOperations implements Operations {
    *                      original image.
    */
   @Override
-  public void splitRGB(String currentImage, String newRedImage, String newGreenImage, String newBlueImage) {
+  public void splitRGB(String currentImage, String newRedImage,
+                       String newGreenImage, String newBlueImage) {
     this.getColorComponent(currentImage, newRedImage, 0);
     this.getColorComponent(currentImage, newGreenImage, 1);
     this.getColorComponent(currentImage, newBlueImage, 2);
@@ -354,8 +361,8 @@ public class ImageOperations implements Operations {
    * @throws IllegalArgumentException if the provided images do not have same dimensions.
    */
   @Override
-  public void combineRGB(String redImage, String greenImage, String blueImage, String newImage)
-          throws IllegalArgumentException {
+  public void combineRGB(String redImage, String greenImage,
+                         String blueImage, String newImage) throws IllegalArgumentException {
 
     ImageModel red = this.imageMap.get(redImage);
     ImageModel green = this.imageMap.get(greenImage);
@@ -404,8 +411,8 @@ public class ImageOperations implements Operations {
               int x = i + a;
               int y = j + b;
               if (x >= 0 && y >= 0 && y < width && x < height) {
-                value = value + filter[a + filterSize][b + filterSize] *
-                        old.getPixelValue(i + a, j + b, k);
+                value += filter[a + filterSize][b + filterSize]
+                        * old.getPixelValue(i + a, j + b, k);
               }
             }
           }
@@ -429,11 +436,7 @@ public class ImageOperations implements Operations {
   public void blur(String currentImage, String newImage) {
     ImageModel imageOld = this.imageMap.get(currentImage);
     ImageModel imageNew = this.getNewImageModel(imageOld);
-    double[][] filter = {
-            {0.0625, 0.125, 0.0625},
-            {0.125, 0.25, 0.125},
-            {0.0625, 0.125, 0.0625}
-    };
+    double[][] filter = {{0.0625, 0.125, 0.0625}, {0.125, 0.25, 0.125}, {0.0625, 0.125, 0.0625}};
     this.applyFilter(filter, imageOld, imageNew);
     this.imageMap.put(newImage, imageNew);
   }
