@@ -1,7 +1,5 @@
 package controller;
 
-import java.io.IOException;
-
 
 /**
  * The Handler interface defines a method for processing
@@ -13,10 +11,18 @@ import java.io.IOException;
 public interface Handler {
 
   /**
-   * Reads and executes a command.
+   * Reads and executes a command from the given input array.
+   * This method processes the input command, and retrieves
+   * the corresponding command executor from the command map.
+   * If the command is recognized, it is executed with the specified
+   * ImageOperations instance. If the command is not found in the
+   * command map, an IllegalArgumentException is thrown.
    *
-   * @param command an array of strings representing the
-   *                command and its arguments.
+   * @param input An array of strings representing the command and its
+   *              arguments.
+   *              The first element is expected to be the command name.
+   * @throws IllegalArgumentException if the command is unknown or not
+   *                                  found in the command map.
    */
-  void readCommand(String[] command) throws IOException;
+  void readCommand(String[] input) throws IllegalArgumentException;
 }

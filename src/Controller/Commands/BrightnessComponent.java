@@ -29,9 +29,6 @@ public class BrightnessComponent extends AbstractCommandExecuter {
     this.currentImageName = cmd[1];
     this.newImageName = cmd[2];
     this.handler = cmd[0];
-    System.out.println(this.currentImageName);
-    System.out.println(this.newImageName);
-    System.out.println(this.handler);
   }
 
   /**

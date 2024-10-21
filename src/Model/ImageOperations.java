@@ -163,8 +163,7 @@ public class ImageOperations implements Operations {
   private void getIntensityComponent(ImageModel o, ImageModel n) {
     for (int i = 0; i < o.getHeight(); i++) {
       for (int j = 0; j < o.getWidth(); j++) {
-        int value = (o.getPixelValue(i, j, 0) + o.getPixelValue(i, j, 1)
-                + o.getPixelValue(i, j, 2)) / 3;
+        int value = (o.getPixelValue(i, j, 0) + o.getPixelValue(i, j, 1) + o.getPixelValue(i, j, 2)) / 3;
         n.setPixelValue(i, j, 0, value);
         n.setPixelValue(i, j, 1, value);
         n.setPixelValue(i, j, 2, value);
@@ -494,4 +493,5 @@ public class ImageOperations implements Operations {
     }
     this.imageMap.put(newImage, imageNew);
   }
+
 }

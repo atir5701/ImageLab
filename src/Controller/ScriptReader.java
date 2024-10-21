@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
+import model.Operations;
+
 /**
  * The ScriptReader class is responsible for reading and executing
  * commands from a script file. It utilizes a CommandHandler to
@@ -13,7 +15,6 @@ import java.util.Scanner;
  * This class provides methods to read commands from a specified file
  * path, ensuring that the file is in the correct format and does not
  * contain comments.
- * It also includes a main method to facilitate execution.
  */
 
 public class ScriptReader {
@@ -25,8 +26,8 @@ public class ScriptReader {
    * used to execute commands read from the script.
    */
 
-  ScriptReader() {
-    handle = new CommandHandler();
+  public ScriptReader(Operations operations) {
+    handle = new CommandHandler(operations);
   }
 
   /**
@@ -40,7 +41,7 @@ public class ScriptReader {
    * @throws IOException if an error occurs while reading the file.
    */
 
-  public void scriptReader(String filepath) throws IOException {
+  private void scriptReader(String filepath) throws IOException {
     File file = new File(filepath);
     BufferedReader br = new BufferedReader(new FileReader(file));
     String st;
@@ -71,28 +72,38 @@ public class ScriptReader {
    *                                  the file.
    */
 
-  public void getScriptPath() throws IllegalArgumentException, IOException {
+  private void getScriptPath() throws IllegalArgumentException, IOException {
     Scanner scn = new Scanner(System.in);
-    System.out.println("Enter Script file path : ");
+    System.out.println("Enter the Command : ");
     String script = scn.nextLine();
-    String extension = script.substring(script.lastIndexOf(".") + 1);
+    script = script.trim();
+    script = script.replaceAll("\\s+", " ");
+    String[] init = script.split(" ");
+    if (!(init[0].equals("run"))) {
+      throw new IllegalArgumentException("Invalid Command Provided to Run the Script");
+    }
+    String path = init[1];
+    String extension = path.substring(path.lastIndexOf(".") + 1);
     if (!extension.equals("txt")) {
       throw new IllegalArgumentException("Provide txt File only");
     }
-    this.scriptReader(script);
+    this.scriptReader(path);
   }
 
   /**
-   * The main method that initiates the script reading process.
-   * This method creates an instance of ScriptReader and
-   * prompts the user to enter the script file path.
-   *
-   * @param args command-line arguments.
-   * @throws IOException if an error occurs while reading the script file.
+   * Method to start the Application by getting the script path.
+   * This method invokes the getScriptPath() method, which
+   * involve reading from a file. If an error occurs during this process,
+   * an IOException will be caught and an error message will be printed to
+   * the console.
    */
 
-  public static void main(String[] args) throws IOException {
-    ScriptReader reader = new ScriptReader();
-    reader.getScriptPath();
+  public void startApplication() {
+    try {
+      this.getScriptPath();
+    } catch (IOException e) {
+      System.out.println("Error in reading script file");
+    }
   }
+
 }

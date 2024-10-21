@@ -53,7 +53,7 @@ public abstract class AbstractCommandExecuter implements CommandExecuter {
    *                   image.
    */
   @Override
-  abstract public void execute(Operations operations);
+  public abstract void execute(Operations operations);
 
 
 }

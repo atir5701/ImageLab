@@ -6,7 +6,7 @@ package model;
  * an image. An image is a 3-d matrix of pixels.
  */
 
-public class ImageModel {
+class ImageModel {
   private final int height;
   private final int width;
   private final int[][][] pixels;

@@ -74,6 +74,7 @@ public class Save extends AbstractCommandExecuter {
    * format.
    * Convert the 3-d image pixel matrix into a BufferedImage
    * and then write it at the suitable path.
+   * Method throws IOException if the filepath is incorrect
    *
    * @param operations The operation instance which is
    *                   used to get the image which is to
@@ -96,7 +97,7 @@ public class Save extends AbstractCommandExecuter {
       }
       ImageIO.write(img, extension, file);
     } catch (IOException e) {
-      System.out.println("File Not Found");
+      throw new RuntimeException("Cannot Save the Image, incorrect filepath");
     }
 
   }
@@ -107,6 +108,7 @@ public class Save extends AbstractCommandExecuter {
    * Writes the image data to a PPM file in ASCII
    * format (P3 format), including the image's
    * dimensions and pixel data.
+   * Method throws IOException if the filepath is incorrect.
    *
    * @param operations The operation instance which is
    *                   used to get the image which is to
@@ -130,7 +132,7 @@ public class Save extends AbstractCommandExecuter {
       }
       bw.close();
     } catch (IOException e) {
-      System.out.println("File Not Found");
+      throw new RuntimeException("Cannot Save the Image, incorrect filepath");
     }
   }
 

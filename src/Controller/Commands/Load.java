@@ -6,7 +6,6 @@ import model.Operations;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -71,6 +70,7 @@ public class Load extends AbstractCommandExecuter {
    * Helper Method which is used to load the PNG or
    * JPEG format images by reading the file and converting
    * the pixel data into a 3-d matrix.
+   * Method throws IOException if the filepath is incorrect.
    *
    * @param operations the operation interface to load the
    *                   image.
@@ -93,7 +93,7 @@ public class Load extends AbstractCommandExecuter {
       }
       operations.loadImages(arr, this.currentImageName);
     } catch (IOException e) {
-      System.out.println("File Not Found");
+      throw new RuntimeException("Filepath provided is incorrect");
     }
   }
 
@@ -101,6 +101,7 @@ public class Load extends AbstractCommandExecuter {
    * Helper method used to load a PPM image by reading the file and
    * converting the pixel data into a 3-d array.
    * PPM format is assumed to be a plain text with "P3" format.
+   * Method throws IOException if the filepath is incorrect.
    *
    * @param operations operation interface used to load image.
    */
@@ -108,9 +109,8 @@ public class Load extends AbstractCommandExecuter {
     Scanner sc;
     try {
       sc = new Scanner(new FileInputStream(this.filePath));
-    } catch (FileNotFoundException e) {
-      System.out.println("File not found!");
-      return;
+    } catch (IOException e) {
+      throw new RuntimeException("Filepath provided is incorrect.");
     }
     StringBuilder builder = new StringBuilder();
     while (sc.hasNextLine()) {
@@ -122,7 +122,7 @@ public class Load extends AbstractCommandExecuter {
     sc = new Scanner(builder.toString());
     String token = sc.next();
     if (!token.equals("P3")) {
-      System.out.println("Invalid PPM file: plain RAW file should begin with P3");
+      System.out.println("Invalid PPM file: plain RAW file should begin with P3.");
       return;
     }
     int width = sc.nextInt();

@@ -13,7 +13,6 @@ import controller.commands.Save;
 import controller.commands.Sepia;
 import controller.commands.Sharpen;
 import controller.commands.VerticalFlip;
-import model.ImageOperations;
 import model.Operations;
 
 import java.util.HashMap;
@@ -28,7 +27,7 @@ import java.util.function.BiFunction;
  */
 
 
-public class CommandHandler implements Handler {
+class CommandHandler implements Handler {
   Operations operations;
   Map<String, BiFunction<String[], Integer, AbstractCommandExecuter>> commandMap;
 
@@ -42,8 +41,8 @@ public class CommandHandler implements Handler {
    * blur, and sharpen, and manipulating color components.
    */
 
-  public CommandHandler() {
-    this.operations = new ImageOperations();
+  public CommandHandler(Operations operations) {
+    this.operations = operations;
     commandMap = new HashMap<>();
     commandMap.put("load", (cmd, a) -> new Load(cmd, 3));
     commandMap.put("save", (cmd, a) -> new Save(cmd, 3));
@@ -83,11 +82,10 @@ public class CommandHandler implements Handler {
     String command = input[0];
     BiFunction<String[], Integer, AbstractCommandExecuter> cmd = this.commandMap.get(command);
     if (cmd == null) {
-      throw new IllegalArgumentException("Unknown command: ");
+      throw new IllegalArgumentException("Invalid Command Provided.");
     }
     AbstractCommandExecuter ex = cmd.apply(input, 0);
     ex.execute(operations);
     System.out.println(command + " executed successfully");
   }
-
 }
