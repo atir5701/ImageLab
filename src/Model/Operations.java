@@ -20,14 +20,23 @@ public interface Operations {
    * image.
    *
    * @param matrix a 3D integer array containing pixel
-   *               values for the image.
-   *               Each pixel is expected to have three
-   *               components (R, G, B).
+   *               values for image.
    * @param name   the name under which the image will be
    *               stored in the image map.
+   * @return true if operation done successfully, else false.
    */
 
-  void loadImages(int[][][] matrix, String name);
+  boolean loadImage(int[][][] matrix, String name);
+
+  /**
+   * Obtain the pixel matrix of the image whose name is
+   * provided in the function parameter.
+   *
+   * @param name the name of the image whose pixel matrix
+   *             if to be obtained.
+   * @return a 3-D array representing the pixel values of image.
+   */
+  int[][][] saveImage(String name);
 
   /**
    * Checks whether an image with the specified name exists
@@ -38,16 +47,6 @@ public interface Operations {
    * @return true if the image exists; false otherwise.
    */
   boolean checkImage(String name);
-
-  /**
-   * Obtain the pixel matrix of the image whose name is
-   * provided in the function parameter.
-   *
-   * @param name the name of the image whose pixel matrix
-   *             if to be obtained.
-   * @return a 3-D array representing the pixel values of image.
-   */
-  int[][][] getImage(String name);
 
   /**
    * Obtain the specific color component from the specified image.
@@ -62,8 +61,9 @@ public interface Operations {
    *                     color component.
    * @param channel      the color component which is to be extracted.
    *                     0 is for Red; 1 is for Green; 2 is for Blue.
+   * @return true if operation done successfully, else false.
    */
-  void getColorComponent(String currentImage, String newImage, int channel);
+  boolean getColorComponent(String currentImage, String newImage, int channel);
 
   /**
    * Obtain the specific brightness component from the specified image.
@@ -80,8 +80,9 @@ public interface Operations {
    * @param handle       specifies which brightness component to use.
    *                     Can be value-component; luma-component;
    *                     intensity-component.
+   * @return true if operation done successfully, else false.
    */
-  void getBrightnessComponent(String currentImage, String newImage, String handle);
+  boolean getBrightnessComponent(String currentImage, String newImage, String handle);
 
   /**
    * Perform horizontal flip of the specified image and create a new image
@@ -92,8 +93,9 @@ public interface Operations {
    *                     horizontally flipped.
    * @param newImage     the name of the new image created by horizontally
    *                     flipping the original image.
+   * @return true if operation done successfully, else false.
    */
-  void horizontalFlip(String currentImage, String newImage);
+  boolean horizontalFlip(String currentImage, String newImage);
 
   /**
    * Perform vertical flip of the specified image and create a new image
@@ -104,8 +106,10 @@ public interface Operations {
    *                     vertically flipped.
    * @param newImage     the name of the new image created by vertically
    *                     flipping the original image.
+   * @return true if operation done successfully, else false.
    */
-  void verticalFlip(String currentImage, String newImage);
+
+  boolean verticalFlip(String currentImage, String newImage);
 
   /**
    * Brightens the specified image by adding the pixel's color value
@@ -120,8 +124,9 @@ public interface Operations {
    *                     intensity value provided.
    * @param intensity    the value which is to be added to each pixel. Can
    *                     be positive or negative.
+   * @return true if operation done successfully, else false.
    */
-  void brighten(String currentImage, String newImage, int intensity);
+  boolean brighten(String currentImage, String newImage, int intensity);
 
   /**
    * Split the specified image into its constituent color component images.
@@ -136,9 +141,10 @@ public interface Operations {
    *                      original image.
    * @param newBlueImage  the new image obtained from the blue-channel of the
    *                      original image.
+   * @return true if operation done successfully, else false.
    */
-  void splitRGB(String currentImage, String newRedImage, String newGreenImage,
-                String newBlueImage);
+  boolean splitRGB(String currentImage, String newRedImage, String newGreenImage,
+                   String newBlueImage);
 
   /**
    * Combine the red, green and blue color component from three specified images
@@ -152,11 +158,12 @@ public interface Operations {
    * @param blueImage  the name of the image which makes blue channel.
    * @param newImage   the name of the new image formed from combination
    *                   of the three images.
+   * @return true if operation done successfully, else false.
    * @throws IllegalArgumentException if the provided images do not have same dimensions.
    */
 
-  void combineRGB(String redImage, String greenImage, String blueImage,
-                  String newImage) throws IllegalArgumentException;
+  boolean combineRGB(String redImage, String greenImage, String blueImage,
+                     String newImage) throws IllegalArgumentException;
 
   /**
    * Blur the specified image by applying a suitable kernel over the
@@ -167,8 +174,9 @@ public interface Operations {
    *                     blurred.
    * @param newImage     the name of the new image obtained after blurring
    *                     the original image.
+   * @return true if operation done successfully, else false.
    */
-  void blur(String currentImage, String newImage);
+  boolean blur(String currentImage, String newImage);
 
   /**
    * Sharpen the specified image by applying a suitable kernel over the
@@ -178,8 +186,9 @@ public interface Operations {
    *                     Sharpen.
    * @param newImage     the name of the new image obtained after sharpening
    *                     the original image.
+   * @return true if operation done successfully, else false.
    */
-  void sharpen(String currentImage, String newImage);
+  boolean sharpen(String currentImage, String newImage);
 
   /**
    * Applying a Sepia color transformation on the image to give it a
@@ -190,7 +199,8 @@ public interface Operations {
    *                     color transformation is to be applied.
    * @param newImage     the name of the new image obtained after applying
    *                     sepia transformation on th original image.
+   * @return true if operation done successfully, else false.
    */
-  void sepia(String currentImage, String newImage);
+  boolean sepia(String currentImage, String newImage);
 
 }

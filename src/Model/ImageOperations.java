@@ -18,42 +18,13 @@ public class ImageOperations implements Operations {
   private final Map<String, ImageModel> imageMap;
 
   /**
-   * Constructs an ImageOperation objet and initializes an
+   * Constructs an ImageOperation object and initializes an
    * empty HashMap to store the image instances.
    * Map will be used to keep a track of all images which are
    * loaded and processed during execution.
    */
   public ImageOperations() {
     this.imageMap = new HashMap<>();
-  }
-
-  /**
-   * Loads an image from a 3D integer array representing pixel values
-   * and stores it in new object of Image model.
-   * In the 3-D Matrix :
-   * The first dimension is the height of the image.
-   * The second dimension is the width of the image.
-   * The third dimension is the channel associated with the
-   * image.
-   *
-   * @param matrix a 3D integer array containing pixel
-   *               values for the image.
-   *               Each pixel is expected to have three
-   *               components (R, G, B).
-   * @param name   the name under which the image will be
-   *               stored in the image map.
-   */
-  @Override
-  public void loadImages(int[][][] matrix, String name) {
-    ImageModel m = new ImageModel(matrix.length, matrix[0].length);
-    for (int i = 0; i < matrix.length; i++) {
-      for (int j = 0; j < matrix[0].length; j++) {
-        for (int k = 0; k <= 2; k++) {
-          m.setPixelValue(i, j, k, matrix[i][j][k]);
-        }
-      }
-    }
-    this.imageMap.put(name, m);
   }
 
   /**
@@ -70,6 +41,35 @@ public class ImageOperations implements Operations {
   }
 
   /**
+   * Loads an image from a 3D integer array representing pixel values
+   * and stores it in new object of Image model.
+   * In the 3-D Matrix :
+   * The first dimension is the height of the image.
+   * The second dimension is the width of the image.
+   * The third dimension is the channel associated with the
+   * image.
+   *
+   * @param matrix a 3D integer array containing pixel
+   *               values for image.
+   * @param name   the name under which the image will be
+   *               stored in the image map.
+   * @return true if operation done successfully, else false.
+   */
+  @Override
+  public boolean loadImage(int[][][] matrix, String name) {
+    ImageModel m = new ImageModel(matrix.length, matrix[0].length);
+    for (int i = 0; i < matrix.length; i++) {
+      for (int j = 0; j < matrix[0].length; j++) {
+        for (int k = 0; k <= 2; k++) {
+          m.setPixelValue(i, j, k, matrix[i][j][k]);
+        }
+      }
+    }
+    this.imageMap.put(name, m);
+    return true;
+  }
+
+  /**
    * Obtain the pixel matrix of the image whose name is
    * provided in the function parameter.
    *
@@ -78,7 +78,7 @@ public class ImageOperations implements Operations {
    * @return a 3-D array representing the pixel values of image.
    */
   @Override
-  public int[][][] getImage(String name) {
+  public int[][][] saveImage(String name) {
     return this.imageMap.get(name).getPixelMatrix();
   }
 
@@ -90,6 +90,7 @@ public class ImageOperations implements Operations {
    *            copied to the new ImageModel.
    * @return a new ImageModel.
    */
+
   private ImageModel getNewImageModel(ImageModel old) {
     int height = old.getHeight();
     int width = old.getWidth();
@@ -109,9 +110,10 @@ public class ImageOperations implements Operations {
    *                     color component.
    * @param channel      the color component which is to be extracted.
    *                     0 is for Red; 1 is for Green; 2 is for Blue.
+   * @return true if operation done successfully, else false.
    */
   @Override
-  public void getColorComponent(String currentImage, String newImage, int channel) {
+  public boolean getColorComponent(String currentImage, String newImage, int channel) {
     ImageModel imageOld = this.imageMap.get(currentImage);
     ImageModel imageNew = this.getNewImageModel(imageOld);
     int height = imageNew.getHeight();
@@ -124,6 +126,7 @@ public class ImageOperations implements Operations {
       }
     }
     this.imageMap.put(newImage, imageNew);
+    return true;
   }
 
   /**
@@ -217,8 +220,8 @@ public class ImageOperations implements Operations {
    *                     intensity-component.
    */
   @Override
-  public void getBrightnessComponent(String currentImage, String newImage,
-                                     String handle) throws IllegalArgumentException {
+  public boolean getBrightnessComponent(String currentImage, String newImage,
+                                        String handle) throws IllegalArgumentException {
     ImageModel imageOld = this.imageMap.get(currentImage);
     ImageModel imageNew = this.getNewImageModel(imageOld);
     switch (handle) {
@@ -235,6 +238,7 @@ public class ImageOperations implements Operations {
         throw new IllegalArgumentException("Invalid command provided.");
     }
     this.imageMap.put(newImage, imageNew);
+    return true;
   }
 
   /**
@@ -246,9 +250,10 @@ public class ImageOperations implements Operations {
    *                     horizontally flipped.
    * @param newImage     the name of the new image created by horizontally
    *                     flipping the original image.
+   * @return true if operation done successfully, else false.
    */
   @Override
-  public void horizontalFlip(String currentImage, String newImage) {
+  public boolean horizontalFlip(String currentImage, String newImage) {
     ImageModel imageOld = this.imageMap.get(currentImage);
     ImageModel imageNew = this.getNewImageModel(imageOld);
     int height = imageNew.getHeight();
@@ -263,6 +268,7 @@ public class ImageOperations implements Operations {
       }
     }
     this.imageMap.put(newImage, imageNew);
+    return true;
   }
 
   /**
@@ -274,9 +280,10 @@ public class ImageOperations implements Operations {
    *                     vertically flipped.
    * @param newImage     the name of the new image created by vertically
    *                     flipping the original image.
+   * @return true if operation done successfully, else false.
    */
   @Override
-  public void verticalFlip(String currentImage, String newImage) {
+  public boolean verticalFlip(String currentImage, String newImage) {
     ImageModel imageOld = this.imageMap.get(currentImage);
     ImageModel imageNew = this.getNewImageModel(imageOld);
     int height = imageNew.getHeight();
@@ -291,6 +298,7 @@ public class ImageOperations implements Operations {
       row = row + 1;
     }
     this.imageMap.put(newImage, imageNew);
+    return true;
   }
 
   /**
@@ -308,7 +316,7 @@ public class ImageOperations implements Operations {
    *                     be positive or negative.
    */
   @Override
-  public void brighten(String currentImage, String newImage, int intensity) {
+  public boolean brighten(String currentImage, String newImage, int intensity) {
     ImageModel imageOld = this.imageMap.get(currentImage);
     ImageModel imageNew = this.getNewImageModel(imageOld);
     int height = imageNew.getHeight();
@@ -322,7 +330,9 @@ public class ImageOperations implements Operations {
       }
     }
     this.imageMap.put(newImage, imageNew);
+    return true;
   }
+
 
   /**
    * Split the specified image into its constituent color component images.
@@ -337,13 +347,15 @@ public class ImageOperations implements Operations {
    *                      original image.
    * @param newBlueImage  the new image obtained from the blue-channel of the
    *                      original image.
+   * @return true if operation done successfully, else false.
    */
   @Override
-  public void splitRGB(String currentImage, String newRedImage,
-                       String newGreenImage, String newBlueImage) {
-    this.getColorComponent(currentImage, newRedImage, 0);
-    this.getColorComponent(currentImage, newGreenImage, 1);
-    this.getColorComponent(currentImage, newBlueImage, 2);
+  public boolean splitRGB(String currentImage, String newRedImage,
+                          String newGreenImage, String newBlueImage) {
+    return this.getColorComponent(currentImage, newRedImage, 0)
+            && this.getColorComponent(currentImage, newGreenImage, 1)
+            && this.getColorComponent(currentImage, newBlueImage, 2);
+
   }
 
   /**
@@ -358,11 +370,13 @@ public class ImageOperations implements Operations {
    * @param blueImage  the name of the image which makes blue channel.
    * @param newImage   the name of the new image formed from combination
    *                   of the three images.
+   * @return true if operation done successfully, else false.
    * @throws IllegalArgumentException if the provided images do not have same dimensions.
    */
   @Override
-  public void combineRGB(String redImage, String greenImage,
-                         String blueImage, String newImage) throws IllegalArgumentException {
+  public boolean combineRGB(String redImage, String greenImage,
+                            String blueImage, String newImage)
+          throws IllegalArgumentException {
 
     ImageModel red = this.imageMap.get(redImage);
     ImageModel green = this.imageMap.get(greenImage);
@@ -370,18 +384,19 @@ public class ImageOperations implements Operations {
 
     if (red.getHeight() != green.getHeight() || red.getHeight() != blue.getHeight()
             || red.getWidth() != green.getWidth() || red.getWidth() != blue.getWidth()) {
-      throw new IllegalArgumentException("Images to be combined do not have same dimensions");
+      throw new IllegalArgumentException("Images to be combined do not have same dimensions.");
     }
 
     ImageModel imageNew = this.getNewImageModel(red);
     for (int i = 0; i < red.getHeight(); i++) {
       for (int j = 0; j < red.getWidth(); j++) {
         imageNew.setPixelValue(i, j, 0, red.getPixelValue(i, j, 0));
-        imageNew.setPixelValue(i, j, 1, green.getPixelValue(i, j, 0));
-        imageNew.setPixelValue(i, j, 2, blue.getPixelValue(i, j, 0));
+        imageNew.setPixelValue(i, j, 1, green.getPixelValue(i, j, 1));
+        imageNew.setPixelValue(i, j, 2, blue.getPixelValue(i, j, 2));
       }
     }
     this.imageMap.put(newImage, imageNew);
+    return true;
   }
 
 
@@ -431,14 +446,16 @@ public class ImageOperations implements Operations {
    *                     blurred.
    * @param newImage     the name of the new image obtained after blurring
    *                     the original image.
+   * @return true if operation done successfully, else false.
    */
   @Override
-  public void blur(String currentImage, String newImage) {
+  public boolean blur(String currentImage, String newImage) {
     ImageModel imageOld = this.imageMap.get(currentImage);
     ImageModel imageNew = this.getNewImageModel(imageOld);
     double[][] filter = {{0.0625, 0.125, 0.0625}, {0.125, 0.25, 0.125}, {0.0625, 0.125, 0.0625}};
     this.applyFilter(filter, imageOld, imageNew);
     this.imageMap.put(newImage, imageNew);
+    return true;
   }
 
   /**
@@ -449,9 +466,10 @@ public class ImageOperations implements Operations {
    *                     Sharpen.
    * @param newImage     the name of the new image obtained after sharpening
    *                     the original image.
+   * @return true if operation done successfully, else false.
    */
   @Override
-  public void sharpen(String currentImage, String newImage) {
+  public boolean sharpen(String currentImage, String newImage) {
     ImageModel imageOld = this.imageMap.get(currentImage);
     ImageModel imageNew = this.getNewImageModel(imageOld);
     double[][] filter = {
@@ -463,6 +481,7 @@ public class ImageOperations implements Operations {
     };
     this.applyFilter(filter, imageOld, imageNew);
     this.imageMap.put(newImage, imageNew);
+    return true;
   }
 
   /**
@@ -474,9 +493,10 @@ public class ImageOperations implements Operations {
    *                     color transformation is to be applied.
    * @param newImage     the name of the new image obtained after applying
    *                     sepia transformation on th original image.
+   * @return true if operation done successfully, else false.
    */
   @Override
-  public void sepia(String currentImage, String newImage) {
+  public boolean sepia(String currentImage, String newImage) {
     ImageModel imageOld = this.imageMap.get(currentImage);
     ImageModel imageNew = this.getNewImageModel(imageOld);
     int height = imageNew.getHeight();
@@ -495,6 +515,7 @@ public class ImageOperations implements Operations {
       }
     }
     this.imageMap.put(newImage, imageNew);
+    return true;
   }
 
 }

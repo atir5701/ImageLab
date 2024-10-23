@@ -1,4 +1,5 @@
-import controller.ScriptReader;
+import controller.CommandReader;
+import controller.ImageAppController;
 import model.ImageOperations;
 import model.Operations;
 
@@ -19,7 +20,7 @@ public class ImageProcessingApplication {
    */
   public static void main(String[] args) {
     Operations operations = new ImageOperations();
-    ScriptReader src = new ScriptReader(operations);
+    ImageAppController src = new CommandReader(operations,System.in,System.out);
     src.startApplication();
   }
 }

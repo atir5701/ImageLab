@@ -1,0 +1,84 @@
+# Loading Multiple images in all format jpeg,ppm and png
+
+load D:\Northeastern\PDP\Assignment-4-MVC\images\bird.png bird
+
+
+# Red, Green, Blue, Value, Intensity, Luma component of all images
+
+red-component bird bird-red
+
+green-component bird bird-green
+
+blue-component bird bird-blue
+
+value-component bird bird-value
+
+intensity-component bird bird-intensity
+
+luma-component bird bird-luma
+
+
+
+# Horizontal Flip
+
+horizontal-flip bird bird-hor
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-hor.png bird-hor
+
+
+# Vertical-flip
+
+vertical-flip bird bird-ver
+
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-ver.png bird-ver
+
+
+
+# Brighten
+
+
+brighten 100 bird bird-bright-100
+
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-bright-100.png bird-bright-100
+
+# Darken
+
+
+brighten -100 bird bird-dark-100
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-dark-100.png bird-dark-100
+
+# RGB split
+
+rgb-split bird bird-rs bird-gs bird-bs
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-redsplit.png bird-rs
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-greensplit.png bird-gs
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-bluesplit.png bird-bs
+
+# RGB combine
+
+rgb-combine birdcom bird-rs bird-gs bird-bs
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-combine.png birdcom
+
+
+
+# Blur
+
+blur 		bird bird-blur
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-blur.png bird-blur
+
+# Sharpen
+
+sharpen bird bird-sharpen
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-sharpen.png bird-sharpen
+
+
+# Sepia
+sepia bird bird-sepia
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-sepia.png bird-sepia

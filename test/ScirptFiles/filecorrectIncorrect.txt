@@ -1,0 +1,52 @@
+# Loading Multiple images in all format jpeg,ppm and png
+
+load D:\Northeastern\PDP\Assignment-4-MVC\images\manhattan-small.png bird
+
+
+# Red, Green, Blue, Value, Intensity, Luma component of all images
+
+red-component bird 
+
+green-component bird bird-green
+
+blue-component bird bird-blue
+
+
+
+# Horizontal Flip
+
+horizontal-flip bird bird-hor
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-hor.ppm
+
+
+# Vertical-flip
+
+vertical-flip bird bird-ver
+
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-ver.ppm bird-ver
+
+
+
+# Brighten
+
+
+brighten 100 bird bird-bright-100
+
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-bright-100.ppm bird-bright-100
+
+# Darken
+
+
+brighten name bird bird-dark-100
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-dark-100.ppm bird-dark-100
+
+# RGB combine
+
+rgb-combine birdcom bird-rs bird-gs bird-bs
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-combine.ppm birdcom
+

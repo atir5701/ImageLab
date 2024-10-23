@@ -1,0 +1,139 @@
+# Loading images
+
+load D:\Northeastern\PDP\Assignment-4-MVC\res\bird.jpg bird
+
+load D:\Northeastern\PDP\Assignment-4-MVC\res\panda.png panda
+
+
+# Red, Green, Blue, Value, Intensity, Luma component of all images
+
+red-component panda panda-red
+red-component bird bird-red
+
+green-component bird bird-green
+green-component panda panda-green
+
+blue-component bird bird-blue
+blue-component panda panda-blue
+
+value-component bird bird-value
+value-component panda panda-value
+
+intensity-component bird bird-intensity
+intensity-component panda panda-intensity
+
+luma-component bird bird-luma
+luma-component panda panda-luma
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-red.jpg bird-red
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-green.jpg bird-green
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-blue.jpg bird-blue
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-value.jpg bird-value
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-intensity.jpg bird-intensity
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-luma.jpg bird-luma
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-red.png panda-red
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-green.png panda-green
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-blue.png panda-blue
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-value.png panda-value
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-intensity.png panda-intensity
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-luma.png panda-luma
+
+# Horizontal Flip
+
+horizontal-flip panda panda-hor
+horizontal-flip bird bird-hor
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-hor.png panda-hor
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-hor.jpg bird-hor
+
+# Vertical-flip
+
+vertical-flip panda panda-ver
+vertical-flip bird bird-ver
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-ver.png panda-ver
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-ver.jpg bird-ver
+
+
+
+# Brighten
+
+brighten 100 panda panda-bright-100
+brighten 100 bird bird-bright-100
+
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-bright-100.png panda-bright-100
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-bright-100.jpg bird-bright-100
+
+
+# Darken
+
+
+brighten -100 panda panda-dark-100
+brighten -100 bird bird-dark-100
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-dark-100.png panda-dark-100
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-dark-100.jpg bird-dark-100
+
+
+# RGB split
+
+rgb-split panda panda-rs panda-gs panda-bs
+rgb-split bird bird-rs bird-gs bird-bs
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-redsplit.png panda-rs
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-greensplit.png panda-gs
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-bluesplit.png panda-bs
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-redsplit.jpg bird-rs
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-greensplit.jpg bird-gs
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-bluesplit.jpg bird-bs
+
+# RGB combine
+
+
+rgb-combine pandacom panda-rs panda-gs panda-bs
+rgb-combine birdcom bird-rs bird-gs bird-bs
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-combine.jpg birdcom
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-combine.png pandacom
+
+
+# Blur
+
+blur 	panda 	panda-blur
+blur 	bird 	bird-blur
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-blur.png panda-blur
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-blur.jpg bird-blur
+
+# Sharpen
+
+sharpen panda panda-sharpen
+sharpen bird bird-sharpen
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-sharpen.png panda-sharpen
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-sharpen.jpg bird-sharpen
+
+
+
+# Sepia
+sepia panda panda-sepia
+sepia bird bird-sepia
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-sepia.png panda-sepia
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-sepia.jpg bird-sepia
+
+
+# Save interconversion
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-blur-converted.jpg panda-blur
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-blur-converted.ppm panda-blur
+save D:\Northeastern\PDP\Assignment-4-MVC\res\panda-blur-converted.jpeg panda-blur
+
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-blur-converted.png bird-blur
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-blur-converted.ppm bird-blur
+save D:\Northeastern\PDP\Assignment-4-MVC\res\bird-blur-converted.jpeg bird-blur
+
+

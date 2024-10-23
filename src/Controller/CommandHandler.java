@@ -1,20 +1,9 @@
 package controller;
 
-import controller.commands.AbstractCommandExecuter;
-import controller.commands.Blur;
-import controller.commands.Brighten;
-import controller.commands.BrightnessComponent;
-import controller.commands.ColorComponent;
-import controller.commands.HorizontalFlip;
-import controller.commands.Load;
-import controller.commands.RGBCombine;
-import controller.commands.RGBSplit;
-import controller.commands.Save;
-import controller.commands.Sepia;
-import controller.commands.Sharpen;
-import controller.commands.VerticalFlip;
 import model.Operations;
 
+
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -27,9 +16,11 @@ import java.util.function.BiFunction;
  */
 
 
-class CommandHandler implements Handler {
-  Operations operations;
-  Map<String, BiFunction<String[], Integer, AbstractCommandExecuter>> commandMap;
+class CommandHandler {
+  private final Operations operations;
+  private final Map<String, BiFunction<String[], Integer, AbstractCommandExecuter>> commandMap;
+  private final PrintStream out;
+  private final PrintStream err;
 
   /**
    * Constructs a new instance of CommandHandler.
@@ -41,8 +32,10 @@ class CommandHandler implements Handler {
    * blur, and sharpen, and manipulating color components.
    */
 
-  public CommandHandler(Operations operations) {
+  CommandHandler(Operations operations, PrintStream out) {
     this.operations = operations;
+    this.out = out;
+    this.err = System.err;
     commandMap = new HashMap<>();
     commandMap.put("load", (cmd, a) -> new Load(cmd, 3));
     commandMap.put("save", (cmd, a) -> new Save(cmd, 3));
@@ -60,6 +53,7 @@ class CommandHandler implements Handler {
     commandMap.put("intensity-component", (cmd, a) -> new BrightnessComponent(cmd, 3));
     commandMap.put("rgb-split", (cmd, a) -> new RGBSplit(cmd, 5));
     commandMap.put("rgb-combine", (cmd, a) -> new RGBCombine(cmd, 5));
+    commandMap.put("quit", (cmd, a) -> new Quit(cmd, 1));
   }
 
   /**
@@ -77,15 +71,21 @@ class CommandHandler implements Handler {
    *                                  found in the command map.
    */
 
-  @Override
-  public void readCommand(String[] input) throws IllegalArgumentException {
+  void readCommand(String[] input) throws IllegalArgumentException {
     String command = input[0];
     BiFunction<String[], Integer, AbstractCommandExecuter> cmd = this.commandMap.get(command);
     if (cmd == null) {
-      throw new IllegalArgumentException("Invalid Command Provided.");
+      throw new IllegalArgumentException("Unknown command: " + command);
     }
+
     AbstractCommandExecuter ex = cmd.apply(input, 0);
-    ex.execute(operations);
-    System.out.println(command + " executed successfully");
+    boolean status = ex.execute(operations);
+    if (status) {
+      this.out.print(command + " executed successfully\n");
+    } else {
+      this.err.println(command + " not executed successfully\n");
+    }
   }
+
+
 }
