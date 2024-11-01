@@ -8,6 +8,8 @@ import java.io.StringReader;
 
 import model.ImageOperationsV2;
 import model.OperationsV2;
+import view.ViewHandler;
+
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,11 +24,13 @@ public class CommandHandlerTest {
   String cmd = "Enter the Command:\n";
   String cmdload = "Enter the Command:\n" + "load executed successfully\n";
   StringBuffer out;
+  ViewHandler v;
 
   @Before
   public void setUp() {
     opr = new ImageOperationsV2();
     out = new StringBuffer();
+    v = new ViewHandler(out);
   }
 
   /**
@@ -37,7 +41,7 @@ public class CommandHandlerTest {
   public void testLoad() {
     String command = "load images\\manhattan-small.png man";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "load executed successfully\n";
@@ -52,7 +56,7 @@ public class CommandHandlerTest {
   public void testLoadIncorrectFormat() {
     String command = "load images\\manhattan-small.png ";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "Invalid command length\n";
@@ -69,7 +73,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.oip man";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "Extension of the image is not supported.\n";
@@ -85,7 +89,7 @@ public class CommandHandlerTest {
     String command = "load img\\manhattan-small.ppm man";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "Filepath provided is incorrect.\n";
@@ -102,7 +106,7 @@ public class CommandHandlerTest {
             "brighten 100 man manbr";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "brighten executed successfully\n";
@@ -119,7 +123,7 @@ public class CommandHandlerTest {
             "\n brighten -100 man manbr";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "brighten executed successfully\n";
@@ -137,7 +141,7 @@ public class CommandHandlerTest {
             "\n brighten 100.56 man manbr";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Increment must be an integer.\n";
@@ -155,7 +159,7 @@ public class CommandHandlerTest {
             "brighten hundered man manbr";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Increment must be an integer.\n";
@@ -172,7 +176,7 @@ public class CommandHandlerTest {
             "\n brighten 100 manbr";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid command length\n";
@@ -188,7 +192,7 @@ public class CommandHandlerTest {
     String command = "brighten 100 man manbrighten";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "The image to be processed is not present.\n";
@@ -205,7 +209,7 @@ public class CommandHandlerTest {
             "\n horizontal-flip man man-horizontal-flip";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "horizontal-flip executed successfully\n";
@@ -222,7 +226,7 @@ public class CommandHandlerTest {
             "\n horizontal-flip manbr";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid command length\n";
@@ -240,7 +244,7 @@ public class CommandHandlerTest {
     Reader in = new StringReader(command);
 
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "The image to be " +
@@ -257,7 +261,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man" +
             "\n vertical-flip  man manbvflip";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "vertical-flip executed successfully\n";
@@ -273,7 +277,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man" +
             "\n vertical-flip manbr";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid command length\n";
@@ -290,7 +294,7 @@ public class CommandHandlerTest {
             "vertical-flip manbr manhroizontal";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "The image to be processed is not present.\n";
@@ -307,7 +311,7 @@ public class CommandHandlerTest {
             "blur man manblur";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "blur executed successfully\n";
@@ -324,7 +328,7 @@ public class CommandHandlerTest {
             "\n blur manbr";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command.\n";
@@ -341,7 +345,7 @@ public class CommandHandlerTest {
             "\n blur manbr manhroizontal";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "The image to be processed is not present.\n";
@@ -356,7 +360,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "blur man mansharpen split 50\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "blur executed successfully\n";
@@ -372,7 +376,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "blur man manred split\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command.\n";
@@ -389,7 +393,7 @@ public class CommandHandlerTest {
             "blur man manred split hundered\n";
 
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be a number.\n";
@@ -397,14 +401,14 @@ public class CommandHandlerTest {
   }
 
   /**
-   * Test Case to check if error thrown if word is not split.
+   * Test Case to check if error thrown is word is not split.
    */
   @Test
   public void testBlurWithNoSplit() {
     String command = "load images\\manhattan-small.png man\n" +
             "blur man manred sp 45\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command\n";
@@ -419,7 +423,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "blur man manlevel split -23\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100.\n";
@@ -435,7 +439,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "blur man manlevel split 123\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100.\n";
@@ -453,7 +457,7 @@ public class CommandHandlerTest {
             "\n sharpen  man mansharpen";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "sharpen executed successfully\n";
@@ -470,7 +474,7 @@ public class CommandHandlerTest {
             "\n sharpen manbr";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command.\n";
@@ -487,7 +491,7 @@ public class CommandHandlerTest {
             "\n sharpen manbr manhroizontal";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "The image to be processed is not present.\n";
@@ -502,7 +506,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "sharpen man mansharpen split 50\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "sharpen executed successfully\n";
@@ -518,7 +522,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "sharpen man mansh split";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command.\n";
@@ -535,7 +539,7 @@ public class CommandHandlerTest {
             "sharpen man manred split hundered\n";
 
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be a number.\n";
@@ -550,7 +554,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "sharpen man manred sp 45\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command\n";
@@ -565,7 +569,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "sharpen man manlevel split -23\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100.\n";
@@ -580,7 +584,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "sharpen man manlevel split 123\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100.\n";
@@ -598,7 +602,7 @@ public class CommandHandlerTest {
             "\n sepia  man mansepia";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "sepia executed successfully\n";
@@ -615,7 +619,7 @@ public class CommandHandlerTest {
             "\n sepia manbr";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command.\n";
@@ -632,7 +636,7 @@ public class CommandHandlerTest {
             "\n sepia manbr manhroizontal";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "The image to be processed is not present.\n";
@@ -647,7 +651,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "sepia man mansepia split 50\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "sepia executed successfully\n";
@@ -663,7 +667,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "sepia man mansepia split\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command.\n";
@@ -680,7 +684,7 @@ public class CommandHandlerTest {
             "sepia man mansepia split hundered\n";
 
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be a number.\n";
@@ -695,7 +699,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "sepia man mansepia sp 45\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command\n";
@@ -710,7 +714,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "sepia man manlevel split -23\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100.\n";
@@ -726,7 +730,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "sepia man manlevel split 123\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100.\n";
@@ -746,7 +750,7 @@ public class CommandHandlerTest {
             "\n luma-component man manluma";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "value-component executed successfully\n" +
@@ -767,7 +771,7 @@ public class CommandHandlerTest {
             "luma-component man";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command.\nInvalid Command.\n" +
@@ -787,7 +791,7 @@ public class CommandHandlerTest {
             + "\n luma-component manbr manhorizontal";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "The image to be processed is not present.\n" +
@@ -806,7 +810,7 @@ public class CommandHandlerTest {
             "luma-component man manluma split 50\n" +
             "intensity-component man manintensity split 50\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "value-component executed successfully\n" +
@@ -826,7 +830,7 @@ public class CommandHandlerTest {
             "luma-component man manluma split \n" +
             "intensity-component man manintensity split \n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command.\n"
@@ -847,7 +851,7 @@ public class CommandHandlerTest {
             "intensity-component man manintensity split hundered\n";
 
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be a number.\n"
@@ -866,7 +870,7 @@ public class CommandHandlerTest {
             "luma-component man manluma sp 34\n" +
             "intensity-component man manintensity sp 23\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command\n"
@@ -885,7 +889,7 @@ public class CommandHandlerTest {
             "intensity-component man manlevel split -23\n"+
             "luma-component man manlevel split -23";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100.\n"
@@ -904,7 +908,7 @@ public class CommandHandlerTest {
             "luma-component man manlevel split 123\n"+
             "intensity-component man manlevel split 123";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100.\n"
@@ -926,7 +930,7 @@ public class CommandHandlerTest {
             "blue-component man manblue";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "red-component executed successfully\n" +
@@ -946,7 +950,7 @@ public class CommandHandlerTest {
             "\n green-component man   \nblue-component man";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command.\nInvalid Command.\n" +
@@ -967,7 +971,7 @@ public class CommandHandlerTest {
             "green-component manbr manhorizontal";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "The image to be processed is not present.\n" +
@@ -986,7 +990,7 @@ public class CommandHandlerTest {
             "blue-component man manblue split 50\n" +
             "green-component man mangreen split 50\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "red-component executed successfully\n" +
@@ -1006,7 +1010,7 @@ public class CommandHandlerTest {
             "blue-component man manblue split \n" +
             "green-component man mangreen split \n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command.\n"
@@ -1027,7 +1031,7 @@ public class CommandHandlerTest {
             "green-component man mangreen split hundered\n";
 
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be a number.\n"
@@ -1046,7 +1050,7 @@ public class CommandHandlerTest {
             "blue-component man manblue sp 34\n" +
             "green-component man mangreen sp 23\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command\n"
@@ -1065,7 +1069,7 @@ public class CommandHandlerTest {
     "blue-component man manlevel split -23\n"+
     "green-component man manlevel split -23";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100.\n"
@@ -1084,7 +1088,7 @@ public class CommandHandlerTest {
             "blue-component man manlevel split 123\n"+
             "green-component man manlevel split 123";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100.\n"
@@ -1104,7 +1108,7 @@ public class CommandHandlerTest {
             "man-red man-green man-blue";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String exectued = cmdload + "rgb-split executed successfully\n";
@@ -1121,7 +1125,7 @@ public class CommandHandlerTest {
             "\n rgb-split man red green";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid command length\n";
@@ -1140,7 +1144,7 @@ public class CommandHandlerTest {
             + "man-green man-blue";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "The image to be processed is not present.\n";
@@ -1159,7 +1163,7 @@ public class CommandHandlerTest {
             "man-combine man-red man-green man-blue";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String exectued = cmdload + "rgb-split executed successfully\n"
@@ -1179,7 +1183,7 @@ public class CommandHandlerTest {
             "man-combine man-red";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "rgb-split executed successfully\n" +
@@ -1200,7 +1204,7 @@ public class CommandHandlerTest {
             "man-combine man-r man-g man-b";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "rgb-split executed successfully" +
@@ -1219,7 +1223,7 @@ public class CommandHandlerTest {
             "save test\\controller\\resultTest\\man.png man";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "save executed successfully\n";
@@ -1236,7 +1240,7 @@ public class CommandHandlerTest {
             "save man";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid command length\n";
@@ -1254,7 +1258,7 @@ public class CommandHandlerTest {
             "save test\\controller\\resultTest\\man.png man-horizontal";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "The image to be processed is not present.\n";
@@ -1271,7 +1275,7 @@ public class CommandHandlerTest {
             "save im\\man.png man";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Filepath provided is incorrect\n";
@@ -1287,7 +1291,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png          man\n";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "load executed successfully\n";
@@ -1304,7 +1308,7 @@ public class CommandHandlerTest {
             "/manhattan-small.png man";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "Invalid command length\nload executed " +
@@ -1322,7 +1326,7 @@ public class CommandHandlerTest {
             "save images\\man.ajd man";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "This extension is not Supported\n";
@@ -1338,10 +1342,10 @@ public class CommandHandlerTest {
     String command = "run";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
-    String expected = cmd + "run command is not valid\n";
+    String expected = cmd + "Command is not valid\n";
     assertEquals(expected, output);
   }
 
@@ -1354,7 +1358,7 @@ public class CommandHandlerTest {
     String command = "run test\\controller\\ScriptFiles\\src.txt";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "File not found\n";
@@ -1370,7 +1374,7 @@ public class CommandHandlerTest {
     String command = "run test\\controller\\ScriptFiles\\src.pdf";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "Provide txt File only\n";
@@ -1387,7 +1391,7 @@ public class CommandHandlerTest {
     String command = "run test\\controller\\ScriptFiles\\filepng.txt";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "load executed successfully\n" +
@@ -1431,7 +1435,7 @@ public class CommandHandlerTest {
     String command = "run test\\controller\\ScriptFiles\\filejpg.txt";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "load executed successfully\n"
@@ -1474,7 +1478,7 @@ public class CommandHandlerTest {
     String command = "run test\\controller\\ScriptFiles\\fileppm.txt";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "load executed successfully\n" +
@@ -1515,7 +1519,7 @@ public class CommandHandlerTest {
     String command = "run test\\controller\\ScriptFiles\\fileMultipleLoad.txt";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "load executed successfully\n" +
@@ -1591,7 +1595,7 @@ public class CommandHandlerTest {
     String command = "run test\\controller\\ScriptFiles\\fileerror.txt";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "Invalid command length\n" +
@@ -1647,7 +1651,7 @@ public class CommandHandlerTest {
     String command = "run test\\controller\\ScriptFiles\\fileconversion.txt";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "load executed successfully\n" +
@@ -1678,7 +1682,7 @@ public class CommandHandlerTest {
     String command = "run test\\controller\\ScriptFiles\\filecorrectIncorrect.txt";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "load executed successfully\n" +
@@ -1707,7 +1711,7 @@ public class CommandHandlerTest {
     String command = "enhance new Img";
     Reader in = new StringReader(command);
 
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String exectued = cmd + "Unknown command: enhance\n";
@@ -1724,7 +1728,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "compress 90 man mancompress";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "compress executed successfully\n";
@@ -1740,7 +1744,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "compress percent man mancompress";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be a numeric value\n";
@@ -1756,7 +1760,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "compress -120 man mancompress";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100\n";
@@ -1772,7 +1776,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "compress 120 man mancompress";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100\n";
@@ -1788,7 +1792,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "compress man mancompress";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid command length\n";
@@ -1804,7 +1808,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "compress 90 man3 mancompress";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "The image to be processed is not present.\n";
@@ -1820,7 +1824,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "histogram man man-hist";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "histogram executed successfully\n";
@@ -1837,7 +1841,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "histogram man";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid command length\n";
@@ -1853,7 +1857,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "histogram man3 mancompress";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "The image to be processed is not present.\n";
@@ -1870,7 +1874,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "color-correct man man-correct";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "color-correct executed successfully\n";
@@ -1886,7 +1890,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "color-correct man";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid command length\n";
@@ -1902,7 +1906,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "color-correct man3 mancompress";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "The image to be processed is not present.\n";
@@ -1917,7 +1921,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "color-correct man manlevel split 50";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "color-correct executed successfully\n";
@@ -1933,7 +1937,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "color-correct man manlevel split";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid command length\n";
@@ -1949,7 +1953,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "color-correct man manlevel split hundered";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be a number.\n";
@@ -1964,7 +1968,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "color-correct man manlevel st 23";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command\n";
@@ -1979,7 +1983,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "color-correct man manlevel split -23";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100.\n";
@@ -1994,7 +1998,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "color-correct man manlevel split 123";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100.\n";
@@ -2010,7 +2014,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man manlevel";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "levels-adjust executed successfully\n";
@@ -2028,7 +2032,7 @@ public class CommandHandlerTest {
             "levels-adjust 20 hundered 200 man manlevel\n" +
             "levels-adjust twenty hundered hunderedone man manlevel ";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "B, M and W value should be Integral values\n" +
@@ -2047,7 +2051,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "levels-adjust -20 100 255 man manlevel \n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "B,M and W value must be between 0 and 255\n";
@@ -2063,7 +2067,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "levels-adjust 2000 10000 2550000 man manlevel\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "B,M and W value must be between 0 and 255\n";
@@ -2079,7 +2083,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "levels-adjust 100 20 255 man manlevel\n";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "B,M and W value must be in ascending order\n";
@@ -2095,7 +2099,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "levels-adjust 20 man mancompress";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid command length.\n";
@@ -2111,7 +2115,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man3 mancompress";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "The image to be processed is not present.\n";
@@ -2126,7 +2130,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man manlevel split 50";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "levels-adjust executed successfully\n";
@@ -2142,7 +2146,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man manlevel split";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid command length.\n";
@@ -2158,7 +2162,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man manlevel split hundered";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be a number.\n";
@@ -2173,7 +2177,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man manlevel st 23";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Invalid Command\n";
@@ -2188,7 +2192,7 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man manlevel split -23";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100.\n";
@@ -2203,12 +2207,10 @@ public class CommandHandlerTest {
     String command = "load images\\manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man manlevel split 123";
     Reader in = new StringReader(command);
-    controller = new CommandReader(opr, in, out);
+    controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmdload + "Percentage must be between 0 and 100.\n";
     assertEquals(expected, output);
   }
-
-
 }

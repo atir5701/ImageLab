@@ -64,8 +64,9 @@ class Blur extends AbstractCommandExecuter {
     if (this.percentage == 100.00) {
       return operations.blur(this.currentImageName, this.newImageName);
     }
-    operations.splitPreview(this.currentImageName, this.newImageName, this.percentage);
-    boolean t = operations.blur(this.newImageName, this.newImageName);
+    String temp = this.newImageName+ this.newImageName.hashCode();
+    operations.splitPreview(this.currentImageName, temp, this.percentage);
+    boolean t = operations.blur(temp,temp);
     return operations.regain(this.currentImageName, this.newImageName) & t;
   }
 

@@ -21,19 +21,10 @@ public interface ImageAppController {
    * will be printed to the console.
    * Implementations should ensure proper error handling and provide
    * informative error messages to guide users when issues arise.
+   *
    */
-
   void startApplication();
 
 
-  /**
-   * Start the application with a input file provided by the user from the
-   * interactive input.
-   * This command basically is a file path which has the scripts which needs
-   * to be executed.
-   * Once the entire file is read and then the program tends to terminate.
-   */
-
-  void startApplicationWithFile(String[] args);
 
 }

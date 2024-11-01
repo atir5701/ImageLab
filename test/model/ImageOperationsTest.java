@@ -547,8 +547,8 @@ public class ImageOperationsTest {
   @Test
   public void checkColorCorrect(){
     this.operations.colorCorrection("galaxy",
-            "galaxycorrect");
-    int[][][] newImg = this.operations.saveImage("galaxycorrect");
+            "galaxy-correct");
+    int[][][] newImg = this.operations.saveImage("galaxy-correct");
     String file2 = "images//galaxy-corrected.png";
     int[][][] compare = this.getMatrix(file2);
     for(int i=0;i<newImg.length;i++){

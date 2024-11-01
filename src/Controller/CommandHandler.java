@@ -2,9 +2,9 @@ package controller;
 
 
 import model.OperationsV2;
+import view.ProgramView;
 
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -20,9 +20,7 @@ import java.util.function.BiFunction;
 class CommandHandler {
   private final OperationsV2 operations;
   private final Map<String, BiFunction<String[], Integer, AbstractCommandExecuter>> commandMap;
-  private final Appendable out;
-  private final Appendable err;
-
+  private final ProgramView view;
 
   /**
    * Constructs a new instance of CommandHandler.
@@ -34,10 +32,9 @@ class CommandHandler {
    * blur, and sharpen, and manipulating color components.
    */
 
-  CommandHandler(OperationsV2 operations, Appendable out) {
+  CommandHandler(OperationsV2 operations, ProgramView view) {
     this.operations = operations;
-    this.out = out;
-    this.err = System.err;
+    this.view = view;
     commandMap = new HashMap<>();
     commandMap.put("load", (cmd, a) -> new Load(cmd, 3));
     commandMap.put("save", (cmd, a) -> new Save(cmd, 3));
@@ -77,7 +74,7 @@ class CommandHandler {
    *                                  found in the command map.
    */
 
-  void readCommand(String[] input) throws IllegalArgumentException , IOException {
+  void readCommand(String[] input) throws IllegalArgumentException {
     String command = input[0];
     BiFunction<String[], Integer, AbstractCommandExecuter> cmd = this.commandMap.get(command);
     if (cmd == null) {
@@ -87,9 +84,9 @@ class CommandHandler {
     AbstractCommandExecuter ex = cmd.apply(input, 0);
     boolean status = ex.execute(operations);
     if (status) {
-      this.out.append(String.format(command + " executed successfully\n"));
+      this.view.setOutput(String.format(command + " executed successfully\n"));
     } else {
-      this.err.append(String.format(command + " not executed successfully\n"));
+      this.view.setOutput(String.format(command + " not executed successfully\n"));
     }
   }
 
