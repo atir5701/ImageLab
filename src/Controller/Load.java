@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 import javax.imageio.ImageIO;
 
-import model.Operations;
+import model.OperationsV2;
 
 /**
  * A class that performs the load operation on an
@@ -24,7 +24,7 @@ class Load extends AbstractCommandExecuter {
   private final String filePath;
   private final String currentImageName;
   private final String extension;
-  private final Map<String, Function<Operations, Boolean>> loadingImage;
+  private final Map<String, Function<OperationsV2, Boolean>> loadingImage;
 
 
   /**
@@ -37,7 +37,9 @@ class Load extends AbstractCommandExecuter {
    * @param commandLength the expected length of command array.
    */
   Load(String[] cmd, int commandLength) {
-    this.validCommandLength(cmd.length, commandLength);
+    if(!this.validCommandLength(cmd.length, commandLength)){
+      throw new IllegalArgumentException("Invalid command length");
+    }
     this.filePath = cmd[1];
     this.extension = this.filePath.substring(this.filePath.lastIndexOf(".") + 1).toLowerCase();
     this.currentImageName = cmd[2];
@@ -60,8 +62,8 @@ class Load extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(Operations operations) {
-    Function<Operations, Boolean> cmd = this.loadingImage.get(this.extension);
+  public boolean execute(OperationsV2 operations) {
+    Function<OperationsV2, Boolean> cmd = this.loadingImage.get(this.extension);
     if (cmd == null) {
       throw new IllegalArgumentException("Extension of the image is not supported.");
     }
@@ -77,7 +79,7 @@ class Load extends AbstractCommandExecuter {
    * @param operations operation interface used to load image.
    * @return true if operation done successfully, else false.
    */
-  private boolean load(Operations operations) {
+  private boolean load(OperationsV2 operations) {
     File file = new File(filePath);
     try {
       BufferedImage img = ImageIO.read(file);
@@ -107,7 +109,7 @@ class Load extends AbstractCommandExecuter {
    * @param operations operation interface used to load image.
    * @return true if operation done successfully, else false.
    **/
-  private boolean loadPpm(Operations operations) {
+  private boolean loadPpm(OperationsV2 operations) {
     Scanner sc;
     try {
       sc = new Scanner(new FileInputStream(filePath));

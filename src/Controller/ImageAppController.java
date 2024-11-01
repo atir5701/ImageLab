@@ -25,4 +25,15 @@ public interface ImageAppController {
 
   void startApplication();
 
+
+  /**
+   * Start the application with a input file provided by the user from the
+   * interactive input.
+   * This command basically is a file path which has the scripts which needs
+   * to be executed.
+   * Once the entire file is read and then the program tends to terminate.
+   */
+
+  void startApplicationWithFile(String[] args);
+
 }

@@ -8,7 +8,7 @@ package model;
  * combining, blurring, sharpening, and applying sepia filtering.
  */
 
-public interface Operations {
+interface Operations {
 
   /**
    * Loads an image from a 3D integer array representing pixel values

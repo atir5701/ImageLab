@@ -1,6 +1,6 @@
 package controller;
 
-import model.Operations;
+import model.OperationsV2;
 
 
 /**
@@ -12,8 +12,9 @@ import model.Operations;
  */
 
 class Sepia extends AbstractCommandExecuter {
-  String currentImageName;
-  String newImageName;
+  private final String currentImageName;
+  private final String newImageName;
+  private final double percentage;
 
   /**
    * Construct a Sepia command object.
@@ -25,9 +26,27 @@ class Sepia extends AbstractCommandExecuter {
    * @param commandLength the expected length of command array.
    */
   Sepia(String[] cmd, int commandLength) {
-    this.validCommandLength(cmd.length, commandLength);
-    this.currentImageName = cmd[1];
-    this.newImageName = cmd[2];
+    if(this.validCommandLength(cmd.length, commandLength)) {
+      this.currentImageName = cmd[1];
+      this.newImageName = cmd[2];
+      this.percentage = 100;
+    }else if(this.validCommandLength(cmd.length,5)){
+      this.currentImageName = cmd[1];
+      this.newImageName = cmd[2];
+      if(!(cmd[3].equals("split"))){
+        throw new IllegalArgumentException("Invalid Command");
+      }
+      try{
+        this.percentage = Double.parseDouble(cmd[4]);
+      }catch(NumberFormatException e) {
+        throw new NumberFormatException("Percentage must be a number.");
+      }
+      if (this.percentage < 0 || this.percentage > 100) {
+        throw new IllegalArgumentException("Percentage must be between 0 and 100.");
+      }
+    }else{
+      throw new IllegalArgumentException("Invalid Command.");
+    }
   }
 
   /**
@@ -42,9 +61,14 @@ class Sepia extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(Operations operations) {
+  public boolean execute(OperationsV2 operations) {
     this.imageCheck(operations, this.currentImageName);
-    return operations.sepia(this.currentImageName, this.newImageName);
+    if (this.percentage == 100.00){
+      return operations.sepia(this.currentImageName, this.newImageName);
+    }
+    operations.splitPreview(this.currentImageName, this.newImageName, this.percentage);
+    boolean t = operations.sepia(this.newImageName, this.newImageName);
+    return operations.sepia(this.currentImageName, this.newImageName) & t;
   }
 
 }

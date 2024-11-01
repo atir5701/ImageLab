@@ -1,6 +1,6 @@
 package controller;
 
-import model.Operations;
+import model.OperationsV2;
 
 
 /**
@@ -11,10 +11,10 @@ import model.Operations;
  */
 
 class ColorComponent extends AbstractCommandExecuter {
-  String currentImageName;
-  String newImageName;
-  String handler;
-
+  private final String currentImageName;
+  private final String newImageName;
+  private final String handler;
+  private final double percentage;
   /**
    * Construct a BrightnessComponent command object.
    * Validate the command length and initializes the image
@@ -26,10 +26,29 @@ class ColorComponent extends AbstractCommandExecuter {
    */
 
   ColorComponent(String[] cmd, int commandLength) {
-    this.validCommandLength(cmd.length, commandLength);
-    this.currentImageName = cmd[1];
-    this.newImageName = cmd[2];
-    this.handler = cmd[0];
+    if(this.validCommandLength(cmd.length, commandLength)){
+      this.handler = cmd[0];
+      this.currentImageName = cmd[1];
+      this.newImageName = cmd[2];
+      this.percentage = 100.00;
+    }else if(this.validCommandLength(cmd.length, 5)){
+      this.handler = cmd[0];
+      this.currentImageName = cmd[1];
+      this.newImageName = cmd[2];
+      if(!(cmd[3].equals("split"))){
+        throw new IllegalArgumentException("Invalid Command");
+      }
+      try{
+        this.percentage = Double.parseDouble(cmd[4]);
+      }catch(NumberFormatException e) {
+        throw new NumberFormatException("Percentage must be a number.");
+      }
+      if (this.percentage < 0 || this.percentage > 100) {
+        throw new IllegalArgumentException("Percentage must be between 0 and 100.");
+      }
+    }else{
+      throw new IllegalArgumentException("Invalid Command.");
+    }
   }
 
   /**
@@ -46,7 +65,7 @@ class ColorComponent extends AbstractCommandExecuter {
    * @throws IllegalArgumentException if the specified handler is invalid.
    */
   @Override
-  public boolean execute(Operations operations) throws IllegalArgumentException {
+  public boolean execute(OperationsV2 operations) throws IllegalArgumentException {
     this.imageCheck(operations, this.currentImageName);
     int color;
     switch (handler) {
@@ -62,7 +81,13 @@ class ColorComponent extends AbstractCommandExecuter {
       default:
         throw new IllegalArgumentException("Invalid command provided");
     }
-    return operations.getColorComponent(this.currentImageName, this.newImageName, color);
+    if(this.percentage == 100.00) {
+      return operations.getColorComponent(this.currentImageName, this.newImageName, color);
+    }
+    operations.splitPreview(this.currentImageName,this.newImageName,this.percentage);
+    boolean t = operations.getColorComponent(this.currentImageName, this.newImageName, color);
+    return operations.regain(this.currentImageName, this.newImageName) &
+            t;
   }
 
 }

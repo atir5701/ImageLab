@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 import javax.imageio.ImageIO;
 
-import model.Operations;
+import model.OperationsV2;
 
 /**
  * A class that performs the Save operation on an
@@ -23,7 +23,7 @@ class Save extends AbstractCommandExecuter {
   private final String filePath;
   private final String currentImageName;
   private final String extension;
-  private final Map<String, Function<Operations, Boolean>> savingImage;
+  private final Map<String, Function<OperationsV2, Boolean>> savingImage;
 
   /**
    * Construct a Save command object.
@@ -36,7 +36,9 @@ class Save extends AbstractCommandExecuter {
    */
 
   Save(String[] cmd, int commandLength) {
-    this.validCommandLength(cmd.length, commandLength);
+    if(!this.validCommandLength(cmd.length, commandLength)){
+      throw new IllegalArgumentException("Invalid command length");
+    }
     this.filePath = cmd[1];
     this.extension = this.filePath.substring(this.filePath.lastIndexOf(".") + 1).toLowerCase();
     this.currentImageName = cmd[2];
@@ -61,9 +63,9 @@ class Save extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(Operations operations) {
+  public boolean execute(OperationsV2 operations) {
     this.imageCheck(operations, this.currentImageName);
-    Function<Operations, Boolean> cmd = this.savingImage.get(this.extension);
+    Function<OperationsV2, Boolean> cmd = this.savingImage.get(this.extension);
     if (cmd == null) {
       throw new IllegalArgumentException("This extension is not Supported");
     }
@@ -91,7 +93,7 @@ class Save extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
 
-  private boolean save(Operations operations) {
+  private boolean save(OperationsV2 operations) {
     int[][][] arr = operations.saveImage(this.currentImageName);
     File file = new File(this.filePath);
     int width = arr[0].length;
@@ -124,7 +126,7 @@ class Save extends AbstractCommandExecuter {
    *                   save the image.
    */
 
-  private boolean savePPM(Operations operations) {
+  private boolean savePPM(OperationsV2 operations) {
     int[][][] arr = operations.saveImage(this.currentImageName);
     try {
       File output = new File(this.filePath);

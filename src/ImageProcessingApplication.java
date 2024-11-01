@@ -1,7 +1,10 @@
+import java.io.InputStreamReader;
+
 import controller.CommandReader;
 import controller.ImageAppController;
-import model.ImageOperations;
-import model.Operations;
+import model.ImageOperationsV2;
+import model.OperationsV2;
+import java.io.StringReader;
 
 /**
  * This is the main class of the entire application.
@@ -19,8 +22,12 @@ public class ImageProcessingApplication {
    *             command prompt.
    */
   public static void main(String[] args) {
-    Operations operations = new ImageOperations();
-    ImageAppController src = new CommandReader(operations,System.in,System.out);
-    src.startApplication();
+    OperationsV2 operations = new ImageOperationsV2();
+    ImageAppController src = new CommandReader(operations,new InputStreamReader(System.in),System.out);
+    if (args.length == 0) {
+      src.startApplication();
+    }else{
+      src.startApplicationWithFile(args);
+    }
   }
 }

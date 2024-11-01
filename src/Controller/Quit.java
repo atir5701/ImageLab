@@ -1,6 +1,6 @@
 package controller;
 
-import model.Operations;
+import model.OperationsV2;
 
 /**
  * A class that performs the Quit operation.
@@ -20,7 +20,10 @@ class Quit extends AbstractCommandExecuter {
    * @param commandLength the expected length of command array.
    */
   Quit(String[] cmd, int commandLength) {
-    this.validCommandLength(cmd.length, commandLength);
+
+    if(! this.validCommandLength(cmd.length, commandLength)){
+      throw new IllegalArgumentException("Invalid command length");
+    }
   }
 
   /**
@@ -34,7 +37,7 @@ class Quit extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(Operations operations) {
+  public boolean execute(OperationsV2 operations) {
     System.exit(0);
     return true;
   }

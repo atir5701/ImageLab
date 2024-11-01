@@ -1,6 +1,6 @@
 package controller;
 
-import model.Operations;
+import model.OperationsV2;
 
 /**
  * A class that performs the RGB-split operation on an
@@ -11,10 +11,10 @@ import model.Operations;
 
 
 class RGBSplit extends AbstractCommandExecuter {
-  String currentImageName;
-  String redNewImage;
-  String greenNewImage;
-  String blueNewImage;
+  private final String currentImageName;
+  private final String redNewImage;
+  private final String greenNewImage;
+  private final String blueNewImage;
 
   /**
    * Construct RGB-split command object.
@@ -27,7 +27,9 @@ class RGBSplit extends AbstractCommandExecuter {
    */
 
   RGBSplit(String[] cmd, int commandLength) {
-    this.validCommandLength(cmd.length, commandLength);
+    if(! this.validCommandLength(cmd.length, commandLength)){
+      throw new IllegalArgumentException("Invalid command length");
+    }
     this.currentImageName = cmd[1];
     this.redNewImage = cmd[2];
     this.greenNewImage = cmd[3];
@@ -46,7 +48,7 @@ class RGBSplit extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(Operations operations) {
+  public boolean execute(OperationsV2 operations) {
     this.imageCheck(operations, this.currentImageName);
     return operations.splitRGB(this.currentImageName, this.redNewImage,
             this.greenNewImage, this.blueNewImage);

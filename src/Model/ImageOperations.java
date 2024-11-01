@@ -13,9 +13,9 @@ import java.util.Map;
  * script's runtime.
  */
 
-public class ImageOperations implements Operations {
+class ImageOperations implements Operations {
 
-  private final Map<String, ImageModel> imageMap;
+  protected final Map<String, ImageModel> imageMap;
 
   /**
    * Constructs an ImageOperation object and initializes an
@@ -91,7 +91,7 @@ public class ImageOperations implements Operations {
    * @return a new ImageModel.
    */
 
-  private ImageModel getNewImageModel(ImageModel old) {
+  protected ImageModel getNewImageModel(ImageModel old) {
     int height = old.getHeight();
     int width = old.getWidth();
     return new ImageModel(height, width);
@@ -140,7 +140,7 @@ public class ImageOperations implements Operations {
    * @param n the new ImageModel which stores the value component of
    *          the original ImageModel.
    */
-  private void getValueComponent(ImageModel o, ImageModel n) {
+  protected void getValueComponent(ImageModel o, ImageModel n) {
     for (int i = 0; i < o.getHeight(); i++) {
       for (int j = 0; j < o.getWidth(); j++) {
         int value = o.getPixelValue(i, j, 0);
@@ -165,7 +165,7 @@ public class ImageOperations implements Operations {
    * @param n the new ImageModel which stores the intensity component of
    *          the original ImageModel.
    */
-  private void getIntensityComponent(ImageModel o, ImageModel n) {
+  protected void getIntensityComponent(ImageModel o, ImageModel n) {
     for (int i = 0; i < o.getHeight(); i++) {
       for (int j = 0; j < o.getWidth(); j++) {
         int value = o.getPixelValue(i, j, 0);
@@ -190,7 +190,7 @@ public class ImageOperations implements Operations {
    * @param n the new ImageModel which stores the luma component of
    *          the original ImageModel.
    */
-  private void getLumaComponent(ImageModel o, ImageModel n) {
+  protected void getLumaComponent(ImageModel o, ImageModel n) {
     for (int i = 0; i < o.getHeight(); i++) {
       for (int j = 0; j < o.getWidth(); j++) {
         double value = 0.2126 * o.getPixelValue(i, j, 0);
@@ -413,7 +413,7 @@ public class ImageOperations implements Operations {
    * @param n      the new ImageModel where the new pixel value
    *               is stored.
    */
-  private void applyFilter(double[][] filter, ImageModel old, ImageModel n) {
+  protected void applyFilter(double[][] filter, ImageModel old, ImageModel n) {
     int filterSize = filter.length / 2;
     int height = old.getHeight();
     int width = old.getWidth();

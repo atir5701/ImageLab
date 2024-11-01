@@ -1,0 +1,84 @@
+# Loading Multiple images in all format jpeg,ppm and png
+
+load images\panda.png bird
+
+
+# Red, Green, Blue, Value, Intensity, Luma component of all images
+
+red-component bird bird-red
+
+green-component bird bird-green
+
+blue-component bird bird-blue
+
+value-component bird bird-value
+
+intensity-component bird bird-intensity
+
+luma-component bird bird-luma
+
+
+
+# Horizontal Flip
+
+horizontal-flip bird bird-hor
+
+save test\controller\resultTest\bird-hor.jpg bird-hor
+
+
+# Vertical-flip
+
+vertical-flip bird bird-ver
+
+
+save test\controller\resultTest\bird-ver.jpg bird-ver
+
+
+
+# Brighten
+
+
+brighten 100 bird bird-bright-100
+
+save test\controller\resultTest\bird-brighten.jpg bird-bright-100
+
+
+# Darken
+
+
+brighten -100 bird bird-dark-100
+
+save test\controller\resultTest\bird-dark-100.png bird-dark-100
+
+# RGB split
+
+rgb-split bird bird-rs bird-gs bird-bs
+
+save test\controller\resultTest\bird-redsplit.png bird-rs
+save test\controller\resultTest\bird-greensplit.png bird-gs
+save test\controller\resultTest\bird-bluesplit.png bird-bs
+
+# RGB combine
+
+rgb-combine birdcom bird-rs bird-gs bird-bs
+
+save test\controller\resultTest\bird-combine.png birdcom
+
+
+
+# Blur
+
+blur 		bird bird-blur
+save test\controller\resultTest\bird-blur.jpg bird-blur
+
+# Sharpen
+
+sharpen bird bird-sharpen
+
+save test\controller\resultTest\bird-sharpen.png bird-sharpen
+
+
+# Sepia
+sepia bird bird-sepia
+
+save test\controller\resultTest\bird-sepia.jpg bird-sepia

@@ -1,6 +1,6 @@
 package controller;
 
-import model.Operations;
+import model.OperationsV2;
 
 /**
  * A class that performs the task of performing
@@ -10,8 +10,8 @@ import model.Operations;
  */
 
 class HorizontalFlip extends AbstractCommandExecuter {
-  String currentImageName;
-  String newImageName;
+  private final String currentImageName;
+  private final String newImageName;
 
   /**
    * Construct a HorizontalFlip command object.
@@ -23,7 +23,9 @@ class HorizontalFlip extends AbstractCommandExecuter {
    * @param commandLength the expected length of command array.
    */
   HorizontalFlip(String[] cmd, int commandLength) {
-    this.validCommandLength(cmd.length, commandLength);
+    if(!this.validCommandLength(cmd.length, commandLength)){
+      throw new IllegalArgumentException("Invalid command length");
+    }
     this.currentImageName = cmd[1];
     this.newImageName = cmd[2];
   }
@@ -40,7 +42,7 @@ class HorizontalFlip extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(Operations operations) {
+  public boolean execute(OperationsV2 operations) {
     this.imageCheck(operations, this.currentImageName);
     return operations.horizontalFlip(this.currentImageName, this.newImageName);
   }

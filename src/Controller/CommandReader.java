@@ -4,11 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.Scanner;
 
-import model.Operations;
+import model.OperationsV2;
 
 
 /**
@@ -24,8 +22,8 @@ import model.Operations;
 
 public class CommandReader implements ImageAppController {
   private final CommandHandler handler;
-  private final InputStream in;
-  private final PrintStream out;
+  private final Readable in;
+  private final Appendable out;
 
   /**
    * Constructs a new CommandReader instance.
@@ -34,8 +32,8 @@ public class CommandReader implements ImageAppController {
    */
 
 
-  public CommandReader(Operations operations, InputStream in, PrintStream out) {
-    handler = new CommandHandler(operations, out);
+  public CommandReader(OperationsV2 operations, Readable in, Appendable out) {
+    this.handler = new CommandHandler(operations, out);
     this.in = in;
     this.out = out;
   }
@@ -48,10 +46,9 @@ public class CommandReader implements ImageAppController {
    * passing it to the CommandHandler for execution.
    *
    * @param filepath the path to the script file to be read.
-   * @throws IOException if an error occurs while reading the file.
    */
 
-  private void scriptReader(String filepath) throws IOException {
+  private void scriptReader(String filepath) {
     try {
       File file = new File(filepath);
       BufferedReader br = new BufferedReader(new FileReader(file));
@@ -66,9 +63,9 @@ public class CommandReader implements ImageAppController {
           }
           tokens[0] = tokens[0].toLowerCase();
           try {
-            handler.readCommand(tokens);
+            this.handler.readCommand(tokens);
           } catch (Exception e) {
-            this.out.print(e.getMessage() + "\n");
+            this.out.append(String.format(e.getMessage() + "\n"));
           }
         }
       }
@@ -91,7 +88,7 @@ public class CommandReader implements ImageAppController {
    *                                  the file.
    */
 
-  private void getCommand() throws IllegalArgumentException, IOException {
+  private void getCommand() throws IOException {
     Scanner scn = new Scanner(this.in);
     while (scn.hasNextLine()) {
       String script = scn.nextLine();
@@ -100,27 +97,23 @@ public class CommandReader implements ImageAppController {
       String[] init = script.split(" ");
       if (!(init[0].equals("run"))) {
         try {
-          handler.readCommand(init);
+          this.handler.readCommand(init);
         } catch (Exception e) {
-          this.out.print(e.getMessage() + "\n");
+          this.out.append(String.format(e.getMessage() + "\n"));
         }
       } else {
         try {
           if (init.length != 2) {
             throw new IllegalArgumentException("run command is not valid");
           }
-          String path = init[1];
-          String extension = path.substring(path.lastIndexOf(".") + 1);
-          if (!extension.equals("txt")) {
-            throw new IllegalArgumentException("Provide txt File only");
-          }
-          this.scriptReader(path);
+          this.checkScriptFile(init[1]);
         } catch (Exception e) {
-          this.out.print(e.getMessage() + "\n");
+          this.out.append(String.format(e.getMessage() + "\n"));
         }
       }
     }
   }
+
 
   /**
    * Starts the application by loading the necessary resources,
@@ -136,12 +129,50 @@ public class CommandReader implements ImageAppController {
   @Override
   public void startApplication() {
     try {
-      this.out.print("Enter the Command:\n");
+      this.out.append("Enter the Command:\n");
       this.getCommand();
     } catch (IOException e) {
-      throw new IllegalArgumentException("");
+      throw new IllegalArgumentException("Something went wrong");
+    }
+  }
+
+  /**
+   * Start the application with input file provided by the user from the
+   * interactive input.
+   * This command basically is a file path which has the scripts which needs
+   * to be executed.
+   * Once the entire file is read and then the program tends to terminate.
+   */
+
+  @Override
+  public void startApplicationWithFile(String[] args) {
+
+    if (args.length != 2) {
+      throw new IllegalArgumentException("command is not correct");
+    }
+    try {
+      this.checkScriptFile(args[1]);
+      this.handler.readCommand(new String[]{"quit"});
+    } catch (Exception e) {
+      try {
+        this.out.append(e.getMessage() + "\n");
+      } catch (IOException ioException) {
+        throw new IllegalArgumentException("Output error");
+      }
     }
   }
 
 
+  /**
+   * Helper method to validate the file path and check for the .txt
+   * extension and execute the commands in the script file.
+   */
+
+  private void checkScriptFile(String path) throws IOException, IllegalArgumentException {
+    String ext = path.substring(path.lastIndexOf(".") + 1);
+    if (!ext.equals("txt")) {
+      throw new IllegalArgumentException("Provide txt File only");
+    }
+    this.scriptReader(path);
+  }
 }

@@ -1,6 +1,6 @@
 package controller;
 
-import model.Operations;
+import model.OperationsV2;
 
 /**
  * A class that performs the task of performing
@@ -10,8 +10,8 @@ import model.Operations;
  */
 
 class VerticalFlip extends AbstractCommandExecuter {
-  String currentImageName;
-  String newImageName;
+  private final String currentImageName;
+  private final String newImageName;
 
   /**
    * Construct a VerticalFlip command object.
@@ -24,7 +24,9 @@ class VerticalFlip extends AbstractCommandExecuter {
    */
 
   VerticalFlip(String[] cmd, int commandLength) {
-    this.validCommandLength(cmd.length, commandLength);
+    if(!this.validCommandLength(cmd.length, commandLength)){
+      throw new IllegalArgumentException("Invalid command length");
+    }
     this.currentImageName = cmd[1];
     this.newImageName = cmd[2];
   }
@@ -42,7 +44,7 @@ class VerticalFlip extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(Operations operations) {
+  public boolean execute(OperationsV2 operations) {
     this.imageCheck(operations, this.currentImageName);
     return operations.verticalFlip(this.currentImageName, this.newImageName);
   }

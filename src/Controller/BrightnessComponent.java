@@ -1,6 +1,6 @@
 package controller;
 
-import model.Operations;
+import model.OperationsV2;
 
 
 /**
@@ -11,10 +11,10 @@ import model.Operations;
  */
 
 class BrightnessComponent extends AbstractCommandExecuter {
-  String currentImageName;
-  String newImageName;
-  String handler;
-
+  private final String currentImageName;
+  private final String newImageName;
+  private final String handler;
+  private final double percentage;
   /**
    * Construct a BrightnessComponent command object.
    * Validate the command length and initializes the image
@@ -25,10 +25,29 @@ class BrightnessComponent extends AbstractCommandExecuter {
    * @param commandLength the expected length of command array.
    */
   BrightnessComponent(String[] cmd, int commandLength) {
-    this.validCommandLength(cmd.length, commandLength);
-    this.currentImageName = cmd[1];
-    this.newImageName = cmd[2];
-    this.handler = cmd[0];
+    if(this.validCommandLength(cmd.length, commandLength)) {
+      this.currentImageName = cmd[1];
+      this.newImageName = cmd[2];
+      this.handler = cmd[0];
+      this.percentage = 100.00;
+    }else if(this.validCommandLength(cmd.length, 5)) {
+      this.currentImageName = cmd[1];
+      this.newImageName = cmd[2];
+      this.handler = cmd[0];
+      if(!(cmd[3].equals("split"))){
+        throw new IllegalArgumentException("Invalid Command");
+      }
+      try{
+        this.percentage = Double.parseDouble(cmd[4]);
+      }catch(NumberFormatException e) {
+        throw new NumberFormatException("Percentage must be a number.");
+      }
+      if (this.percentage < 0 || this.percentage > 100) {
+        throw new IllegalArgumentException("Percentage must be between 0 and 100.");
+      }
+    }else{
+      throw new IllegalArgumentException("Invalid Command.");
+    }
   }
 
   /**
@@ -46,9 +65,15 @@ class BrightnessComponent extends AbstractCommandExecuter {
    */
 
   @Override
-  public boolean execute(Operations operations) {
+  public boolean execute(OperationsV2 operations) {
     this.imageCheck(operations, this.currentImageName);
-    return operations.getBrightnessComponent(this.currentImageName,
-            this.newImageName, this.handler);
+    if ( this.percentage == 100.00){
+      return operations.getBrightnessComponent(this.currentImageName,
+              this.newImageName,this.handler);
+    }
+    operations.splitPreview(this.currentImageName,this.newImageName,this.percentage);
+    boolean check1 = operations.getBrightnessComponent(this.newImageName,this.newImageName,this.handler);
+    return operations.regain(this.currentImageName, this.newImageName) &
+            check1;
   }
 }

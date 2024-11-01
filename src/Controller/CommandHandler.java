@@ -1,9 +1,10 @@
 package controller;
 
-import model.Operations;
+
+import model.OperationsV2;
 
 
-import java.io.PrintStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -17,10 +18,11 @@ import java.util.function.BiFunction;
 
 
 class CommandHandler {
-  private final Operations operations;
+  private final OperationsV2 operations;
   private final Map<String, BiFunction<String[], Integer, AbstractCommandExecuter>> commandMap;
-  private final PrintStream out;
-  private final PrintStream err;
+  private final Appendable out;
+  private final Appendable err;
+
 
   /**
    * Constructs a new instance of CommandHandler.
@@ -32,7 +34,7 @@ class CommandHandler {
    * blur, and sharpen, and manipulating color components.
    */
 
-  CommandHandler(Operations operations, PrintStream out) {
+  CommandHandler(OperationsV2 operations, Appendable out) {
     this.operations = operations;
     this.out = out;
     this.err = System.err;
@@ -53,6 +55,10 @@ class CommandHandler {
     commandMap.put("intensity-component", (cmd, a) -> new BrightnessComponent(cmd, 3));
     commandMap.put("rgb-split", (cmd, a) -> new RGBSplit(cmd, 5));
     commandMap.put("rgb-combine", (cmd, a) -> new RGBCombine(cmd, 5));
+    commandMap.put("compress",(cmd,a)->new Compress(cmd,4));
+    commandMap.put("histogram",(cmd,a)->new Histogram(cmd,3));
+    commandMap.put("color-correct",(cmd,a)->new ColorCorrect(cmd,3));
+    commandMap.put("levels-adjust",(cmd,a)->new LevelsAdjust(cmd,6));
     commandMap.put("quit", (cmd, a) -> new Quit(cmd, 1));
   }
 
@@ -71,7 +77,7 @@ class CommandHandler {
    *                                  found in the command map.
    */
 
-  void readCommand(String[] input) throws IllegalArgumentException {
+  void readCommand(String[] input) throws IllegalArgumentException , IOException {
     String command = input[0];
     BiFunction<String[], Integer, AbstractCommandExecuter> cmd = this.commandMap.get(command);
     if (cmd == null) {
@@ -81,9 +87,9 @@ class CommandHandler {
     AbstractCommandExecuter ex = cmd.apply(input, 0);
     boolean status = ex.execute(operations);
     if (status) {
-      this.out.print(command + " executed successfully\n");
+      this.out.append(String.format(command + " executed successfully\n"));
     } else {
-      this.err.println(command + " not executed successfully\n");
+      this.err.append(String.format(command + " not executed successfully\n"));
     }
   }
 

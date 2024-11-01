@@ -18,15 +18,17 @@ import static org.junit.Assert.assertEquals;
  */
 
 public class ImageOperationsTest {
-  Operations operations;
+  OperationsV2 operations;
 
   @Before
   public void setUp() {
-    this.operations = new ImageOperations();
-    String file = "D:\\Northeastern\\PDP\\Assignment-4-MVC" +
-            "\\images\\manhattan-small.png";
+    this.operations = new ImageOperationsV2();
+    String file = "images\\manhattan-small.png";
+    String filetwo = "images\\galaxy.png";
     int[][][] org = this.getMatrix(file);
+    int[][][] org1 = this.getMatrix(filetwo);
     this.operations.loadImage(org, "man");
+    this.operations.loadImage(org1, "galaxy");
   }
 
 
@@ -68,9 +70,27 @@ public class ImageOperationsTest {
   public void checkBrightness() {
     this.operations.brighten("man", "man-bright-50", 50);
     int[][][] manNew = this.operations.saveImage("man-bright-50");
-    String file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file = "images" +
             "\\manhattan-small-brighter-by-50.png";
     int[][][] compare = this.getMatrix(file);
+    for (int i = 0; i < manNew.length; i++) {
+      for (int j = 0; j < manNew[i].length; j++) {
+        for (int k = 0; k <= 2; k++) {
+          assertEquals(compare[i][j][k], manNew[i][j][k]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check if image gets brighten
+   * with a zero.
+   */
+  @Test
+  public void checkBrightnessZero() {
+    this.operations.brighten("man", "man-bright-50", 0);
+    int[][][] manNew = this.operations.saveImage("man-bright-50");
+    int[][][] compare = this.operations.saveImage("man");
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
         for (int k = 0; k <= 2; k++) {
@@ -90,7 +110,7 @@ public class ImageOperationsTest {
   public void checkDarkeness() {
     this.operations.brighten("man", "man-darken-50", -50);
     int[][][] manNew = this.operations.saveImage("man-darken-50");
-    String file2 = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file2 = "images" +
             "\\manhattan-small-darker-by-50.png";
     int[][][] compare = this.getMatrix(file2);
     for (int i = 0; i < manNew.length; i++) {
@@ -111,7 +131,7 @@ public class ImageOperationsTest {
   public void checkVerticalFlip() {
     this.operations.verticalFlip("man", "man-vflip");
     int[][][] manNew = this.operations.saveImage("man-vflip");
-    String file2 = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file2 = "images" +
             "\\manhattan-small-vertical.png";
     int[][][] compare = this.getMatrix(file2);
     for (int i = 0; i < manNew.length; i++) {
@@ -131,7 +151,7 @@ public class ImageOperationsTest {
   public void checkHorizontalFlip() {
     this.operations.horizontalFlip("man", "man-hflip");
     int[][][] manNew = this.operations.saveImage("man-hflip");
-    String file2 = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file2 = "images" +
             "\\manhattan-small-horizontal.png";
     int[][][] compare = this.getMatrix(file2);
     for (int i = 0; i < manNew.length; i++) {
@@ -152,7 +172,7 @@ public class ImageOperationsTest {
     this.operations.horizontalFlip("man", "man-hflip");
     this.operations.verticalFlip("man-hflip", "man-hv");
     int[][][] manNew = this.operations.saveImage("man-hv");
-    String file2 = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file2 = "images" +
             "\\manhattan-small-horizontal-vertical.png";
     int[][][] compare = this.getMatrix(file2);
     for (int i = 0; i < manNew.length; i++) {
@@ -173,7 +193,7 @@ public class ImageOperationsTest {
     this.operations.verticalFlip("man", "man-vflip");
     this.operations.horizontalFlip("man-vflip", "man-vh");
     int[][][] manNew = this.operations.saveImage("man-vh");
-    String file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file = "images" +
             "\\manhattan-small-vertical-horizontal.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
@@ -193,7 +213,7 @@ public class ImageOperationsTest {
   public void checkSepia() {
     this.operations.sepia("man", "man-sepia");
     int[][][] manNew = this.operations.saveImage("man-sepia");
-    String file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file = "images" +
             "\\manhattan-small-sepia.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
@@ -213,8 +233,29 @@ public class ImageOperationsTest {
   public void checkBlur() {
     this.operations.blur("man", "man-blur");
     int[][][] manNew = this.operations.saveImage("man-blur");
-    String file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file = "images" +
             "\\manhattan-small-blur.png";
+    int[][][] compare = this.getMatrix(file);
+    for (int i = 0; i < manNew.length; i++) {
+      for (int j = 0; j < manNew[i].length; j++) {
+        for (int k = 0; k <= 2; k++) {
+          assertEquals(compare[i][j][k], manNew[i][j][k]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check if double blur is
+   * applied on the image.
+   */
+  @Test
+  public void checkDoubleBlur(){
+    this.operations.blur("man", "man-blur");
+    this.operations.blur("man-blur", "man-blur");
+    int[][][] manNew = this.operations.saveImage("man-blur");
+    String file = "images" +
+            "\\manhattan-small-blur-2.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -233,7 +274,7 @@ public class ImageOperationsTest {
   public void checkSharpen() {
     this.operations.sharpen("man", "man-sharp");
     int[][][] manNew = this.operations.saveImage("man-sharp");
-    String file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file = "images" +
             "\\manhattan-small-sharper.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
@@ -246,6 +287,26 @@ public class ImageOperationsTest {
   }
 
   /**
+   * Test Case to check if double sharp is
+   * applied correctly.
+   */
+  @Test
+  public void checkDoubleSharpen(){
+    this.operations.sharpen("man", "man-sharp");
+    this.operations.sharpen("man-sharp", "man-sharp");
+    int[][][] manNew = this.operations.saveImage("man-sharp");
+    String file = "images" +
+            "\\manhattan-small-sharpen-2.png";
+    int[][][] compare = this.getMatrix(file);
+    for (int i = 0; i < manNew.length; i++) {
+      for (int j = 0; j < manNew[i].length; j++) {
+        for (int k = 0; k <= 2; k++) {
+          assertEquals(compare[i][j][k], manNew[i][j][k]);
+        }
+      }
+    }
+  }
+  /**
    * Test Case to check if value component
    * of image is generated correctly.
    */
@@ -254,7 +315,7 @@ public class ImageOperationsTest {
     this.operations.getBrightnessComponent("man",
             "man-value", "value-component");
     int[][][] manNew = this.operations.saveImage("man-value");
-    String file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file = "images" +
             "\\manhattan-small-value-greyscale.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
@@ -275,7 +336,7 @@ public class ImageOperationsTest {
     this.operations.getBrightnessComponent("man",
             "man-luma", "luma-component");
     int[][][] manNew = this.operations.saveImage("man-luma");
-    String file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file = "images" +
             "\\manhattan-small-luma-greyscale.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
@@ -297,7 +358,7 @@ public class ImageOperationsTest {
     this.operations.getBrightnessComponent("man",
             "man-intensity", "intensity-component");
     int[][][] manNew = this.operations.saveImage("man-intensity");
-    String file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file = "images" +
             "\\manhattan-small-intensity-greyscale.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
@@ -321,7 +382,7 @@ public class ImageOperationsTest {
     this.operations.getColorComponent("man",
             "man-red", 0);
     int[][][] manNew = this.operations.saveImage("man-red");
-    String file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file = "images" +
             "\\manhattan-small-red.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
@@ -341,7 +402,7 @@ public class ImageOperationsTest {
     this.operations.getColorComponent("man",
             "man-blue", 2);
     int[][][] manNew = this.operations.saveImage("man-blue");
-    String file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file = "images" +
             "\\manhattan-small-blue.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
@@ -361,7 +422,7 @@ public class ImageOperationsTest {
     this.operations.getColorComponent("man",
             "man-green", 1);
     int[][][] manNew = this.operations.saveImage("man-green");
-    String file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file = "images" +
             "\\manhattan-small-green.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
@@ -382,7 +443,7 @@ public class ImageOperationsTest {
     this.operations.splitRGB("man",
             "man-red", "man-green", "man-blue");
     int[][][] manNew = this.operations.saveImage("man-red");
-    String file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file = "images" +
             "\\manhattan-small-red.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
@@ -393,7 +454,7 @@ public class ImageOperationsTest {
       }
     }
     manNew = this.operations.saveImage("man-green");
-    file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    file = "images" +
             "\\manhattan-small-green.png";
     compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
@@ -405,7 +466,7 @@ public class ImageOperationsTest {
     }
 
     manNew = this.operations.saveImage("man-blue");
-    file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    file = "images" +
             "\\manhattan-small-blue.png";
     compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
@@ -421,7 +482,6 @@ public class ImageOperationsTest {
    * Test Case to check if the RGB Combine
    * works correctly.
    */
-
   @Test
   public void checkRGBCombine() {
     this.operations.splitRGB("man",
@@ -429,7 +489,7 @@ public class ImageOperationsTest {
     this.operations.combineRGB("man-red", "man-green",
             "man-blue", "manNew");
     int[][][] manNew = this.operations.saveImage("manNew");
-    String file = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
+    String file = "images" +
             "\\manhattan-small.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
@@ -445,13 +505,12 @@ public class ImageOperationsTest {
    * Test Case to check if the RGB Combine
    * throws error if image are of different size.
    */
-
   @Test(expected = IllegalArgumentException.class)
   public void checkRGBCombineWithDifferentSize() {
     this.operations.splitRGB("man",
             "man-red", "man-green", "man-blue");
-    String file1 = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
-            "\\bird.png";
+    String file1 = "images" +
+            "\\galaxy.png";
     int[][][] newImg = this.getMatrix(file1);
     this.operations.loadImage(newImg, "bird");
     this.operations.splitRGB("bird", "bird-red",
@@ -466,8 +525,8 @@ public class ImageOperationsTest {
    */
   @Test
   public void checkOverridingOfImage() {
-    String file1 = "D:\\Northeastern\\PDP\\Assignment-4-MVC\\images" +
-            "\\bird.png";
+    String file1 = "images" +
+            "\\galaxy.png";
     int[][][] newImg = this.getMatrix(file1);
     this.operations.loadImage(newImg, "man");
     int[][][] reference = this.getMatrix(file1);
@@ -480,4 +539,99 @@ public class ImageOperationsTest {
       }
     }
   }
+
+  /**
+   * Test Case to check if the color-correction
+   * of the image is carried out correctly.
+   */
+  @Test
+  public void checkColorCorrect(){
+    this.operations.colorCorrection("galaxy",
+            "galaxycorrect");
+    int[][][] newImg = this.operations.saveImage("galaxycorrect");
+    String file2 = "images//galaxy-corrected.png";
+    int[][][] compare = this.getMatrix(file2);
+    for(int i=0;i<newImg.length;i++){
+      for(int j=0;j<newImg[0].length;j++){
+        for(int k=0;k<=2;k++){
+          assertEquals(compare[i][j][k], newImg[i][j][k]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check if the level adjust
+   * is carried out correctly.
+   */
+  @Test
+  public void checkLevelAdjust(){
+    this.operations.levelAdjustment("galaxy",
+            "galaxy-level",20,100,255);
+    int[][][] newImg = this.operations.saveImage("galaxy-level");
+    String file2 = "images/galaxy-adjusted.png";
+    int[][][] compare = this.getMatrix(file2);
+    for(int i=0;i<newImg.length;i++){
+      for(int j=0;j<newImg[0].length;j++){
+        for(int k=0;k<=2;k++){
+          int diff = Math.abs(compare[i][j][k]-newImg[i][j][k]);
+          if(diff<=1){
+            diff=0;
+          }
+          assertEquals(0, diff);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check the color correction
+   * on the level adjust.
+   */
+  @Test
+  public void checkColorCorrectLevelAdjust(){
+    this.operations.levelAdjustment("galaxy","galaxyl",20,
+            100,255);
+    this.operations.colorCorrection("galaxyl","galaxylc");
+    int[][][] newImg = this.operations.saveImage("galaxylc");
+    String file2 = "images/galaxy-adjusted-color-corrected.png";
+    int[][][] compare = this.getMatrix(file2);
+    for(int i=0;i<newImg.length;i++){
+      for(int j=0;j<newImg[0].length;j++){
+        for(int k=0;k<=2;k++){
+          int diff = Math.abs(compare[i][j][k]-newImg[i][j][k]);
+          if(diff<=1){
+            diff=0;
+          }
+          assertEquals(0, diff);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check if the compression is carried out
+   * correctly.
+   */
+  @Test
+  public void checkCompression(){
+    this.operations.compressImage("man",
+            "mancompress90",90);
+    int[][][] newImg = this.operations.saveImage("mancompress90");
+    String file2 = "images/patel.jpg";
+    int[][][] compare = this.getMatrix(file2);
+    int count=0;
+    for(int i=0;i<newImg.length;i++){
+      for(int j=0;j<newImg[0].length;j++){
+        for(int k=0;k<=2;k++) {
+          if (compare[i][j][k] - newImg[i][j][k] != 0) {
+            count += 1;
+          }
+        }
+      }
+    }
+    System.out.println(newImg.length*newImg[0].length*3);
+    System.out.println(count);
+  }
+
 }

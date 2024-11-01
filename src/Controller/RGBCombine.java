@@ -1,6 +1,6 @@
 package controller;
 
-import model.Operations;
+import model.OperationsV2;
 
 
 /**
@@ -11,10 +11,10 @@ import model.Operations;
  */
 
 class RGBCombine extends AbstractCommandExecuter {
-  String newImageName;
-  String redImage;
-  String greenImage;
-  String blueImage;
+  private final String newImageName;
+  private final String redImage;
+  private final String greenImage;
+  private final String blueImage;
 
   /**
    * Construct a RGBCombine command object.
@@ -26,7 +26,9 @@ class RGBCombine extends AbstractCommandExecuter {
    * @param commandLength the expected length of command array.
    */
   RGBCombine(String[] cmd, int commandLength) {
-    this.validCommandLength(cmd.length, commandLength);
+    if(!this.validCommandLength(cmd.length, commandLength)){
+      throw new IllegalArgumentException("Invalid command length");
+    }
     this.newImageName = cmd[1];
     this.redImage = cmd[2];
     this.greenImage = cmd[3];
@@ -46,7 +48,7 @@ class RGBCombine extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(Operations operations) {
+  public boolean execute(OperationsV2 operations) {
     this.imageCheck(operations, this.redImage);
     this.imageCheck(operations, this.greenImage);
     this.imageCheck(operations, this.blueImage);

@@ -1,15 +1,18 @@
 package controller;
 
-import model.Operations;
+import model.OperationsV2;
+
 /**
  * A class that performs the blur operation on an
  * image. The blur is applied to the image specified
  * in the command and result is saved as a new image.
  */
 
+
 class Blur extends AbstractCommandExecuter {
-  String currentImageName;
-  String newImageName;
+  private final String currentImageName;
+  private final String newImageName;
+  private final double percentage;
 
   /**
    * Construct a Blur command object.
@@ -21,9 +24,27 @@ class Blur extends AbstractCommandExecuter {
    * @param commandLength the expected length of command array.
    */
   Blur(String[] cmd, int commandLength) {
-    this.validCommandLength(cmd.length, commandLength);
-    this.currentImageName = cmd[1];
-    this.newImageName = cmd[2];
+    if (this.validCommandLength(cmd.length, commandLength)) {
+      this.currentImageName = cmd[1];
+      this.newImageName = cmd[2];
+      this.percentage = 100.00;
+    } else if (this.validCommandLength(cmd.length, 5)) {
+      this.currentImageName = cmd[1];
+      this.newImageName = cmd[2];
+      if (!(cmd[3].equals("split"))) {
+        throw new IllegalArgumentException("Invalid Command");
+      }
+      try {
+        this.percentage = Double.parseDouble(cmd[4]);
+      } catch (NumberFormatException e) {
+        throw new NumberFormatException("Percentage must be a number.");
+      }
+      if (this.percentage < 0 || this.percentage > 100) {
+        throw new IllegalArgumentException("Percentage must be between 0 and 100.");
+      }
+    } else {
+      throw new IllegalArgumentException("Invalid Command.");
+    }
   }
 
   /**
@@ -38,9 +59,14 @@ class Blur extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(Operations operations) {
+  public boolean execute(OperationsV2 operations) {
     this.imageCheck(operations, this.currentImageName);
-    return operations.blur(this.currentImageName, this.newImageName);
+    if (this.percentage == 100.00) {
+      return operations.blur(this.currentImageName, this.newImageName);
+    }
+    operations.splitPreview(this.currentImageName, this.newImageName, this.percentage);
+    boolean t = operations.blur(this.newImageName, this.newImageName);
+    return operations.regain(this.currentImageName, this.newImageName) & t;
   }
 
 }

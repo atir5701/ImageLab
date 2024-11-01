@@ -1,6 +1,6 @@
 package controller;
 
-import model.Operations;
+import model.OperationsV2;
 
 /**
  * A class that performs the brightened operation on an
@@ -28,7 +28,9 @@ class Brighten extends AbstractCommandExecuter {
    *                               be parsed as integer.
    */
   Brighten(String[] cmd, int commandLength) throws NumberFormatException {
-    this.validCommandLength(cmd.length, commandLength);
+    if (! this.validCommandLength(cmd.length, commandLength)){
+      throw new IllegalArgumentException("Invalid command length");
+    }
     this.currentImageName = cmd[2];
     this.newImageName = cmd[3];
 
@@ -52,7 +54,7 @@ class Brighten extends AbstractCommandExecuter {
    */
 
   @Override
-  public boolean execute(Operations operations) {
+  public boolean execute(OperationsV2 operations) {
     this.imageCheck(operations, this.currentImageName);
     return operations.brighten(this.currentImageName, this.newImageName, this.increment);
   }
