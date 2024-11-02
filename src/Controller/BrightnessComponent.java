@@ -71,9 +71,10 @@ class BrightnessComponent extends AbstractCommandExecuter {
       return operations.getBrightnessComponent(this.currentImageName,
               this.newImageName,this.handler);
     }
-    operations.splitPreview(this.currentImageName,this.newImageName,this.percentage);
-    boolean check1 = operations.getBrightnessComponent(this.newImageName,this.newImageName,this.handler);
-    return operations.regain(this.currentImageName, this.newImageName) &
+    String temp = this.newImageName+ this.newImageName.hashCode();
+    operations.splitPreview(this.currentImageName,temp,this.percentage);
+    boolean check1 = operations.getBrightnessComponent(temp,temp,this.handler);
+    return operations.regain(this.currentImageName,temp,this.newImageName) &
             check1;
   }
 }

@@ -48,8 +48,9 @@ class ColorCorrect extends AbstractCommandExecuter{
     if (this.percentage == 100.00) {
       return operations.colorCorrection(this.currentImageName, this.newImageName);
     }
-    operations.splitPreview(this.currentImageName, this.newImageName, this.percentage);
-    boolean t = operations.colorCorrection(this.newImageName, this.newImageName);
-    return operations.regain(this.currentImageName,this.newImageName) & t;
+    String temp = this.newImageName+ this.newImageName.hashCode();
+    operations.splitPreview(this.currentImageName, temp, this.percentage);
+    boolean t = operations.colorCorrection(temp,temp);
+    return operations.regain(this.currentImageName,temp,this.newImageName) & t;
   }
 }

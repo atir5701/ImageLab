@@ -12,5 +12,5 @@ public interface OperationsV2 extends Operations {
 
   void splitPreview(String currentImageName, String newImageName,double percentage);
 //  public boolean splitView()
-  boolean regain(String currentImageName, String newImageName);
+  boolean regain(String currentImageName,String temporaryName,String newImageName);
 }

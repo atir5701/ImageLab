@@ -67,7 +67,7 @@ class Blur extends AbstractCommandExecuter {
     String temp = this.newImageName+ this.newImageName.hashCode();
     operations.splitPreview(this.currentImageName, temp, this.percentage);
     boolean t = operations.blur(temp,temp);
-    return operations.regain(this.currentImageName, this.newImageName) & t;
+    return operations.regain(this.currentImageName,temp,this.newImageName) & t;
   }
 
 }

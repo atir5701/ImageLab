@@ -62,9 +62,10 @@ class Sharpen extends AbstractCommandExecuter {
     if(this.percentage == 100.00) {
       return operations.sharpen(this.currentImageName, this.newImageName);
     }
-    operations.splitPreview(this.currentImageName, this.newImageName, this.percentage);
-    boolean t = operations.sharpen(this.newImageName, this.newImageName);
-    return operations.regain(this.currentImageName,this.newImageName) & t;
+    String temp = this.newImageName+ this.newImageName.hashCode();
+    operations.splitPreview(this.currentImageName, temp, this.percentage);
+    boolean t = operations.sharpen(temp,temp);
+    return operations.regain(this.currentImageName,temp,this.newImageName) & t;
   }
 
 }

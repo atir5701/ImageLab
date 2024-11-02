@@ -48,7 +48,7 @@ public class ImageOperationsV2Mock implements OperationsV2 {
   }
 
   @Override
-  public boolean regain(String currentImageName, String newImageName) {
+  public boolean regain(String currentImageName,String temp, String newImageName) {
     log.append("Regain ").append(currentImageName).append(" to ").append(newImageName);
     return true;
   }

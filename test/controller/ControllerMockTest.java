@@ -7,8 +7,6 @@ package controller;
 
 
 import org.junit.Before;
-
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 

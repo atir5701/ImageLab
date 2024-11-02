@@ -371,9 +371,9 @@ public class ImageOperationsV2 extends ImageOperations implements OperationsV2 {
     this.imageMap.put(newImageName,newImage);
   }
 
-   public boolean regain(String currentImageName,String newImageName){
+   public boolean regain(String currentImageName,String temporaryImageName,String newImageName){
     ImageModel oldImage = this.imageMap.get(currentImageName);
-    ImageModel newImage = this.imageMap.get(newImageName);
+    ImageModel newImage = this.imageMap.get(temporaryImageName);
     ImageModel finalImage = this.getNewImageModel(oldImage);
     int width = newImage.getWidth();
     for(int i=0;i<oldImage.getHeight();i++){
