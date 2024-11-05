@@ -54,10 +54,10 @@ class LevelsAdjust extends AbstractCommandExecuter {
       return operations.levelAdjustment(this.currentImageName, this.newImageName, this.
               b, this.m, this.w);
     }
-    String temp = this.newImageName+ this.newImageName.hashCode();
-    operations.splitPreview(this.currentImageName, temp,this.percentage);
-    boolean t = operations.levelAdjustment(temp,temp, this.b, this.m, this.w);
-    return operations.regain(this.currentImageName,temp,this.newImageName) & t;
+    String temp = this.newImageName + this.newImageName.hashCode();
+    operations.splitPreview(this.currentImageName, temp, this.percentage);
+    boolean t = operations.levelAdjustment(temp, temp, this.b, this.m, this.w);
+    return operations.regain(this.currentImageName, temp, this.newImageName) & t;
 
   }
 }

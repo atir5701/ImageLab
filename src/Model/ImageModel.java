@@ -78,7 +78,15 @@ class ImageModel {
    * @return a 3-d array containing the pixel values of image.
    */
   protected int[][][] getPixelMatrix() {
-    return this.pixels;
+    int[][][] n = new int[this.height][this.width][3];
+    for (int i = 0; i < this.height; i++) {
+      for (int j = 0; j < this.width; j++) {
+        for (int k = 0; k < 3; k++) {
+          n[i][j][k] = this.pixels[i][j][k];
+        }
+      }
+    }
+    return n;
   }
 
 }

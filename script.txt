@@ -1,24 +1,29 @@
 # Loading images
 
 load res\bird.jpg bird
-load res\panda.png panda
+load res\panda.jpg panda
 
 
 # Red, Green, Blue, Value, Intensity, Luma component of all images
 
 red-component bird bird-red
+red-component panda bird-reds split 30 
 
 green-component bird bird-green
-
+green-component panda bird-greens split 70
 
 blue-component bird bird-blue
+blue-component panda bird-blues split 10
 
 value-component bird bird-value
+value-component panda bird-values split 25
 
 intensity-component bird bird-intensity
+intensity-component panda bird-intensitys split 23
 
 
 luma-component bird bird-luma
+luma-component bird bird-lumas split 49
 
 
 save res\bird-red.jpg bird-red
@@ -27,6 +32,13 @@ save res\bird-blue.jpg bird-blue
 save res\bird-value.jpg bird-value
 save res\bird-intensity.jpg bird-intensity
 save res\bird-luma.jpg bird-luma
+
+save res\panda-redsplit.jpg bird-reds
+save res\panda-greensplit.jpg bird-greens
+save res\panda-bluesplit.jpg bird-blues
+save res\panda-valuesplit.jpg bird-values
+save res\panda-intensitysplit.jpg bird-intensitys
+save res\panda-lumasplit.jpg bird-lumas
 
 
 # Horizontal Flip
@@ -84,22 +96,48 @@ save res\bird-combine.jpg birdcom
 # Blur
 
 blur 	bird 	bird-blur
+blur 	bird 	bird-blurs split 30
+save res\bird-blur.png bird-blur
+save res\bird-blursplit.png bird-blurs
 
-save res\bird-blur.ppm bird-blur
 
 # Sharpen
 
 
 sharpen bird bird-sharpen
+sharpen bird bird-sharpens split 50
 
 save res\bird-sharpen.jpeg bird-sharpen
-
+save res\bird-sharpsplit.png bird-sharpens
 
 
 # Sepia
 
 sepia bird bird-sepia
+sepia bird bird-sepias split 20
 save res\bird-sepia.jpg bird-sepia
+save res\bird-sepiasplit.jpg bird-sepias
 
+# Compression
+
+compress 65 panda pandacomp
+save res\panda-compress.jpeg pandacomp
+
+#Histogram
+
+histogram panda panda-hist
+save res\panda-hist.png panda-hist
+
+# Levels-adjust
+levels-adjust 10 200 250 panda panda-levels
+levels-adjust 10 200 250 panda panda-levelsp split 45
+save res\panda-levels-adjust.png panda-levels
+save res\panda-levels-adjust-split.png panda-levelsp
+
+# color correct
+color-correct panda panda-color
+color-correct panda panda-colors split 30
+save res\panda-color.png panda-color
+save res\panda-color-split.png panda-colors
 
 

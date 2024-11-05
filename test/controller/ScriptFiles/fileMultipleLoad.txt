@@ -11,9 +11,11 @@ load images\bird.jpg bird
 
 red-component panda panda-red
 red-component bird bird-red
+red-component bird bird-split split 50
 
 green-component bird bird-green
 green-component panda panda-green
+green-component panda panda-split split 60
 
 blue-component bird bird-blue
 blue-component panda panda-blue
@@ -23,9 +25,12 @@ value-component panda panda-value
 
 intensity-component bird bird-intensity
 intensity-component panda panda-intensity
+intensity-component bird bird-split split 10
 
 luma-component bird bird-luma
 luma-component panda panda-luma
+luma-component panda panda-split split 15.6
+
 
 
 
@@ -92,7 +97,8 @@ save  test\controller\resultTest\panda-combine.jpeg pandacom
 
 blur panda panda-blur
 blur bird bird-blur
-
+blur bird bird-split split 50
+save test\controller\resultTest\bird-split.jpg bird-split
 save  test\controller\resultTest\panda-blur.jpeg panda-blur
 
 save  test\controller\resultTest\bird-blur.png bird-blur
@@ -102,16 +108,18 @@ save  test\controller\resultTest\bird-blur.png bird-blur
 
 sharpen panda panda-sharpen
 sharpen bird bird-sharpen
-
+sharpen panda panda-split split 60
 save  test\controller\resultTest\panda-sharpen.jpeg panda-sharpen
 
 save test\controller\resultTest\bird-sharpen.png bird-sharpen
 
+save test\controller\resultTest\panda-sharpen-split.jpg panda-split
 
 # Performing operation on already existing image
 
 blur panda-sharpen panda-sharpen-blur
 blur bird-sharpen bird-sharpen-blur
+blur bird bird-split split 50
 
 save test\controller\resultTest\panda-sharpen-blur.jpeg panda-sharpen-blur
 
@@ -132,3 +140,22 @@ save  test\controller\resultTest\bird-sepia.png bird-sepia
 sharpen bird panda-sepia
 
 save test\controller\resultTest\panda-sepia.png panda-sepia
+
+# Compress
+compress 35 bird birdcomp
+compress 45 panda pandacomp
+
+# Histogram
+histogram bird bird-hist
+histogram panda panda-hist
+
+
+#Levels-adjust
+levels-adjust 10 34 200 bird bird-level
+levels-adjust 10 34 200 bird bird-level split 30
+levels-adjust 10 56 255 panda panda-level split 45
+
+#Color-Correct
+color-correct bird bird-correct
+color-correct panda panda-correct split 23
+color-correct bird bird-correct2 split 50

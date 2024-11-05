@@ -7,7 +7,7 @@ package controller;
  * Implementing classes are responsible for handling and executing
  * commands input into the system, managing the necessary logic to
  * facilitate the image processing workflow.
- * */
+ */
 
 public interface ImageAppController {
 
@@ -21,10 +21,8 @@ public interface ImageAppController {
    * will be printed to the console.
    * Implementations should ensure proper error handling and provide
    * informative error messages to guide users when issues arise.
-   *
    */
   void startApplication();
-
 
 
 }

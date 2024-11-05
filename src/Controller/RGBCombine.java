@@ -26,7 +26,7 @@ class RGBCombine extends AbstractCommandExecuter {
    * @param commandLength the expected length of command array.
    */
   RGBCombine(String[] cmd, int commandLength) {
-    if(!this.validCommandLength(cmd.length, commandLength)){
+    if (!this.validCommandLength(cmd.length, commandLength)) {
       throw new IllegalArgumentException("Invalid command length");
     }
     this.newImageName = cmd[1];

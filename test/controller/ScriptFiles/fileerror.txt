@@ -8,12 +8,15 @@ load images\koala.ppm koala
 
 red-component bird
 red-component bird bird-red
+red-component bird bird-red split
 
 green-component bird
 green-component bird bird-green
+green-component bird bird-red split twenty
 
 blue-component bird 
 blue-component bird bird-green
+blue-component bird bird-red sp 45
 
 value-component bird
 value-component bird bird-green
@@ -61,6 +64,7 @@ rgb-combine birdcom bird-rs bird-gs bird-bs
 
 blur 		bird 
 blur bird max
+blur bird bird-red split -45
 
 # Sharpen
 
@@ -72,6 +76,7 @@ sharpen bird bird-sharpen
 # Sepia
 sepia bird 
 sepia bird bird-sepia
+sepia bird bird-red split 145
 
 save test\controller\resultTest\koala.ppm 
 save test\controller\img\koala.ppm koala
@@ -80,4 +85,21 @@ save test\controller\resultTest\koala.gfg koala
 
 flipvertical img ims1
 sharp img1 img2
+
+
+# Compress
+compress -100 bird birdcomp
+compress hundered bird birdcomp
+
+#histogram
+histogram man man-20
+
+#levels-adjust
+levels-adjust 34 67 24 man man-level
+levels-adjust 23 67 hundred man man-level
+levels-adjust 290 300 345 man man-level
+levels-adjust -100 -150 -190 man man-level
+
+#color-correct
+colorcorrect man man-color
   

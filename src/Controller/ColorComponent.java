@@ -15,6 +15,7 @@ class ColorComponent extends AbstractCommandExecuter {
   private final String newImageName;
   private final String handler;
   private final double percentage;
+
   /**
    * Construct a BrightnessComponent command object.
    * Validate the command length and initializes the image
@@ -26,27 +27,27 @@ class ColorComponent extends AbstractCommandExecuter {
    */
 
   ColorComponent(String[] cmd, int commandLength) {
-    if(this.validCommandLength(cmd.length, commandLength)){
+    if (this.validCommandLength(cmd.length, commandLength)) {
       this.handler = cmd[0];
       this.currentImageName = cmd[1];
       this.newImageName = cmd[2];
       this.percentage = 100.00;
-    }else if(this.validCommandLength(cmd.length, 5)){
+    } else if (this.validCommandLength(cmd.length, 5)) {
       this.handler = cmd[0];
       this.currentImageName = cmd[1];
       this.newImageName = cmd[2];
-      if(!(cmd[3].equals("split"))){
+      if (!(cmd[3].equals("split"))) {
         throw new IllegalArgumentException("Invalid Command");
       }
-      try{
+      try {
         this.percentage = Double.parseDouble(cmd[4]);
-      }catch(NumberFormatException e) {
+      } catch (NumberFormatException e) {
         throw new NumberFormatException("Percentage must be a number.");
       }
       if (this.percentage < 0 || this.percentage > 100) {
         throw new IllegalArgumentException("Percentage must be between 0 and 100.");
       }
-    }else{
+    } else {
       throw new IllegalArgumentException("Invalid Command.");
     }
   }
@@ -81,13 +82,13 @@ class ColorComponent extends AbstractCommandExecuter {
       default:
         throw new IllegalArgumentException("Invalid command provided");
     }
-    if(this.percentage == 100.00) {
+    if (this.percentage == 100.00) {
       return operations.getColorComponent(this.currentImageName, this.newImageName, color);
     }
-    String temp = this.newImageName+ this.newImageName.hashCode();
-    operations.splitPreview(this.currentImageName,temp,this.percentage);
+    String temp = this.newImageName + this.newImageName.hashCode();
+    operations.splitPreview(this.currentImageName, temp, this.percentage);
     boolean t = operations.getColorComponent(temp, temp, color);
-    return operations.regain(this.currentImageName,temp, this.newImageName) &
+    return operations.regain(this.currentImageName, temp, this.newImageName) &
             t;
   }
 

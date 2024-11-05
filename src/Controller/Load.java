@@ -37,7 +37,7 @@ class Load extends AbstractCommandExecuter {
    * @param commandLength the expected length of command array.
    */
   Load(String[] cmd, int commandLength) {
-    if(!this.validCommandLength(cmd.length, commandLength)){
+    if (!this.validCommandLength(cmd.length, commandLength)) {
       throw new IllegalArgumentException("Invalid command length");
     }
     this.filePath = cmd[1];

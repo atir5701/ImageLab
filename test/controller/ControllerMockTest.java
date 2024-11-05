@@ -1,12 +1,7 @@
 package controller;
 
-/**
- * Split Preview test still left.
- * Compression Test still left.
- */
-
-
 import org.junit.Before;
+
 import java.io.Reader;
 import java.io.StringReader;
 
@@ -14,7 +9,16 @@ import model.OperationsV2;
 import view.ViewHandler;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
+
+
+
+/**
+ * This is the class to perform the mock testing
+ * of the controller using the mock class of the
+ * Model which is ImageOperationsV2Mock.
+ */
 
 public class ControllerMockTest {
   StringBuffer out;
@@ -24,6 +28,9 @@ public class ControllerMockTest {
   ImageAppController controller;
   ViewHandler view;
 
+  /**
+   * Basic setup before to carry out the test.
+   */
   @Before
   public void setUp() {
     log = new StringBuilder();
@@ -32,196 +39,459 @@ public class ControllerMockTest {
     view = new ViewHandler(out);
   }
 
+  /**
+   * Test Case to check the Brighten Function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkBright(){
+  public void checkBright() {
     in = new StringReader("brighten 50 man man-bright");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "Brighten man to man-bright 50";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the Brighten Function is
+   * called correctly by the controller for darkening
+   * the image.
+   */
   @Test
-  public void checkCompress(){
+  public void checkDark() {
+    in = new StringReader("brighten -50 man man-dark");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "Brighten man to man-dark -50";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check the Compress Function is
+   * called correctly by the controller.
+   */
+  @Test
+  public void checkCompress() {
     in = new StringReader("compress 50 man mancomp");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "Compress man to mancomp";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the Histogram function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkHistogram(){
+  public void checkHistogram() {
     in = new StringReader("histogram man manhist");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "Histogram man to manhist";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the Color-Correct Function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkColorCorrection(){
+  public void checkColorCorrection() {
     in = new StringReader("color-correct man mancolor-correct");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "ColorCorrection man to mancolor-correct";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the Levels-Adjust is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkLevelAdjust(){
+  public void checkLevelAdjust() {
     in = new StringReader("levels-adjust 10 20 233 man man-level");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "LevelAdjustment man to man-level with 10 20 233";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
-//  @Test
-//  public void checkSplitPreviewWithBlur(){
-//    in = new StringReader("blur man manb split 50");
-//    controller = new CommandReader(mock,in,view);
-//    controller.startApplication();
-//    String expected = "SplitPreview man to manb 50";
-//    assertEquals(expected,log.toString());
-//  }
-
+  /**
+   * Test Case to check the Load Function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkLoadImage(){
+  public void checkLoadImage() {
     in = new StringReader("load images/manhattan-small.png man");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "Load image man";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the Save Function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkSaveImage(){
+  public void checkSaveImage() {
     in = new StringReader("save images/manhattan.png man");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "Save image man";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+
+  /**
+   * Test Case to check the red-component function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkRedComponent(){
+  public void checkRedComponent() {
     in = new StringReader("red-component man manred");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "GetColorComponent man to manred 0";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the green-component function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkGreenComponent(){
+  public void checkGreenComponent() {
     in = new StringReader("green-component man mangreen");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "GetColorComponent man to mangreen 1";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the blue-component function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkBlueComponent(){
+  public void checkBlueComponent() {
     in = new StringReader("blue-component man manblue");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "GetColorComponent man to manblue 2";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the value-component function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkValueComponent(){
+  public void checkValueComponent() {
     in = new StringReader("value-component man manvalue");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "GetBrightnessComponent man to manvalue value-component";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the intensity-component function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkIntensityComponent(){
+  public void checkIntensityComponent() {
     in = new StringReader("intensity-component man manin");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "GetBrightnessComponent man to manin intensity-component";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the luma-component function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkLumaComponent(){
+  public void checkLumaComponent() {
     in = new StringReader("luma-component man manluma");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "GetBrightnessComponent man to manluma luma-component";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the horizontal-flip function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkHorizontalFlip(){
+  public void checkHorizontalFlip() {
     in = new StringReader("horizontal-flip man manhf");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "HorizontalFlip man to manhf";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
-
+  /**
+   * Test Case to check the vertical-flip function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkVerticalFlip(){
+  public void checkVerticalFlip() {
     in = new StringReader("vertical-flip man manvf");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "VerticalFlip man to manvf";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the split-RGB function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkSplitRGB(){
+  public void checkSplitRGB() {
     in = new StringReader("rgb-split man manr mang manb");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "Split RBG man to manr mang manb";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the rgb-combine function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkCombineRGB(){
+  public void checkCombineRGB() {
     in = new StringReader("rgb-combine man manr mang manb");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "CombineRGB manr mang manb to man";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the blur function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkBlur(){
+  public void checkBlur() {
     in = new StringReader("blur man manblur");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "Blur man to manblur";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the sharpen function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkSharpen(){
+  public void checkSharpen() {
     in = new StringReader("sharpen man mansharp");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "Sharpen man to mansharp";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check the sepia function is
+   * called correctly by the controller.
+   */
   @Test
-  public void checkSepia(){
+  public void checkSepia() {
     in = new StringReader("sepia man mansepia");
-    controller = new CommandReader(mock,in,view);
+    controller = new CommandReader(mock, in, view);
     controller.startApplication();
     String expected = "Sepia man to mansepia";
-    assertEquals(expected,log.toString());
+    assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check if the Split operation
+   * on the blur image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkBlurSplit() {
+    in = new StringReader("blur man man-blur split 30");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "SplitPreview on man with 30.0\n" +
+            "Blur man-blur75101434 to man-blur75101434\n" +
+            "Regain man to man-blur";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the Split operation
+   * on the sharp image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkSharpSplit() {
+    in = new StringReader("sharpen man man-sharp split 50.98");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "SplitPreview on man with 50.98\n" +
+            "Sharpen man-sharp-1951261257 to man-sharp-1951261257\n" +
+            "Regain man to man-sharp";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the Split operation
+   * on the sepia image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkSepiaSplit() {
+    in = new StringReader("sepia man man-sepia split 0.98");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "SplitPreview on man with 0.98\n" +
+            "Sepia man-sepia-1951336509 to man-sepia-1951336509\n" +
+            "Regain man to man-sepia";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the Split operation
+   * on the red-component image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkRedComponentSplit() {
+    in = new StringReader("red-component man man-red split 19.98");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "SplitPreview on man with 19.98\n" +
+            "GetColorComponent man-red833721758 to man-red833721758 0\n" +
+            "Regain man to man-red";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the Split operation
+   * on the green-component image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkGreenComponentSplit() {
+    in = new StringReader("green-component man man-green split 19.98");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "SplitPreview on man with 19.98\n" +
+            "GetColorComponent man-green-1962042160 to man-green-1962042160 1\n" +
+            "Regain man to man-green";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the Split operation
+   * on the blue-component image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkBlueComponentSplit() {
+    in = new StringReader("blue-component man man-blue split 19.98");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "SplitPreview on man with 19.98\n" +
+            "GetColorComponent man-blue75101421 to man-blue75101421 2\n" +
+            "Regain man to man-blue";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the Split operation
+   * on the value-component image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkValueComponentSplit() {
+    in = new StringReader("value-component man man-value split 19.98");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "SplitPreview on man with 19.98\n" +
+            "GetBrightnessComponent man-value-1948688578 to man-value-1948688578" +
+            " value-component\n" +
+            "Regain man to man-value";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the Split operation
+   * on the intensity-component image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkIntensityComponentSplit() {
+    in = new StringReader("intensity-component man man-in split 19.98");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "SplitPreview on man with 19.98\n" +
+            "GetBrightnessComponent man-in-1081484680 to man-in-1081484680 " +
+            "intensity-component\n" +
+            "Regain man to man-in";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the Split operation
+   * on the luma-component image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkLumaComponentSplit() {
+    in = new StringReader("luma-component man man-luma split 19.98");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "SplitPreview on man with 19.98\n" +
+            "GetBrightnessComponent man-luma75407728 to man-luma75407728" +
+            " luma-component\n" +
+            "Regain man to man-luma";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the levels-adjust operation
+   * on the luma-component image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkLevelsAdjustSplit() {
+    in = new StringReader("levels-adjust 10 200 255 man man-luma split 19.98");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "SplitPreview on man with 19.98\n" +
+            "LevelAdjustment man-luma75407728 to man-luma75407728 with 10 200 255\n" +
+            "Regain man to man-luma";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the Split operation
+   * on the color-correct image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkColorCorrectSplit() {
+    in = new StringReader("color-correct man man-luma split 19.98");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "SplitPreview on man with 19.98\n" +
+            "ColorCorrection man-luma75407728 to man-luma75407728\n" +
+            "Regain man to man-luma";
+    assertEquals(expected, log.toString());
+  }
 
 
 }

@@ -21,7 +21,7 @@ class Quit extends AbstractCommandExecuter {
    */
   Quit(String[] cmd, int commandLength) {
 
-    if(! this.validCommandLength(cmd.length, commandLength)){
+    if (!this.validCommandLength(cmd.length, commandLength)) {
       throw new IllegalArgumentException("Invalid command length");
     }
   }

@@ -15,6 +15,7 @@ class BrightnessComponent extends AbstractCommandExecuter {
   private final String newImageName;
   private final String handler;
   private final double percentage;
+
   /**
    * Construct a BrightnessComponent command object.
    * Validate the command length and initializes the image
@@ -25,27 +26,27 @@ class BrightnessComponent extends AbstractCommandExecuter {
    * @param commandLength the expected length of command array.
    */
   BrightnessComponent(String[] cmd, int commandLength) {
-    if(this.validCommandLength(cmd.length, commandLength)) {
+    if (this.validCommandLength(cmd.length, commandLength)) {
       this.currentImageName = cmd[1];
       this.newImageName = cmd[2];
       this.handler = cmd[0];
       this.percentage = 100.00;
-    }else if(this.validCommandLength(cmd.length, 5)) {
+    } else if (this.validCommandLength(cmd.length, 5)) {
       this.currentImageName = cmd[1];
       this.newImageName = cmd[2];
       this.handler = cmd[0];
-      if(!(cmd[3].equals("split"))){
+      if (!(cmd[3].equals("split"))) {
         throw new IllegalArgumentException("Invalid Command");
       }
-      try{
+      try {
         this.percentage = Double.parseDouble(cmd[4]);
-      }catch(NumberFormatException e) {
+      } catch (NumberFormatException e) {
         throw new NumberFormatException("Percentage must be a number.");
       }
       if (this.percentage < 0 || this.percentage > 100) {
         throw new IllegalArgumentException("Percentage must be between 0 and 100.");
       }
-    }else{
+    } else {
       throw new IllegalArgumentException("Invalid Command.");
     }
   }
@@ -67,14 +68,14 @@ class BrightnessComponent extends AbstractCommandExecuter {
   @Override
   public boolean execute(OperationsV2 operations) {
     this.imageCheck(operations, this.currentImageName);
-    if ( this.percentage == 100.00){
+    if (this.percentage == 100.00) {
       return operations.getBrightnessComponent(this.currentImageName,
-              this.newImageName,this.handler);
+              this.newImageName, this.handler);
     }
-    String temp = this.newImageName+ this.newImageName.hashCode();
-    operations.splitPreview(this.currentImageName,temp,this.percentage);
-    boolean check1 = operations.getBrightnessComponent(temp,temp,this.handler);
-    return operations.regain(this.currentImageName,temp,this.newImageName) &
+    String temp = this.newImageName + this.newImageName.hashCode();
+    operations.splitPreview(this.currentImageName, temp, this.percentage);
+    boolean check1 = operations.getBrightnessComponent(temp, temp, this.handler);
+    return operations.regain(this.currentImageName, temp, this.newImageName) &
             check1;
   }
 }

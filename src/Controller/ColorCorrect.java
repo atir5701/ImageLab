@@ -13,31 +13,31 @@ import model.OperationsV2;
  */
 
 
-class ColorCorrect extends AbstractCommandExecuter{
+class ColorCorrect extends AbstractCommandExecuter {
   private final String currentImageName;
   private final String newImageName;
   private final double percentage;
 
-  ColorCorrect(String[] cmd,int commandLength){
-    if(this.validCommandLength(cmd.length, commandLength)) {
+  ColorCorrect(String[] cmd, int commandLength) {
+    if (this.validCommandLength(cmd.length, commandLength)) {
       this.currentImageName = cmd[1];
       this.newImageName = cmd[2];
       this.percentage = 100;
-    }else if(this.validCommandLength(cmd.length,5)){
+    } else if (this.validCommandLength(cmd.length, 5)) {
       this.currentImageName = cmd[1];
       this.newImageName = cmd[2];
-      if(!(cmd[3].equals("split"))){
+      if (!(cmd[3].equals("split"))) {
         throw new IllegalArgumentException("Invalid Command");
       }
-      try{
+      try {
         this.percentage = Double.parseDouble(cmd[4]);
-      }catch(NumberFormatException e) {
+      } catch (NumberFormatException e) {
         throw new NumberFormatException("Percentage must be a number.");
       }
       if (this.percentage < 0 || this.percentage > 100) {
         throw new IllegalArgumentException("Percentage must be between 0 and 100.");
       }
-    }else{
+    } else {
       throw new IllegalArgumentException("Invalid command length");
     }
   }
@@ -48,9 +48,9 @@ class ColorCorrect extends AbstractCommandExecuter{
     if (this.percentage == 100.00) {
       return operations.colorCorrection(this.currentImageName, this.newImageName);
     }
-    String temp = this.newImageName+ this.newImageName.hashCode();
+    String temp = this.newImageName + this.newImageName.hashCode();
     operations.splitPreview(this.currentImageName, temp, this.percentage);
-    boolean t = operations.colorCorrection(temp,temp);
-    return operations.regain(this.currentImageName,temp,this.newImageName) & t;
+    boolean t = operations.colorCorrection(temp, temp);
+    return operations.regain(this.currentImageName, temp, this.newImageName) & t;
   }
 }

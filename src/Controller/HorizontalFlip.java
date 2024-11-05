@@ -23,7 +23,7 @@ class HorizontalFlip extends AbstractCommandExecuter {
    * @param commandLength the expected length of command array.
    */
   HorizontalFlip(String[] cmd, int commandLength) {
-    if(!this.validCommandLength(cmd.length, commandLength)){
+    if (!this.validCommandLength(cmd.length, commandLength)) {
       throw new IllegalArgumentException("Invalid command length");
     }
     this.currentImageName = cmd[1];

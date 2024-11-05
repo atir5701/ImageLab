@@ -11,6 +11,11 @@ green-component bird bird-green
 
 blue-component bird bird-blue
 
+red-component bird bird-red split
+
+blue-component bird bird-blue spl 34
+
+green-component bird bird-split -34
 
 
 # Horizontal Flip
@@ -34,7 +39,6 @@ save test\controller\resultTest\bird-ver.ppm bird-ver
 
 brighten 100 bird bird-bright-100
 
-
 save test\controller\resultTest\bird-bright-100.ppm bird-bright-100
 
 # Darken
@@ -50,3 +54,18 @@ rgb-combine birdcom bird-rs bird-gs bird-bs
 
 save test\controller\resultTest\bird-combine.ppm birdcom
 
+
+# Compress
+compress 35 bird birdcomp
+
+
+# Histogram
+histogram bird
+
+#Levels-adjust
+levels-adjust 10 34 200 bird bird-level
+levels-adjust 10 34 200 bird bird-level spt 30
+
+#Color-Correct
+color-correct bird bird-correct
+color-correct bird bird-correct2 split 180

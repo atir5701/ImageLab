@@ -39,7 +39,7 @@ public class ImageProcessingApplication {
       }
       nonInteractive.append("\n").append("quit");
       Reader in = new StringReader(nonInteractive.toString());
-      src = new CommandReader(operations, in, view, true);
+      src = new CommandReader(operations, in, view);
     }
     src.startApplication();
   }

@@ -52,10 +52,10 @@ class CommandHandler {
     commandMap.put("intensity-component", (cmd, a) -> new BrightnessComponent(cmd, 3));
     commandMap.put("rgb-split", (cmd, a) -> new RGBSplit(cmd, 5));
     commandMap.put("rgb-combine", (cmd, a) -> new RGBCombine(cmd, 5));
-    commandMap.put("compress",(cmd,a)->new Compress(cmd,4));
-    commandMap.put("histogram",(cmd,a)->new Histogram(cmd,3));
-    commandMap.put("color-correct",(cmd,a)->new ColorCorrect(cmd,3));
-    commandMap.put("levels-adjust",(cmd,a)->new LevelsAdjust(cmd,6));
+    commandMap.put("compress", (cmd, a) -> new Compress(cmd, 4));
+    commandMap.put("histogram", (cmd, a) -> new Histogram(cmd, 3));
+    commandMap.put("color-correct", (cmd, a) -> new ColorCorrect(cmd, 3));
+    commandMap.put("levels-adjust", (cmd, a) -> new LevelsAdjust(cmd, 6));
     commandMap.put("quit", (cmd, a) -> new Quit(cmd, 1));
   }
 

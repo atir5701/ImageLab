@@ -12,6 +12,7 @@ class Sharpen extends AbstractCommandExecuter {
   private final String currentImageName;
   private final String newImageName;
   private final double percentage;
+
   /**
    * Construct a Sharpen command object.
    * Validate the command length and initialize the image
@@ -22,25 +23,25 @@ class Sharpen extends AbstractCommandExecuter {
    * @param commandLength the expected length of command array.
    */
   Sharpen(String[] cmd, int commandLength) {
-    if(this.validCommandLength(cmd.length, commandLength)) {
+    if (this.validCommandLength(cmd.length, commandLength)) {
       this.currentImageName = cmd[1];
       this.newImageName = cmd[2];
       this.percentage = 100.00;
     } else if (this.validCommandLength(cmd.length, 5)) {
       this.currentImageName = cmd[1];
       this.newImageName = cmd[2];
-      if(!(cmd[3].equals("split"))){
+      if (!(cmd[3].equals("split"))) {
         throw new IllegalArgumentException("Invalid Command");
       }
-      try{
+      try {
         this.percentage = Double.parseDouble(cmd[4]);
-      }catch(NumberFormatException e) {
+      } catch (NumberFormatException e) {
         throw new NumberFormatException("Percentage must be a number.");
       }
       if (this.percentage < 0 || this.percentage > 100) {
         throw new IllegalArgumentException("Percentage must be between 0 and 100.");
       }
-    }else{
+    } else {
       throw new IllegalArgumentException("Invalid Command.");
     }
   }
@@ -59,13 +60,13 @@ class Sharpen extends AbstractCommandExecuter {
   @Override
   public boolean execute(OperationsV2 operations) {
     this.imageCheck(operations, this.currentImageName);
-    if(this.percentage == 100.00) {
+    if (this.percentage == 100.00) {
       return operations.sharpen(this.currentImageName, this.newImageName);
     }
-    String temp = this.newImageName+ this.newImageName.hashCode();
+    String temp = this.newImageName + this.newImageName.hashCode();
     operations.splitPreview(this.currentImageName, temp, this.percentage);
-    boolean t = operations.sharpen(temp,temp);
-    return operations.regain(this.currentImageName,temp,this.newImageName) & t;
+    boolean t = operations.sharpen(temp, temp);
+    return operations.regain(this.currentImageName, temp, this.newImageName) & t;
   }
 
 }

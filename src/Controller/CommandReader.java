@@ -39,23 +39,6 @@ public class CommandReader implements ImageAppController {
     this.view = view;
   }
 
-  /**
-   * Constructs a new CommandReader instance for non-interactive mode.
-   * This constructor initializes the CommandHandler instance
-   * used to execute commands read from the script/command-line.
-   */
-
-
-  public CommandReader(OperationsV2 operations, Readable in, ProgramView view,boolean interact) {
-    this.handler = new CommandHandler(operations, view);
-    this.in = in;
-    this.view = view;
-    try {
-      this.getCommand();
-    }catch (IOException e) {
-      throw new IllegalArgumentException("Please come back again");
-    }
-  }
 
   /**
    * Reads commands from the specified script file and executes them.

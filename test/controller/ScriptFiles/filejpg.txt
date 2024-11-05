@@ -6,16 +6,22 @@ load images\bird.jpg bird
 # Red, Green, Blue, Value, Intensity, Luma component of all images
 
 red-component bird bird-red
+red-component bird bird-split split 50
 
 green-component bird bird-green
+green-component bird bird-split split 60
 
 blue-component bird bird-blue
+blue-component bird bird-split split 70
 
 value-component bird bird-value
+value-component bird bird-split split 30
 
 intensity-component bird bird-intensity
+intensity-component bird bird-split split 10
 
 luma-component bird bird-luma
+luma-component bird bird-split split 15.6
 
 
 
@@ -70,15 +76,36 @@ save test\controller\resultTest\bird-combine.jpg birdcom
 
 blur 		bird bird-blur
 save test\controller\resultTest\bird-blur.jpg bird-blur
+blur bird bird-split split 50
+save test\controller\resultTest\bird-split.jpg bird-split
 
 # Sharpen
 
 sharpen bird bird-sharpen
-
+sharpen bird bird-split split 60
 save test\controller\resultTest\bird-sharpen.jpg bird-sharpen
 
 
 # Sepia
 sepia bird bird-sepia
-
+sepia bird bird-sepia split 45.8
 save test\controller\resultTest\bird-sepia.jpg bird-sepia
+
+# Compress
+compress 35 bird birdcomp
+save test\controller\resultTest\bird-comp.jpg birdcomp
+
+# Histogram
+histogram bird bird-hist
+save test\controller\resultTest\bird-hist.png bird-hist
+
+#Levels-adjust
+levels-adjust 10 34 200 bird bird-level
+save test\controller\resultTest\bird-level.png bird-level
+levels-adjust 10 34 200 bird bird-level split 30
+
+#Color-Correct
+color-correct bird bird-correct
+save test\controller\resultTest\bird-correct.png bird-correct
+color-correct bird bird-correct2 split 50
+

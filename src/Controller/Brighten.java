@@ -28,7 +28,7 @@ class Brighten extends AbstractCommandExecuter {
    *                               be parsed as integer.
    */
   Brighten(String[] cmd, int commandLength) throws NumberFormatException {
-    if (! this.validCommandLength(cmd.length, commandLength)){
+    if (!this.validCommandLength(cmd.length, commandLength)) {
       throw new IllegalArgumentException("Invalid command length");
     }
     this.currentImageName = cmd[2];
