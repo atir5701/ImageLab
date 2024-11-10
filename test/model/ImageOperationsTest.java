@@ -651,12 +651,43 @@ public class ImageOperationsTest {
             {{7, 8, 9}, {7, 8, 9}, {7, 8, 9}}
     };
     this.operations.loadImage(m, "temp");
-    this.operations.compressImage("temp", "temp-compress", 50);
+    this.operations.compressImage("temp",
+            "temp-compress", 50);
     int[][][] actual = this.operations.saveImage("temp-compress");
     int[][][] expected = new int[][][]{
             {{1, 3, 4}, {1, 3, 4}, {2, 3, 4}},
             {{3, 3, 4}, {3, 3, 4}, {4, 3, 4}},
             {{4, 6, 7}, {4, 6, 7}, {8, 8, 10}}
+    };
+
+    for (int i = 0; i < actual.length; i++) {
+      for (int j = 0; j < actual[0].length; j++) {
+        for (int k = 0; k <= 2; k++) {
+          assertEquals(expected[i][j][k], actual[i][j][k]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check if the compression works correct
+   * with a suitable compression value.
+   */
+  @Test
+  public void checkCompressionWithDouble() {
+    int[][][] m = new int[][][]{
+            {{1, 2, 3}, {1, 2, 3}, {1, 2, 3}},
+            {{4, 5, 6}, {4, 5, 6}, {4, 5, 6}},
+            {{7, 8, 9}, {7, 8, 9}, {7, 8, 9}}
+    };
+    this.operations.loadImage(m, "temp");
+    this.operations.compressImage("temp",
+            "temp-compress", 70.89);
+    int[][][] actual = this.operations.saveImage("temp-compress");
+    int[][][] expected = new int[][][]{
+            {{2, 2, 3}, {2, 2, 3}, {2, 4, 3}},
+            {{2, 2, 3}, {2, 2, 3}, {2, 4, 3}},
+            {{4, 5, 3}, {4, 5, 3}, {4, 7, 3}}
     };
 
     for (int i = 0; i < actual.length; i++) {
@@ -1164,6 +1195,25 @@ public class ImageOperationsTest {
 
   /**
    * Test Case to check if the split works correct
+   * for blur with double.
+   */
+  @Test
+  public void checkBlurSplitDouble() {
+    String temp = "matrix";
+    String name = temp + temp.hashCode();
+    this.operations.splitPreview("matrix", name, 45.8);
+    this.operations.blur(temp, temp);
+    this.operations.regain("matrix", name, "matrix-new");
+    int[][][] actual = this.operations.saveImage("matrix-new");
+    int[][][] expected = new int[][][]{
+            {{1, 2, 3}, {1, 2, 3}, {1, 1, 2}}, {{4, 5, 6}, {4, 5, 6}, {3, 3, 4}},
+            {{7, 8, 9}, {7, 8, 9}, {5, 6, 6}}, {{10, 11, 12}, {6, 7, 8}, {5, 5, 6}}
+    };
+    assertArrayEquals(actual, expected);
+  }
+
+  /**
+   * Test Case to check if the split works correct
    * for sepia.
    */
   @Test
@@ -1171,6 +1221,25 @@ public class ImageOperationsTest {
     String temp = "matrix";
     String name = temp + temp.hashCode();
     this.operations.splitPreview("matrix", name, 50);
+    this.operations.sepia(temp, temp);
+    this.operations.regain("matrix", name, "matrix-new");
+    int[][][] actual = this.operations.saveImage("matrix-new");
+    int[][][] expected = new int[][][]{
+            {{1, 2, 3}, {2, 2, 1}, {2, 2, 1}}, {{4, 5, 6}, {6, 5, 4}, {6, 5, 4}},
+            {{7, 8, 9}, {10, 9, 7}, {10, 9, 7}}, {{10, 11, 12}, {14, 13, 10}, {14, 13, 10}}
+    };
+    assertArrayEquals(actual, expected);
+  }
+
+  /**
+   * Test Case to check if the split works correct
+   * for sepia.
+   */
+  @Test
+  public void checkSepiaSplitDouble() {
+    String temp = "matrix";
+    String name = temp + temp.hashCode();
+    this.operations.splitPreview("matrix", name, 50.56);
     this.operations.sepia(temp, temp);
     this.operations.regain("matrix", name, "matrix-new");
     int[][][] actual = this.operations.saveImage("matrix-new");
@@ -1201,6 +1270,25 @@ public class ImageOperationsTest {
   }
 
   /**
+   * Test Case to check if the split works correct with zero
+   * for sharp.
+   */
+  @Test
+  public void checkSharpSplitDouble() {
+    String temp = "matrix";
+    String name = temp + temp.hashCode();
+    this.operations.splitPreview("matrix", name, 23.89);
+    this.operations.sharpen(temp, temp);
+    this.operations.regain("matrix", name, "matrix-new");
+    int[][][] actual = this.operations.saveImage("matrix-new");
+    int[][][] expected = new int[][][]{
+            {{0, 1, 2}, {1, 3, 5}, {0, 1, 2}}, {{3, 5, 6}, {8, 10, 13}, {3, 5, 6}},
+            {{12, 14, 15}, {20, 23, 25}, {12, 14, 15}}, {{12, 13, 14}, {18, 20, 22}, {12, 13, 14}}
+    };
+    assertArrayEquals(actual, expected);
+  }
+
+  /**
    * Test Case to check if the split works correct
    * for red-component.
    */
@@ -1209,6 +1297,25 @@ public class ImageOperationsTest {
     String temp = "matrix";
     String name = temp + temp.hashCode();
     this.operations.splitPreview("matrix", name, 59);
+    this.operations.getColorComponent(temp, temp, 0);
+    this.operations.regain("matrix", name, "matrix-new");
+    int[][][] actual = this.operations.saveImage("matrix-new");
+    int[][][] expected = new int[][][]{
+            {{1, 2, 3}, {1, 1, 1}, {1, 1, 1}}, {{4, 5, 6}, {4, 4, 4}, {4, 4, 4}},
+            {{7, 8, 9}, {7, 7, 7}, {7, 7, 7}}, {{10, 11, 12}, {10, 10, 10}, {10, 10, 10}}
+    };
+    assertArrayEquals(actual, expected);
+  }
+
+  /**
+   * Test Case to check if the split works correct
+   * for red-component.
+   */
+  @Test
+  public void checkRedComponentSplitDouble() {
+    String temp = "matrix";
+    String name = temp + temp.hashCode();
+    this.operations.splitPreview("matrix", name, 59.7);
     this.operations.getColorComponent(temp, temp, 0);
     this.operations.regain("matrix", name, "matrix-new");
     int[][][] actual = this.operations.saveImage("matrix-new");
@@ -1240,6 +1347,25 @@ public class ImageOperationsTest {
 
   /**
    * Test Case to check if the split works correct
+   * for green-component.
+   */
+  @Test
+  public void checkGreenComponentSplitDouble() {
+    String temp = "matrix";
+    String name = temp + temp.hashCode();
+    this.operations.splitPreview("matrix", name, 90.2);
+    this.operations.getColorComponent(temp, temp, 1);
+    this.operations.regain("matrix", name, "matrix-new");
+    int[][][] actual = this.operations.saveImage("matrix-new");
+    int[][][] expected = new int[][][]{
+            {{1, 2, 3}, {1, 2, 3}, {2, 2, 2}}, {{4, 5, 6}, {4, 5, 6}, {5, 5, 5}},
+            {{7, 8, 9}, {7, 8, 9}, {8, 8, 8}}, {{10, 11, 12}, {10, 11, 12}, {11, 11, 11}}
+    };
+    assertArrayEquals(actual, expected);
+  }
+
+  /**
+   * Test Case to check if the split works correct
    * for blue-component.
    */
   @Test
@@ -1253,6 +1379,25 @@ public class ImageOperationsTest {
     int[][][] expected = new int[][][]{
             {{3, 3, 3}, {3, 3, 3}, {3, 3, 3}}, {{6, 6, 6}, {6, 6, 6}, {6, 6, 6}},
             {{9, 9, 9}, {9, 9, 9}, {9, 9, 9}}, {{12, 12, 12}, {12, 12, 12}, {12, 12, 12}}
+    };
+    assertArrayEquals(actual, expected);
+  }
+
+  /**
+   * Test Case to check if the split works correct
+   * for blue-component with double.
+   */
+  @Test
+  public void checkBlueComponentSplitDouble() {
+    String temp = "matrix";
+    String name = temp + temp.hashCode();
+    this.operations.splitPreview("matrix", name, 67.98);
+    this.operations.getColorComponent(temp, temp, 2);
+    this.operations.regain("matrix", name, "matrix-new");
+    int[][][] actual = this.operations.saveImage("matrix-new");
+    int[][][] expected = new int[][][]{
+            {{1, 2, 3}, {1, 2, 3}, {3, 3, 3}}, {{4, 5, 6}, {4, 5, 6}, {6, 6, 6}},
+            {{7, 8, 9}, {7, 8, 9}, {9, 9, 9}}, {{10, 11, 12}, {10, 11, 12}, {12, 12, 12}}
     };
     assertArrayEquals(actual, expected);
   }
@@ -1278,6 +1423,25 @@ public class ImageOperationsTest {
 
   /**
    * Test Case to check if the split works correct
+   * for value-component with double.
+   */
+  @Test
+  public void checkValueComponentSplitDouble() {
+    String temp = "matrix";
+    String name = temp + temp.hashCode();
+    this.operations.splitPreview("matrix", name, 45.78);
+    this.operations.getBrightnessComponent(temp, temp, "value-component");
+    this.operations.regain("matrix", name, "matrix-new");
+    int[][][] actual = this.operations.saveImage("matrix-new");
+    int[][][] expected = new int[][][]{
+            {{1, 2, 3}, {3, 3, 3}, {3, 3, 3}}, {{4, 5, 6}, {6, 6, 6}, {6, 6, 6}},
+            {{7, 8, 9}, {9, 9, 9}, {9, 9, 9}}, {{10, 11, 12}, {12, 12, 12}, {12, 12, 12}}
+    };
+    assertArrayEquals(actual, expected);
+  }
+
+  /**
+   * Test Case to check if the split works correct
    * for luma-component.
    */
   @Test
@@ -1291,6 +1455,25 @@ public class ImageOperationsTest {
     int[][][] expected = new int[][][]{
             {{1, 2, 3}, {1, 2, 3}, {1, 1, 1}}, {{4, 5, 6}, {4, 5, 6}, {4, 4, 4}},
             {{7, 8, 9}, {7, 8, 9}, {7, 7, 7}}, {{10, 11, 12}, {10, 11, 12}, {10, 10, 10}}
+    };
+    assertArrayEquals(actual, expected);
+  }
+
+  /**
+   * Test Case to check if the split works correct
+   * for luma-component with double.
+   */
+  @Test
+  public void checkLumaComponentSplitDouble() {
+    String temp = "matrix";
+    String name = temp + temp.hashCode();
+    this.operations.splitPreview("matrix", name, 45.78);
+    this.operations.getBrightnessComponent(temp, temp, "luma-component");
+    this.operations.regain("matrix", name, "matrix-new");
+    int[][][] actual = this.operations.saveImage("matrix-new");
+    int[][][] expected = new int[][][]{
+            {{1, 2, 3}, {1, 1, 1}, {1, 1, 1}}, {{4, 5, 6}, {4, 4, 4}, {4, 4, 4}},
+            {{7, 8, 9}, {7, 7, 7}, {7, 7, 7}}, {{10, 11, 12}, {10, 10, 10}, {10, 10, 10}}
     };
     assertArrayEquals(actual, expected);
   }
@@ -1310,6 +1493,25 @@ public class ImageOperationsTest {
     int[][][] expected = new int[][][]{
             {{2, 2, 2}, {2, 2, 2}, {2, 2, 2}}, {{5, 5, 5}, {5, 5, 5}, {5, 5, 5}},
             {{8, 8, 8}, {8, 8, 8}, {8, 8, 8}}, {{11, 11, 11}, {11, 11, 11}, {11, 11, 11}}
+    };
+    assertArrayEquals(actual, expected);
+  }
+
+  /**
+   * Test Case to check if the split works correct with
+   * for intensity-component double.
+   */
+  @Test
+  public void checkIntensityComponentSplitDouble() {
+    String temp = "matrix";
+    String name = temp + temp.hashCode();
+    this.operations.splitPreview("matrix", name, 50.8);
+    this.operations.getBrightnessComponent(temp, temp, "intensity-component");
+    this.operations.regain("matrix", name, "matrix-new");
+    int[][][] actual = this.operations.saveImage("matrix-new");
+    int[][][] expected = new int[][][]{
+            {{1, 2, 3}, {2, 2, 2}, {2, 2, 2}}, {{4, 5, 6}, {5, 5, 5}, {5, 5, 5}},
+            {{7, 8, 9}, {8, 8, 8}, {8, 8, 8}}, {{10, 11, 12}, {11, 11, 11}, {11, 11, 11}}
     };
     assertArrayEquals(actual, expected);
   }
@@ -1335,6 +1537,26 @@ public class ImageOperationsTest {
 
   /**
    * Test Case to check if the split works correct
+   * for levels-adjust.
+   */
+  @Test
+  public void checkLevelsAdjustSplitDouble() {
+    String temp = "matrix";
+    String name = temp + temp.hashCode();
+    this.operations.splitPreview("matrix", name, 34.7);
+    this.operations.levelAdjustment(temp, temp, 20, 100, 200);
+    this.operations.regain("matrix", name, "matrix-new");
+    int[][][] actual = this.operations.saveImage("matrix-new");
+    int[][][] expected = new int[][][]{
+            {{1, 2, 3}, {0, 0, 0}, {0, 0, 0}}, {{4, 5, 6}, {0, 0, 0}, {0, 0, 0}},
+            {{7, 8, 9}, {0, 0, 0}, {0, 0, 0}}, {{10, 11, 12}, {0, 0, 0}, {0, 0, 0}}
+    };
+    assertArrayEquals(actual, expected);
+  }
+
+
+  /**
+   * Test Case to check if the split works correct
    * for color-correct.
    */
   @Test
@@ -1353,17 +1575,37 @@ public class ImageOperationsTest {
   }
 
   /**
+   * Test Case to check if the split works correct
+   * for color-correct with double.
+   */
+  @Test
+  public void checkColorCorrectSplitDouble() {
+    String temp = "matrix";
+    String name = temp + temp.hashCode();
+    this.operations.splitPreview("matrix", name, 57.89);
+    this.operations.colorCorrection(temp, temp);
+    this.operations.regain("matrix", name, "matrix-new");
+    int[][][] actual = this.operations.saveImage("matrix-new");
+    int[][][] expected = new int[][][]{
+            {{1, 2, 3}, {2, 2, 2}, {2, 2, 2}}, {{4, 5, 6}, {5, 5, 5}, {5, 5, 5}},
+            {{7, 8, 9}, {8, 8, 8}, {8, 8, 8}}, {{10, 11, 12}, {11, 11, 11}, {11, 11, 11}}
+    };
+    assertArrayEquals(actual, expected);
+  }
+
+
+  /**
    * Test Case to check if the histogram is generated correctly.
    * according to the property.
    */
   @Test
-  public void checkHistogramProperty(){
-    this.operations.histogram("man","man-hist");
+  public void checkHistogramProperty() {
+    this.operations.histogram("man", "man-hist");
     int[][][] temp = this.operations.saveImage("man-hist");
     int height = temp.length;
     int width = temp[0].length;
-    assertEquals(256,height);
-    assertEquals(256,width);
+    assertEquals(256, height);
+    assertEquals(256, width);
   }
 
   /**
@@ -1371,19 +1613,19 @@ public class ImageOperationsTest {
    * correctly.
    */
   @Test
-  public void checkHistogramComponent(){
+  public void checkHistogramComponent() {
     int[][][] m = {
             {{150, 200, 170}, {150, 200, 170}, {150, 200, 170}},
             {{150, 200, 170}, {150, 200, 170}, {150, 200, 170}},
             {{150, 200, 170}, {150, 200, 170}, {150, 200, 170}}
     };
-    this.operations.loadImage(m,"temp");
-    this.operations.histogram("temp","temp2");
+    this.operations.loadImage(m, "temp");
+    this.operations.histogram("temp", "temp2");
     int[][][] output = this.operations.saveImage("temp2");
 
     for (int i = 1; i < 255; i++) {
       for (int j = 1; j < 255; j++) {
-        if (j == 150 || j==151 ) {
+        if (j == 150 || j == 151) {
           assertEquals(output[i][j][0], 255);
           assertEquals(output[i][j][1], 0);
           assertEquals(output[i][j][2], 0);

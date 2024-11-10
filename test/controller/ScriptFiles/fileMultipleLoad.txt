@@ -1,9 +1,9 @@
 # Loading Multiple images in all format jpeg and png
 
 
-load images\panda.png panda
+load images/panda.png panda
 
-load images\bird.jpg bird
+load images/bird.jpg bird
 
 
 # Red, Green, Blue, Value, Intensity, Luma component of all images
@@ -39,8 +39,8 @@ luma-component panda panda-split split 15.6
 horizontal-flip panda panda-hor
 horizontal-flip bird bird-hor
 
-save  test\controller\resultTest\panda-hor.jpeg panda-hor
-save  test\controller\resultTest\bird-hor.png bird-hor
+save  test/controller/resultTest/panda-hor.jpeg panda-hor
+save  test/controller/resultTest/bird-hor.png bird-hor
 
 
 # Vertical-flip
@@ -48,8 +48,8 @@ save  test\controller\resultTest\bird-hor.png bird-hor
 vertical-flip panda panda-ver
 vertical-flip bird bird-ver
 
-save  test\controller\resultTest\panda-ver.jpeg panda-ver
-save  test\controller\resultTest\bird-ver.png bird-ver
+save  test/controller/resultTest/panda-ver.jpeg panda-ver
+save  test/controller/resultTest/bird-ver.png bird-ver
 
 
 
@@ -59,29 +59,29 @@ save  test\controller\resultTest\bird-ver.png bird-ver
 brighten 100 panda panda-bright-100
 brighten 100 bird bird-bright-100
 
-save test\controller\resultTest\panda-bright-100.jpeg panda-bright-100
-save  test\controller\resultTest\bird-bright-100.png bird-bright-100
+save test/controller/resultTest/panda-bright-100.jpeg panda-bright-100
+save  test/controller/resultTest/bird-bright-100.png bird-bright-100
 
 # Darken
 
 brighten -100 panda panda-dark-100
 brighten -100 bird bird-dark-100
 
-save  test\controller\resultTest\panda-dark-100.jpeg panda-dark-100
-save  test\controller\resultTest\bird-dark-100.png bird-dark-100
+save  test/controller/resultTest/panda-dark-100.jpeg panda-dark-100
+save  test/controller/resultTest/bird-dark-100.png bird-dark-100
 
 # RGB split
 
 rgb-split panda panda-rs panda-gs panda-bs
 rgb-split bird bird-rs bird-gs bird-bs
 
-save  test\controller\resultTest\panda-redsplit.jpeg panda-rs
-save  test\controller\resultTest\panda-greensplit.jpeg panda-gs
-save  test\controller\resultTest\panda-bluesplit.jpeg panda-bs
+save  test/controller/resultTest/panda-redsplit.jpeg panda-rs
+save  test/controller/resultTest/panda-greensplit.jpeg panda-gs
+save  test/controller/resultTest/panda-bluesplit.jpeg panda-bs
 
-save test\controller\resultTest\bird-redsplit.png bird-rs
-save  test\controller\resultTest\bird-greensplit.png bird-gs
-save  test\controller\resultTest\bird-bluesplit.png bird-bs
+save test/controller/resultTest/bird-redsplit.png bird-rs
+save  test/controller/resultTest/bird-greensplit.png bird-gs
+save  test/controller/resultTest/bird-bluesplit.png bird-bs
 
 # RGB combine
 
@@ -89,8 +89,8 @@ save  test\controller\resultTest\bird-bluesplit.png bird-bs
 rgb-combine pandacom panda-rs panda-gs panda-bs
 rgb-combine birdcom bird-rs bird-gs bird-bs
 
-save  test\controller\resultTest\bird-combine.png birdcom
-save  test\controller\resultTest\panda-combine.jpeg pandacom
+save  test/controller/resultTest/bird-combine.png birdcom
+save  test/controller/resultTest/panda-combine.jpeg pandacom
 
 
 # Blur
@@ -98,10 +98,10 @@ save  test\controller\resultTest\panda-combine.jpeg pandacom
 blur panda panda-blur
 blur bird bird-blur
 blur bird bird-split split 50
-save test\controller\resultTest\bird-split.jpg bird-split
-save  test\controller\resultTest\panda-blur.jpeg panda-blur
+save test/controller/resultTest/bird-split.jpg bird-split
+save  test/controller/resultTest/panda-blur.jpeg panda-blur
 
-save  test\controller\resultTest\bird-blur.png bird-blur
+save  test/controller/resultTest/bird-blur.png bird-blur
 
 # Sharpen
 
@@ -109,11 +109,11 @@ save  test\controller\resultTest\bird-blur.png bird-blur
 sharpen panda panda-sharpen
 sharpen bird bird-sharpen
 sharpen panda panda-split split 60
-save  test\controller\resultTest\panda-sharpen.jpeg panda-sharpen
+save  test/controller/resultTest/panda-sharpen.jpeg panda-sharpen
 
-save test\controller\resultTest\bird-sharpen.png bird-sharpen
+save test/controller/resultTest/bird-sharpen.png bird-sharpen
 
-save test\controller\resultTest\panda-sharpen-split.jpg panda-split
+save test/controller/resultTest/panda-sharpen-split.jpg panda-split
 
 # Performing operation on already existing image
 
@@ -121,9 +121,9 @@ blur panda-sharpen panda-sharpen-blur
 blur bird-sharpen bird-sharpen-blur
 blur bird bird-split split 50
 
-save test\controller\resultTest\panda-sharpen-blur.jpeg panda-sharpen-blur
+save test/controller/resultTest/panda-sharpen-blur.jpeg panda-sharpen-blur
 
-save test\controller\resultTest\bird-sharpen-blur.ppm bird-sharpen-blur
+save test/controller/resultTest/bird-sharpen-blur.ppm bird-sharpen-blur
 
 
 # Sepia
@@ -131,15 +131,15 @@ save test\controller\resultTest\bird-sharpen-blur.ppm bird-sharpen-blur
 sepia panda panda-sepia
 sepia bird bird-sepia
 
-save  test\controller\resultTest\panda-sepia.jpeg panda-sepia
+save  test/controller/resultTest/panda-sepia.jpeg panda-sepia
 
-save  test\controller\resultTest\bird-sepia.png bird-sepia
+save  test/controller/resultTest/bird-sepia.png bird-sepia
 
 # Overloading an existing image
 
 sharpen bird panda-sepia
 
-save test\controller\resultTest\panda-sepia.png panda-sepia
+save test/controller/resultTest/panda-sepia.png panda-sepia
 
 # Compress
 compress 35 bird birdcomp

@@ -2,6 +2,12 @@ package controller;
 
 import model.OperationsV2;
 
+/**
+ * A class that performs the LevelsAdjust operation on an
+ * image. The levels-adjust is applied to the image specified
+ * in the command and result is saved as a new image.
+ */
+
 class LevelsAdjust extends AbstractCommandExecuter {
   private final String currentImageName;
   private final String newImageName;
@@ -9,6 +15,20 @@ class LevelsAdjust extends AbstractCommandExecuter {
   private final int m;
   private final int w;
   private final double percentage;
+
+  /**
+   * Construct a Levels-adjust command object.
+   * Validate the command length and initialize the image
+   * names.
+   * As this command supports the split operation also so two check are made for
+   * the command length. If split is provided then percentage
+   * is set to the value provided by user else the value is set to 100.
+   *
+   * @param cmd           the command array obtained by splitting
+   *                      input using space.
+   * @param commandLength the expected length of command array.
+   * @throws NumberFormatException if the input b,m or w value in not an integer.
+   */
 
   LevelsAdjust(String[] cmd, int commandLength) throws NumberFormatException {
     if (this.validCommandLength(cmd.length, commandLength)) {
@@ -47,6 +67,21 @@ class LevelsAdjust extends AbstractCommandExecuter {
     }
   }
 
+  /**
+   * Execute the levels-adjust operation on the current image.
+   * The method first check if the image on which operation
+   * is to be done in present in the system or not.
+   * For the split operation a check if done on the value of the percentage,
+   * if the percentage is 100 then directly levels-adjust is applied.
+   * Else first the image is split, after split the operation is done on split
+   * half and at end the image is combines with the remaining half.
+   *
+   * @param operations The operation instance which is
+   *                   used to call the blur method
+   *                   which is to be executed on the input
+   *                   image.
+   * @return true if operation done successfully, else false.
+   */
   @Override
   public boolean execute(OperationsV2 operations) {
     this.imageCheck(operations, this.currentImageName);

@@ -27,6 +27,7 @@ class ImageOperations implements Operations {
     this.imageMap = new HashMap<>();
   }
 
+
   /**
    * Checks whether an image with the specified name exists
    * in the image map.
@@ -57,14 +58,7 @@ class ImageOperations implements Operations {
    */
   @Override
   public boolean loadImage(int[][][] matrix, String name) {
-    ImageModel m = new ImageModel(matrix.length, matrix[0].length);
-    for (int i = 0; i < matrix.length; i++) {
-      for (int j = 0; j < matrix[0].length; j++) {
-        for (int k = 0; k <= 2; k++) {
-          m.setPixelValue(i, j, k, matrix[i][j][k]);
-        }
-      }
-    }
+    ImageModel m = new ImageModel(matrix.length, matrix[0].length, matrix);
     this.imageMap.put(name, m);
     return true;
   }
@@ -83,18 +77,35 @@ class ImageOperations implements Operations {
   }
 
   /**
+   * Method to set the value of pixel in image array at
+   * specific location.
+   * The value must be between equal 0 and 255 so a clamping is
+   * also carried out.
+   *
+   * @param x     the row of the array.
+   * @param y     the column of the array.
+   * @param z     the color channel.
+   * @param value the value to be set at the specified
+   *              coordinate.
+   */
+  protected void setPixelValue(int x, int y, int z, int value, int[][][] arr) {
+    arr[x][y][z] = Math.max(0, Math.min(255, value));
+  }
+
+  /**
    * Creates and returns a new ImageModel object with the dimensions
    * as of the old ImageModel provided as input parameter.
    *
-   * @param old the existing ImageModel whose dimensions are to be
-   *            copied to the new ImageModel.
+   * @param old    the existing ImageModel whose dimensions are to be
+   *               copied to the new ImageModel.
+   * @param matrix the new values of pixel.
    * @return a new ImageModel.
    */
 
-  protected ImageModel getNewImageModel(ImageModel old) {
+  protected ImageModel getNewImageModel(ImageModel old, int[][][] matrix) {
     int height = old.getHeight();
     int width = old.getWidth();
-    return new ImageModel(height, width);
+    return new ImageModel(height, width, matrix);
   }
 
   /**
@@ -115,16 +126,17 @@ class ImageOperations implements Operations {
   @Override
   public boolean getColorComponent(String currentImage, String newImage, int channel) {
     ImageModel imageOld = this.imageMap.get(currentImage);
-    ImageModel imageNew = this.getNewImageModel(imageOld);
-    int height = imageNew.getHeight();
-    int width = imageNew.getWidth();
+    int height = imageOld.getHeight();
+    int width = imageOld.getWidth();
+    int[][][] arr = new int[height][width][3];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         for (int k = 0; k <= 2; k++) {
-          imageNew.setPixelValue(i, j, k, imageOld.getPixelValue(i, j, channel));
+          this.setPixelValue(i, j, k, imageOld.getPixelValue(i, j, channel), arr);
         }
       }
     }
+    ImageModel imageNew = this.getNewImageModel(imageOld, arr);
     this.imageMap.put(newImage, imageNew);
     return true;
   }
@@ -135,23 +147,24 @@ class ImageOperations implements Operations {
    * Value is obtained by calculating by the max value of each channel
    * at each pixel location.
    *
-   * @param o the original ImageModel whose value component is to be
-   *          obtained.
-   * @param n the new ImageModel which stores the value component of
-   *          the original ImageModel.
+   * @param o        the original ImageModel whose value component is to be
+   *                 obtained.
+   * @param newImage the name of the new image to be stored.
    */
-  protected void getValueComponent(ImageModel o, ImageModel n) {
+  protected void getValueComponent(ImageModel o, String newImage) {
+    int[][][] arr = new int[o.getHeight()][o.getWidth()][3];
     for (int i = 0; i < o.getHeight(); i++) {
       for (int j = 0; j < o.getWidth(); j++) {
         int value = o.getPixelValue(i, j, 0);
         value = Math.max(o.getPixelValue(i, j, 1), value);
         value = Math.max(o.getPixelValue(i, j, 2), value);
-
-        n.setPixelValue(i, j, 0, value);
-        n.setPixelValue(i, j, 1, value);
-        n.setPixelValue(i, j, 2, value);
+        this.setPixelValue(i, j, 0, value, arr);
+        this.setPixelValue(i, j, 1, value, arr);
+        this.setPixelValue(i, j, 2, value, arr);
       }
     }
+    ImageModel imageNew = this.getNewImageModel(o, arr);
+    this.imageMap.put(newImage, imageNew);
   }
 
   /**
@@ -160,23 +173,25 @@ class ImageOperations implements Operations {
    * Intensity is obtained by calculating by the average value of each channel
    * at each pixel location.
    *
-   * @param o the original ImageModel whose intensity component is to be
-   *          obtained.
-   * @param n the new ImageModel which stores the intensity component of
-   *          the original ImageModel.
+   * @param o        the original ImageModel whose intensity component is to be
+   *                 obtained.
+   * @param newImage the name of the new image to be stored.
    */
-  protected void getIntensityComponent(ImageModel o, ImageModel n) {
+  protected void getIntensityComponent(ImageModel o, String newImage) {
+    int[][][] arr = new int[o.getHeight()][o.getWidth()][3];
     for (int i = 0; i < o.getHeight(); i++) {
       for (int j = 0; j < o.getWidth(); j++) {
         int value = o.getPixelValue(i, j, 0);
         value += o.getPixelValue(i, j, 1);
         value += o.getPixelValue(i, j, 2);
         value /= 3;
-        n.setPixelValue(i, j, 0, value);
-        n.setPixelValue(i, j, 1, value);
-        n.setPixelValue(i, j, 2, value);
+        this.setPixelValue(i, j, 0, value, arr);
+        this.setPixelValue(i, j, 1, value, arr);
+        this.setPixelValue(i, j, 2, value, arr);
       }
     }
+    ImageModel imageNew = this.getNewImageModel(o, arr);
+    this.imageMap.put(newImage, imageNew);
   }
 
   /**
@@ -185,22 +200,20 @@ class ImageOperations implements Operations {
    * Luma is obtained by calculating by the weighted sum of each channel
    * at each pixel location.
    *
-   * @param o the original ImageModel whose luma component is to be
-   *          obtained.
-   * @param n the new ImageModel which stores the luma component of
-   *          the original ImageModel.
+   * @param o        the original ImageModel whose luma component is to be
+   *                 obtained.
+   * @param newImage the name of the new image to be stored.
    */
-  protected void getLumaComponent(ImageModel o, ImageModel n) {
-    for (int i = 0; i < o.getHeight(); i++) {
-      for (int j = 0; j < o.getWidth(); j++) {
-        double value = 0.2126 * o.getPixelValue(i, j, 0);
-        value += 0.7152 * o.getPixelValue(i, j, 1);
-        value += 0.0722 * o.getPixelValue(i, j, 2);
-        n.setPixelValue(i, j, 0, (int) value);
-        n.setPixelValue(i, j, 1, (int) value);
-        n.setPixelValue(i, j, 2, (int) value);
-      }
-    }
+  protected void getLumaComponent(ImageModel o, String newImage) {
+    int[][][] arr = new int[o.getHeight()][o.getWidth()][3];
+    double[][] operation = {
+            {0.2126, 0.7152, 0.0722},
+            {0.2126, 0.7152, 0.0722},
+            {0.2126, 0.7152, 0.0722}
+    };
+    this.colorTransform(o, operation, arr);
+    ImageModel imageNew = this.getNewImageModel(o, arr);
+    this.imageMap.put(newImage, imageNew);
   }
 
   /**
@@ -223,21 +236,20 @@ class ImageOperations implements Operations {
   public boolean getBrightnessComponent(String currentImage, String newImage,
                                         String handle) throws IllegalArgumentException {
     ImageModel imageOld = this.imageMap.get(currentImage);
-    ImageModel imageNew = this.getNewImageModel(imageOld);
+
     switch (handle) {
       case "value-component":
-        this.getValueComponent(imageOld, imageNew);
+        this.getValueComponent(imageOld, newImage);
         break;
       case "intensity-component":
-        this.getIntensityComponent(imageOld, imageNew);
+        this.getIntensityComponent(imageOld, newImage);
         break;
       case "luma-component":
-        this.getLumaComponent(imageOld, imageNew);
+        this.getLumaComponent(imageOld, newImage);
         break;
       default:
         throw new IllegalArgumentException("Invalid command provided.");
     }
-    this.imageMap.put(newImage, imageNew);
     return true;
   }
 
@@ -255,18 +267,19 @@ class ImageOperations implements Operations {
   @Override
   public boolean horizontalFlip(String currentImage, String newImage) {
     ImageModel imageOld = this.imageMap.get(currentImage);
-    ImageModel imageNew = this.getNewImageModel(imageOld);
-    int height = imageNew.getHeight();
-    int width = imageNew.getWidth();
+    int height = imageOld.getHeight();
+    int width = imageOld.getWidth();
+    int[][][] arr = new int[height][width][3];
     for (int i = 0; i < height; i++) {
       int col = 0;
       for (int j = width - 1; j >= 0; j--) {
         for (int k = 0; k <= 2; k++) {
-          imageNew.setPixelValue(i, col, k, imageOld.getPixelValue(i, j, k));
+          this.setPixelValue(i, col, k, imageOld.getPixelValue(i, j, k), arr);
         }
         col = col + 1;
       }
     }
+    ImageModel imageNew = this.getNewImageModel(imageOld, arr);
     this.imageMap.put(newImage, imageNew);
     return true;
   }
@@ -285,18 +298,19 @@ class ImageOperations implements Operations {
   @Override
   public boolean verticalFlip(String currentImage, String newImage) {
     ImageModel imageOld = this.imageMap.get(currentImage);
-    ImageModel imageNew = this.getNewImageModel(imageOld);
-    int height = imageNew.getHeight();
-    int width = imageNew.getWidth();
+    int height = imageOld.getHeight();
+    int width = imageOld.getWidth();
+    int[][][] arr = new int[height][width][3];
     int row = 0;
     for (int i = height - 1; i >= 0; i--) {
       for (int j = 0; j < width; j++) {
         for (int k = 0; k <= 2; k++) {
-          imageNew.setPixelValue(row, j, k, imageOld.getPixelValue(i, j, k));
+          this.setPixelValue(row, j, k, imageOld.getPixelValue(i, j, k), arr);
         }
       }
       row = row + 1;
     }
+    ImageModel imageNew = this.getNewImageModel(imageOld, arr);
     this.imageMap.put(newImage, imageNew);
     return true;
   }
@@ -318,17 +332,18 @@ class ImageOperations implements Operations {
   @Override
   public boolean brighten(String currentImage, String newImage, int intensity) {
     ImageModel imageOld = this.imageMap.get(currentImage);
-    ImageModel imageNew = this.getNewImageModel(imageOld);
-    int height = imageNew.getHeight();
-    int width = imageNew.getWidth();
+    int height = imageOld.getHeight();
+    int width = imageOld.getWidth();
+    int[][][] arr = new int[height][width][3];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         for (int k = 0; k <= 2; k++) {
           int value = imageOld.getPixelValue(i, j, k) + intensity;
-          imageNew.setPixelValue(i, j, k, value);
+          this.setPixelValue(i, j, k, value, arr);
         }
       }
     }
+    ImageModel imageNew = this.getNewImageModel(imageOld, arr);
     this.imageMap.put(newImage, imageNew);
     return true;
   }
@@ -387,14 +402,15 @@ class ImageOperations implements Operations {
       throw new IllegalArgumentException("Images to be combined do not have same dimensions.");
     }
 
-    ImageModel imageNew = this.getNewImageModel(red);
+    int[][][] arr = new int[red.getHeight()][red.getWidth()][3];
     for (int i = 0; i < red.getHeight(); i++) {
       for (int j = 0; j < red.getWidth(); j++) {
-        imageNew.setPixelValue(i, j, 0, red.getPixelValue(i, j, 0));
-        imageNew.setPixelValue(i, j, 1, green.getPixelValue(i, j, 1));
-        imageNew.setPixelValue(i, j, 2, blue.getPixelValue(i, j, 2));
+        this.setPixelValue(i, j, 0, red.getPixelValue(i, j, 0), arr);
+        this.setPixelValue(i, j, 1, green.getPixelValue(i, j, 1), arr);
+        this.setPixelValue(i, j, 2, blue.getPixelValue(i, j, 2), arr);
       }
     }
+    ImageModel imageNew = this.getNewImageModel(red, arr);
     this.imageMap.put(newImage, imageNew);
     return true;
   }
@@ -407,16 +423,17 @@ class ImageOperations implements Operations {
    * with the neighborhood pixel and the result is added to get the new
    * pixel value.
    *
-   * @param filter a 2-D array which is the filter to be applied.
-   * @param old    the original ImageModel on which filter is to
-   *               be applied.
-   * @param n      the new ImageModel where the new pixel value
-   *               is stored.
+   * @param filter   a 2-D array which is the filter to be applied.
+   * @param old      the original ImageModel on which filter is to
+   *                 be applied.
+   * @param newImage the name of the new image obtained after blurring
+   *                 the original image.
    */
-  protected void applyFilter(double[][] filter, ImageModel old, ImageModel n) {
+  protected void applyFilter(double[][] filter, ImageModel old, String newImage) {
     int filterSize = filter.length / 2;
     int height = old.getHeight();
     int width = old.getWidth();
+    int[][][] arr = new int[height][width][3];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         for (int k = 0; k <= 2; k++) {
@@ -431,10 +448,12 @@ class ImageOperations implements Operations {
               }
             }
           }
-          n.setPixelValue(i, j, k, (int) value);
+          this.setPixelValue(i, j, k, (int) value, arr);
         }
       }
     }
+    ImageModel imageNew = this.getNewImageModel(old, arr);
+    this.imageMap.put(newImage, imageNew);
   }
 
   /**
@@ -451,10 +470,8 @@ class ImageOperations implements Operations {
   @Override
   public boolean blur(String currentImage, String newImage) {
     ImageModel imageOld = this.imageMap.get(currentImage);
-    ImageModel imageNew = this.getNewImageModel(imageOld);
     double[][] filter = {{0.0625, 0.125, 0.0625}, {0.125, 0.25, 0.125}, {0.0625, 0.125, 0.0625}};
-    this.applyFilter(filter, imageOld, imageNew);
-    this.imageMap.put(newImage, imageNew);
+    this.applyFilter(filter, imageOld, newImage);
     return true;
   }
 
@@ -471,7 +488,6 @@ class ImageOperations implements Operations {
   @Override
   public boolean sharpen(String currentImage, String newImage) {
     ImageModel imageOld = this.imageMap.get(currentImage);
-    ImageModel imageNew = this.getNewImageModel(imageOld);
     double[][] filter = {
             {-0.125, -0.125, -0.125, -0.125, -0.125},
             {-0.125, 0.25, 0.25, 0.25, -0.125},
@@ -479,8 +495,7 @@ class ImageOperations implements Operations {
             {-0.125, 0.25, 0.25, 0.25, -0.125},
             {-0.125, -0.125, -0.125, -0.125, -0.125}
     };
-    this.applyFilter(filter, imageOld, imageNew);
-    this.imageMap.put(newImage, imageNew);
+    this.applyFilter(filter, imageOld, newImage);
     return true;
   }
 
@@ -498,24 +513,52 @@ class ImageOperations implements Operations {
   @Override
   public boolean sepia(String currentImage, String newImage) {
     ImageModel imageOld = this.imageMap.get(currentImage);
-    ImageModel imageNew = this.getNewImageModel(imageOld);
-    int height = imageNew.getHeight();
-    int width = imageNew.getWidth();
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        int r = imageOld.getPixelValue(i, j, 0);
-        int g = imageOld.getPixelValue(i, j, 1);
-        int b = imageOld.getPixelValue(i, j, 2);
-        int newr = (int) (0.393 * r + 0.769 * g + 0.189 * b);
-        int newg = (int) (0.349 * r + 0.686 * g + 0.168 * b);
-        int newb = (int) (0.272 * r + 0.534 * g + 0.131 * b);
-        imageNew.setPixelValue(i, j, 0, newr);
-        imageNew.setPixelValue(i, j, 1, newg);
-        imageNew.setPixelValue(i, j, 2, newb);
-      }
-    }
+    int height = imageOld.getHeight();
+    int width = imageOld.getWidth();
+    int[][][] arr = new int[height][width][3];
+    double[][] operation = {{0.393, 0.769, 0.189}, {0.349, 0.686, 0.168}, {0.272, 0.534, 0.131}};
+    this.colorTransform(imageOld, operation, arr);
+    ImageModel imageNew = this.getNewImageModel(imageOld, arr);
     this.imageMap.put(newImage, imageNew);
     return true;
   }
+
+  /**
+   * Applies a color transformation to an image using a 3x3
+   * transformation matrix.
+   * This method takes an input image and a transformation
+   * matrix, performs matrix multiplication between
+   * the transformation matrix and the RGB values
+   * of each pixel, and store.
+   *
+   * @param imageOld  The original image to which the color transformation is applied.
+   * @param operation A 3x3 matrix that defines the color transformation to be applied.
+   * @param arr       A 3D array to store the transformed pixel values.
+   */
+  protected void colorTransform(ImageModel imageOld, double[][] operation,
+                                int[][][] arr) {
+    int height = imageOld.getHeight();
+    int width = imageOld.getWidth();
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        int[] originalRGB = new int[3];
+        originalRGB[0] = imageOld.getPixelValue(i, j, 0);
+        originalRGB[1] = imageOld.getPixelValue(i, j, 1);
+        originalRGB[2] = imageOld.getPixelValue(i, j, 2);
+        int[] newRGB = new int[3];
+        for (int k = 0; k < 3; k++) {
+          double temp = 0;
+          for (int l = 0; l < 3; l++) {
+            temp = temp + (operation[k][l] * originalRGB[l]);
+          }
+          newRGB[k] = (int) temp;
+        }
+        this.setPixelValue(i, j, 0, newRGB[0], arr);
+        this.setPixelValue(i, j, 1, newRGB[1], arr);
+        this.setPixelValue(i, j, 2, newRGB[2], arr);
+      }
+    }
+  }
+
 
 }

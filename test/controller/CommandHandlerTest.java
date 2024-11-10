@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import model.ImageOperationsV2;
 import model.OperationsV2;
@@ -12,6 +14,7 @@ import view.ViewHandler;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Class to perform all the testing related
@@ -47,6 +50,35 @@ public class CommandHandlerTest {
     String expected = cmd + "load executed successfully\n";
     assertEquals(expected, output);
   }
+
+  /**
+   * Test Case to check if the PPM is load correctly.
+   */
+  @Test
+  public void testLoadPPM() {
+    String command = "load images\\koala.ppm man";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmd + "load executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check if the jpg is load correctly.
+   */
+  @Test
+  public void testLoadJPG() {
+    String command = "load images\\bird.jpg man";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmd + "load executed successfully\n";
+    assertEquals(expected, output);
+  }
+
 
   /**
    * Test Case to check if the load throws
@@ -368,6 +400,21 @@ public class CommandHandlerTest {
   }
 
   /**
+   * Test Case to check if split with blur works correctly.
+   */
+  @Test
+  public void testBlurWithSplitDouble() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "blur man man-sharpen split 50.78\n";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "blur executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
    * Test Case to check if split with no value
    * blur.
    */
@@ -514,6 +561,21 @@ public class CommandHandlerTest {
   }
 
   /**
+   * Test Case to check if split with sharpen works correctly.
+   */
+  @Test
+  public void testSharpenWithSplitDouble() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "sharpen man man-sharpen split 50.78\n";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "sharpen executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
    * Test Case to check if split with no value
    * sharpen.
    */
@@ -650,6 +712,22 @@ public class CommandHandlerTest {
   public void testSepiaWithSplit() {
     String command = "load images\\manhattan-small.png man\n" +
             "sepia man man-sepia split 50\n";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "sepia executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check if split with sepia works correctly
+   * with double.
+   */
+  @Test
+  public void testSepiaWithSplitDouble() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "sepia man man-sepia split 80.90\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
@@ -809,6 +887,25 @@ public class CommandHandlerTest {
             "value-component man man-value split 50\n" +
             "luma-component man man-luma split 50\n" +
             "intensity-component man man-intensity split 50\n";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "value-component executed successfully\n" +
+            "luma-component executed successfully\n" +
+            "intensity-component executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check if split with brightness-component works correctly.
+   */
+  @Test
+  public void testBrightnessComponentWithSplitDouble() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "value-component man man-value split 50.67\n" +
+            "luma-component man man-luma split 50.56\n" +
+            "intensity-component man man-intensity split 50.56\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
@@ -989,6 +1086,26 @@ public class CommandHandlerTest {
             "red-component man man-red split 50\n" +
             "blue-component man man-blue split 50\n" +
             "green-component man man-green split 50\n";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "red-component executed successfully\n" +
+            "blue-component executed successfully\n" +
+            "green-component executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check if split with color-component works correctly
+   * with double.
+   */
+  @Test
+  public void testColorComponentWithSplitDouble() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "red-component man man-red split 50.89\n" +
+            "blue-component man man-blue split 60.45\n" +
+            "green-component man man-green split 50.23\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
@@ -1191,7 +1308,6 @@ public class CommandHandlerTest {
     assertEquals(expected, output);
   }
 
-
   /**
    * Test Case to check rgb-split
    * throw error, if image to be loaded is not present.
@@ -1228,6 +1344,8 @@ public class CommandHandlerTest {
     String output = out.toString();
     String expected = cmdload + "save executed successfully\n";
     assertEquals(expected, output);
+    assertTrue("Image not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\man.png")));
   }
 
   /**
@@ -1246,7 +1364,6 @@ public class CommandHandlerTest {
     String expected = cmdload + "Invalid command length\n";
     assertEquals(expected, output);
   }
-
 
   /**
    * Test Case to check save
@@ -1281,6 +1398,7 @@ public class CommandHandlerTest {
     String expected = cmdload + "Filepath provided is incorrect\n";
     assertEquals(expected, output);
   }
+
 
   /**
    * Test Case to check command executed
@@ -1442,8 +1560,14 @@ public class CommandHandlerTest {
             "color-correct executed successfully\n" +
             "save executed successfully\n" +
             "color-correct executed successfully\n";
-    assertEquals(expected, output);
 
+    assertEquals(expected, output);
+    assertTrue("bird-histogram not save successfully",
+            Files.exists(Paths.get("test\\controller\\" +
+                    "resultTest\\bird-hist.png")));
+    assertTrue("bird-color-correct not save successfully",
+            Files.exists(Paths.get("test\\controller\\" +
+                    "resultTest\\bird-correct.png")));
   }
 
   /**
@@ -1507,6 +1631,20 @@ public class CommandHandlerTest {
             "save executed successfully\n" +
             "color-correct executed successfully\n";
     assertEquals(expected, output);
+    assertTrue("bird-horizontal not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\bird-hor.jpg")));
+    assertTrue("bird-bright not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\bird-dark-100.jpg")));
+    assertTrue("bird-blur not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\" +
+                    "bird-split.jpg")));
+    assertTrue("bird-compress not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\bird-comp.jpg")));
+    assertTrue("bird-levels-adjust not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\" +
+                    "bird-level.png")));
+
+
   }
 
   /**
@@ -1573,6 +1711,24 @@ public class CommandHandlerTest {
             "save executed successfully\n" +
             "color-correct executed successfully\n";
     assertEquals(expected, output);
+    assertTrue("bird-vertical not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\bird-ver.ppm")));
+    assertTrue("RGB-Split not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\bird-redsplit.ppm")));
+    assertTrue("RGB-Split not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\bird-greensplit.ppm")));
+    assertTrue("RGB-Split not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\bird-bluesplit.ppm")));
+    assertTrue("RGB-combine not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\bird-combine.ppm")));
+    assertTrue("bird-blur not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\bird-blur.ppm")));
+    assertTrue("bird-sharp not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\bird-sharpen.ppm")));
+    assertTrue("bird-sharp-split not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\bird-split.png")));
+    assertTrue("bird-sepia-split not save successfully",
+            Files.exists(Paths.get("test\\controller\\resultTest\\bird-sepia.jpg")));
   }
 
   /**
@@ -1734,7 +1890,7 @@ public class CommandHandlerTest {
             "B,M and W value must be between 0 and 255\n" +
             "B,M and W value must be in ascending order\n" +
             "Unknown command: colorcorrect\n" +
-            "Unknown command: \n";
+            "Percentage must be between 0 and 100.\n";
     assertEquals(expected, output);
   }
 
@@ -1823,7 +1979,6 @@ public class CommandHandlerTest {
     assertEquals(expected, output);
   }
 
-
   /**
    * Test Case to check if the compression is
    * called correctly in controller.
@@ -1841,6 +1996,22 @@ public class CommandHandlerTest {
   }
 
   /**
+   * Test Case to check if the compression is
+   * called correctly in controller.
+   */
+  @Test
+  public void testCompressWithDouble() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "compress 90.45 man man-compress";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "compress executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
    * Test Case to check if no value is given in compress
    * command.
    */
@@ -1848,6 +2019,22 @@ public class CommandHandlerTest {
   public void testCompressNoValue() {
     String command = "load images\\manhattan-small.png man\n" +
             "compress percent man man-compress";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "Percentage must be a numeric value\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check if string value is given in compress
+   * command.
+   */
+  @Test
+  public void testCompressStringValue() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "compress twenty man man-compress";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
@@ -1968,7 +2155,6 @@ public class CommandHandlerTest {
     assertEquals(expected, output);
   }
 
-
   /**
    * Test Case to check if the color-correct is
    * called correctly in controller.
@@ -2024,6 +2210,22 @@ public class CommandHandlerTest {
   public void testColorCorrectWithSplit() {
     String command = "load images\\manhattan-small.png man\n" +
             "color-correct man man-level split 50";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "color-correct executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check if split with color-correct works correctly
+   * with double value.
+   */
+  @Test
+  public void testColorCorrectWithSplitDouble() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "color-correct man man-level split 50.78";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
@@ -2242,6 +2444,22 @@ public class CommandHandlerTest {
   }
 
   /**
+   * Test Case to check if split with levels-adjust works correctly
+   * with double percentage.
+   */
+  @Test
+  public void testLevelWithSplitDouble() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "levels-adjust 20 100 255 man man-level split 50.89";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "levels-adjust executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
    * Test Case to check if split with no value
    * levels-adjust.
    */
@@ -2307,7 +2525,7 @@ public class CommandHandlerTest {
    * Test Case to check if the percentage is grater than a hundred.
    */
   @Test
-  public void testLevelSplitValue() {
+  public void testLevelSplitInvalidValue() {
     String command = "load images\\manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man man-level split 123";
     Reader in = new StringReader(command);

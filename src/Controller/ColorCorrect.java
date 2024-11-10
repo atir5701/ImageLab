@@ -18,6 +18,19 @@ class ColorCorrect extends AbstractCommandExecuter {
   private final String newImageName;
   private final double percentage;
 
+  /**
+   * Construct a ColorCorrect command object.
+   * Validate the command length and initializes the image
+   * names.
+   * As this command supports the split operation also so two check are made for
+   * the command length. If split is provided then percentage
+   * is set to the value provided by user else the value is set to 100.
+   *
+   * @param cmd           the command array obtained by splitting
+   *                      input using space.
+   * @param commandLength the expected length of command array.
+   */
+
   ColorCorrect(String[] cmd, int commandLength) {
     if (this.validCommandLength(cmd.length, commandLength)) {
       this.currentImageName = cmd[1];
@@ -42,6 +55,23 @@ class ColorCorrect extends AbstractCommandExecuter {
     }
   }
 
+
+  /**
+   * Execute the ColorCorrect operation based on the specified
+   * handle provided in the command.
+   * The method first check if the image on which operation
+   * is to be done in present in the system or not.
+   * For the split operation a check if done on the value of the percentage,
+   * if the percentage is 100 then directly levels-adjust is applied.
+   * Else first the image is split, after split the operation is done on split
+   * half and at end the image is combines with the remaining half.
+   *
+   * @param operations The operation instance which is
+   *                   used to call the suitable method
+   *                   which is to be executed on the input
+   *                   image.
+   * @return true if operation done successfully, else false.
+   */
   @Override
   public boolean execute(OperationsV2 operations) {
     this.imageCheck(operations, this.currentImageName);

@@ -18,6 +18,9 @@ class Blur extends AbstractCommandExecuter {
    * Construct a Blur command object.
    * Validate the command length and initialize the image
    * names.
+   * As this command supports the split operation also so two check are made for
+   * the command length. If split is provided then percentage
+   * is set to the value provided by user else the value is set to 100.
    *
    * @param cmd           the command array obtained by splitting
    *                      input using space.
@@ -51,6 +54,10 @@ class Blur extends AbstractCommandExecuter {
    * Execute the blur operation on the current image.
    * The method first check if the image on which operation
    * is to be done in present in the system or not.
+   * For the split operation a check if done on the value of the percentage,
+   * if the percentage is 100 then directly blur is applied.
+   * Else first the image is split, after split the operation is done on split
+   * half and at end the image is combines with the remaining half.
    *
    * @param operations The operation instance which is
    *                   used to call the blur method

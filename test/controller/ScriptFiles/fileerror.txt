@@ -1,9 +1,9 @@
 # Loading Multiple images in all format jpeg,ppm and png
 
-load images\koala.ppm 
+load images/koala.ppm 
 load koala.ppm kaola
-load images\koala.gfg koala  
-load images\koala.ppm koala
+load images/koala.gfg koala  
+load images/koala.ppm koala
 # Red, Green, Blue, Value, Intensity, Luma component of all images
 
 red-component bird
@@ -78,9 +78,9 @@ sepia bird
 sepia bird bird-sepia
 sepia bird bird-red split 145
 
-save test\controller\resultTest\koala.ppm 
-save test\controller\img\koala.ppm koala
-save test\controller\resultTest\koala.gfg koala
+save test/controller/resultTest/koala.ppm 
+save test/controller/img/koala.ppm koala
+save test/controller/resultTest/koala.gfg koala
 
 
 flipvertical img ims1
@@ -102,4 +102,4 @@ levels-adjust -100 -150 -190 man man-level
 
 #color-correct
 colorcorrect man man-color
-  
+color-correct koala koala-color split -90  

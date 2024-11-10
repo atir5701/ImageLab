@@ -108,7 +108,6 @@ interface Operations {
    *                     flipping the original image.
    * @return true if operation done successfully, else false.
    */
-
   boolean verticalFlip(String currentImage, String newImage);
 
   /**

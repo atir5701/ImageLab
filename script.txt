@@ -1,7 +1,7 @@
 # Loading images
 
 load res\bird.jpg bird
-load res\panda.jpg panda
+load res\panda.png panda
 
 
 # Red, Green, Blue, Value, Intensity, Luma component of all images
@@ -33,12 +33,12 @@ save res\bird-value.jpg bird-value
 save res\bird-intensity.jpg bird-intensity
 save res\bird-luma.jpg bird-luma
 
-save res\panda-redsplit.jpg bird-reds
-save res\panda-greensplit.jpg bird-greens
-save res\panda-bluesplit.jpg bird-blues
-save res\panda-valuesplit.jpg bird-values
-save res\panda-intensitysplit.jpg bird-intensitys
-save res\panda-lumasplit.jpg bird-lumas
+save res\panda-redsplit.png bird-reds
+save res\panda-greensplit.png bird-greens
+save res\panda-bluesplit.png bird-blues
+save res\panda-valuesplit.png bird-values
+save res\panda-intensitysplit.png bird-intensitys
+save res\panda-lumasplit.png bird-lumas
 
 
 # Horizontal Flip
@@ -72,7 +72,7 @@ save res\bird-bright-100.jpg bird-bright-100
 
 brighten -100 bird bird-dark-100
 
-save res\bird-dark-100.jpg bird-dark-100
+save res\bird-dark-100.png bird-dark-100
 
 
 # RGB split
@@ -131,13 +131,13 @@ save res\panda-hist.png panda-hist
 # Levels-adjust
 levels-adjust 10 200 250 panda panda-levels
 levels-adjust 10 200 250 panda panda-levelsp split 45
-save res\panda-levels-adjust.png panda-levels
-save res\panda-levels-adjust-split.png panda-levelsp
+save res\panda-levels-adjust.jpg panda-levels
+save res\panda-levels-adjust-split.jpeg panda-levelsp
 
 # color correct
 color-correct panda panda-color
 color-correct panda panda-colors split 30
-save res\panda-color.png panda-color
-save res\panda-color-split.png panda-colors
+save res\panda-color.jpeg panda-color
+save res\panda-color-split.jpeg panda-colors
 
 

@@ -1,6 +1,6 @@
 # Loading Multiple images in all format jpeg,ppm and png
 
-load images\manhattan-small.png bird
+load images/manhattan-small.png bird
 
 
 # Red, Green, Blue, Value, Intensity, Luma component of all images
@@ -22,7 +22,7 @@ green-component bird bird-split -34
 
 horizontal-flip bird bird-hor
 
-save test\controller\resultTest\bird-hor.ppm
+save test/controller/resultTest/bird-hor.ppm
 
 
 # Vertical-flip
@@ -30,7 +30,7 @@ save test\controller\resultTest\bird-hor.ppm
 vertical-flip bird bird-ver
 
 
-save test\controller\resultTest\bird-ver.ppm bird-ver
+save test/controller/resultTest/bird-ver.ppm bird-ver
 
 
 
@@ -39,20 +39,20 @@ save test\controller\resultTest\bird-ver.ppm bird-ver
 
 brighten 100 bird bird-bright-100
 
-save test\controller\resultTest\bird-bright-100.ppm bird-bright-100
+save test/controller/resultTest/bird-bright-100.ppm bird-bright-100
 
 # Darken
 
 
 brighten name bird bird-dark-100
 
-save test\controller\resultTest\bird-dark-100.ppm bird-dark-100
+save test/controller/resultTest/bird-dark-100.ppm bird-dark-100
 
 # RGB combine
 
 rgb-combine birdcom bird-rs bird-gs bird-bs
 
-save test\controller\resultTest\bird-combine.ppm birdcom
+save test/controller/resultTest/bird-combine.ppm birdcom
 
 
 # Compress
