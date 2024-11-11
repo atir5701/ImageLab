@@ -2,8 +2,11 @@ import java.io.InputStreamReader;
 
 import controller.CommandReader;
 import controller.ImageAppController;
+import controller.MVCController;
 import model.ImageOperationsV2;
 import model.OperationsV2;
+import view.GuiView;
+import view.IView;
 import view.ProgramView;
 import view.ViewHandler;
 
@@ -29,18 +32,22 @@ public class ImageProcessingApplication {
   public static void main(String[] args) {
     OperationsV2 operations = new ImageOperationsV2();
     ProgramView view = new ViewHandler(System.out);
-    ImageAppController src;
-    if (args.length == 0) {
-      src = new CommandReader(operations, new InputStreamReader(System.in), view);
-    } else {
-      StringBuilder nonInteractive = new StringBuilder();
-      for (String arg : args) {
-        nonInteractive.append(arg).append(" ");
-      }
-      nonInteractive.append("\n").append("quit");
-      Reader in = new StringReader(nonInteractive.toString());
-      src = new CommandReader(operations, in, view);
-    }
-    src.startApplication();
+    IView v = new GuiView("Image Processing Application");
+//
+//    ImageAppController src;
+//    if (args.length == 0) {
+//      src = new CommandReader(operations, new InputStreamReader(System.in), view);
+//    } else {
+//      StringBuilder nonInteractive = new StringBuilder();
+//      for (String arg : args) {
+//        nonInteractive.append(arg).append(" ");
+//      }
+//      nonInteractive.append("\n").append("quit");
+//      Reader in = new StringReader(nonInteractive.toString());
+//      src = new CommandReader(operations, in, view);
+//    }
+//    src.startApplication();
+    MVCController m = new MVCController();
+    m.go(operations,v);
   }
 }

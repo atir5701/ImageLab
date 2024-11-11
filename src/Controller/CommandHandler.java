@@ -75,6 +75,7 @@ class CommandHandler {
    */
 
   void readCommand(String[] input) throws IllegalArgumentException {
+
     String command = input[0];
     BiFunction<String[], Integer, AbstractCommandExecuter> cmd = this.commandMap.get(command);
     if (cmd == null) {
