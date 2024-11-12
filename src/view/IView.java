@@ -19,4 +19,10 @@ public interface IView {
 
   void showHistogram(BufferedImage image);
 
+  void splitPreview(String commandName);
+
+  void showNumberError();
+
+  void showSplitImage(String name,BufferedImage image);
+
 }

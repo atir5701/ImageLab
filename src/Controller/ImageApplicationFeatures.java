@@ -12,7 +12,7 @@ public class ImageApplicationFeatures implements Features {
   private final CommandHandler commandHandler;
   private final OperationsV2 model;
   private final IView view;
-
+  private double percentage;
 
   public ImageApplicationFeatures(OperationsV2 model, IView view) {
     this.model = model;
@@ -43,6 +43,12 @@ public class ImageApplicationFeatures implements Features {
     view.showHistogram(histogram);
   }
 
+  private void displaySplitImage(String name) {
+    BufferedImage image = this.convertToDisplay(name);
+    view.showSplitImage(name,image);
+    BufferedImage histogram = this.histogram(name);
+    view.showHistogram(histogram);
+  }
 
   private BufferedImage convertToDisplay(String name) {
     int[][][] arr = model.saveImage(name);
@@ -64,6 +70,15 @@ public class ImageApplicationFeatures implements Features {
     String command = operation + " " + imageName + " " + imageName + "_" + operation;
     commandHandler.readCommand(command.split(" "));
     this.displayImage(imageName + "_" + operation);
+  }
+
+  private void commandGeneratorSplit(String operation,String commandName,String imageName) {
+
+    String command = operation + " " + imageName + " " + imageName + "_" + operation
+            +"_Split"+" split "+this.percentage;
+    System.out.println(command);
+    commandHandler.readCommand(command.split(" "));
+    this.displaySplitImage(imageName + "_" + operation+"_Split");
   }
 
   @Override
@@ -101,6 +116,23 @@ public class ImageApplicationFeatures implements Features {
       return;
     }
     this.commandGenerator("blur", imageName);
+    view.splitPreview("blur");
+  }
+
+
+  @Override
+  public void applySplit(String percentage,String commandName,String imageName){
+    try {
+      double temp = Double.parseDouble(percentage);
+      if(temp<0 || temp>100){
+        view.showNumberError();
+      }else {
+        this.percentage = temp;
+        this.commandGeneratorSplit(commandName, percentage, imageName);
+      }
+    } catch (NumberFormatException e) {
+      view.showNumberError();
+    }
   }
 
   @Override
@@ -207,6 +239,8 @@ public class ImageApplicationFeatures implements Features {
   public void applyLevelAdjust(String imageName, int b, int m, int w) {
 
   }
+
+
 
 
 }
