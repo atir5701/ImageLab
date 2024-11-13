@@ -45,9 +45,7 @@ public class ImageApplicationFeatures implements Features {
 
   private void displaySplitImage(String name) {
     BufferedImage image = this.convertToDisplay(name);
-    view.showSplitImage(name,image);
-    BufferedImage histogram = this.histogram(name);
-    view.showHistogram(histogram);
+    view.showSplitImage(image);
   }
 
   private BufferedImage convertToDisplay(String name) {
@@ -65,18 +63,16 @@ public class ImageApplicationFeatures implements Features {
     return img;
   }
 
-
-  private void commandGenerator(String operation, String imageName) {
+  @Override
+  public void commandGenerator(String operation, String imageName) {
     String command = operation + " " + imageName + " " + imageName + "_" + operation;
     commandHandler.readCommand(command.split(" "));
     this.displayImage(imageName + "_" + operation);
   }
 
   private void commandGeneratorSplit(String operation,String commandName,String imageName) {
-
     String command = operation + " " + imageName + " " + imageName + "_" + operation
             +"_Split"+" split "+this.percentage;
-    System.out.println(command);
     commandHandler.readCommand(command.split(" "));
     this.displaySplitImage(imageName + "_" + operation+"_Split");
   }
@@ -87,7 +83,6 @@ public class ImageApplicationFeatures implements Features {
     if (path == null) {
       return;
     }
-
     if (!view.checkImage()) {
       return;
     }
@@ -96,7 +91,20 @@ public class ImageApplicationFeatures implements Features {
     String command = "load " + path.getAbsolutePath() + " " + name;
     commandHandler.readCommand(command.split(" "));
     this.displayImage(name);
+  }
 
+  @Override
+  public void saveImage(String imageName){
+    boolean t = this.checkImage(imageName);
+    if(!t){
+      return;
+    }
+    File path = view.getSaveFilePath();
+    if(path!=null){
+      String command = "save "+path.getAbsolutePath()+" "+imageName;
+      commandHandler.readCommand(command.split(" "));
+      view.showSaveSuccess();
+    }
   }
 
 
@@ -106,7 +114,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    this.commandGenerator("sepia", imageName);
+    view.splitPreview("sepia");
   }
 
   @Override
@@ -115,7 +123,6 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    this.commandGenerator("blur", imageName);
     view.splitPreview("blur");
   }
 
@@ -141,7 +148,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    this.commandGenerator("sharpen", imageName);
+    view.splitPreview("sharpen");
   }
 
   @Override
@@ -168,7 +175,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    this.commandGenerator("color-correct", imageName);
+    view.splitPreview("color-correct");
   }
 
   @Override
@@ -187,7 +194,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    this.commandGenerator("luma-component", imageName);
+    view.splitPreview("luma-component");
   }
 
   @Override
@@ -196,7 +203,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    this.commandGenerator("value-component", imageName);
+    view.splitPreview("value-component");
   }
 
   @Override
@@ -205,7 +212,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    this.commandGenerator("intensity-component", imageName);
+    view.splitPreview("intensity-component");
   }
 
   @Override
@@ -214,7 +221,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    this.commandGenerator("red-component", imageName);
+    view.splitPreview("red-component");
   }
 
   @Override
@@ -223,7 +230,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    this.commandGenerator("green-component", imageName);
+    view.splitPreview("green-component");
   }
 
   @Override
@@ -232,7 +239,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    this.commandGenerator("blue-component", imageName);
+    view.splitPreview("blue-component");
   }
 
   @Override

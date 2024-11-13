@@ -33,7 +33,7 @@ public class ImageProcessingApplication {
     OperationsV2 operations = new ImageOperationsV2();
     ProgramView view = new ViewHandler(System.out);
     IView v = new GuiView("Image Processing Application");
-//
+
 //    ImageAppController src;
 //    if (args.length == 0) {
 //      src = new CommandReader(operations, new InputStreamReader(System.in), view);

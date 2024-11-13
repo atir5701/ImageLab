@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import javax.swing.filechooser.FileFilter;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -28,6 +30,7 @@ public class GuiView extends JFrame implements IView {
   private JButton compressButton;
   private JButton splitButton;
   private JButton applyButton;
+  private JButton cancelButton;
   private JButton adjButton;
   private JLabel imageLabel;
   private JLabel histogramLabel;
@@ -36,7 +39,7 @@ public class GuiView extends JFrame implements IView {
   private JPanel topPanel;
   private JPanel operationPanel;
   private JPanel imagePanel;
-  private JPanel splitimagePanel;
+  private JPanel splitImagePanel;
   private JPanel histogramPanel;
   private JFrame splitFrame;
   private JTextField textField;
@@ -45,7 +48,7 @@ public class GuiView extends JFrame implements IView {
   public GuiView(String caption) {
     this.setTitle(caption);
     this.setSize(800, 600);
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     this.setResizable(true);
     this.initializeComponents();
 
@@ -91,6 +94,24 @@ public class GuiView extends JFrame implements IView {
     splitPane.setResizeWeight(0.5);
     splitPane.setDividerLocation(0.5);
 
+
+    this.addWindowListener(new java.awt.event.WindowAdapter() {
+      @Override
+      public void windowClosing(java.awt.event.WindowEvent e) {
+        int choice = JOptionPane.showConfirmDialog(
+                GuiView.this,
+                "Are you sure you want to exit the application?",
+                "Confirm Exit",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (choice == JOptionPane.YES_OPTION) {
+          dispose(); // Close the main application window
+        }
+      }
+    });
+
     this.add(splitPane, BorderLayout.CENTER);
     this.pack();
     this.setVisible(true);
@@ -116,6 +137,7 @@ public class GuiView extends JFrame implements IView {
     adjButton = new JButton("Levels-Adjust");
     splitButton = new JButton("Split");
     applyButton = new JButton("Apply");
+    cancelButton = new JButton("Cancel");
     imageLabel = new JLabel();
     histogramLabel = new JLabel();
     textField = new JTextField(10);
@@ -221,41 +243,41 @@ public class GuiView extends JFrame implements IView {
 
   @Override
   public void addFeature(Features features) {
-    loadButton.addActionListener(e -> features.loadImage());
-    blurButton.addActionListener(e -> features.applyBlur(this.imageName));
-    sepiaButton.addActionListener(e -> features.applySepia(this.imageName));
-    sharpenButton.addActionListener(e -> features.applySharp(this.imageName));
-    redButton.addActionListener(e -> features.applyRed(this.imageName));
-    greenButton.addActionListener(e -> features.applyGreen(this.imageName));
-    blueButton.addActionListener(e -> features.applyBlue(this.imageName));
-    valueButton.addActionListener(e -> features.applyValue(this.imageName));
-    lumaButton.addActionListener(e -> features.applyLuma(this.imageName));
-    intensityButton.addActionListener(e -> features.applyIntensity(this.imageName));
-    hflipButton.addActionListener(e -> features.applyHorizontalFlip(this.imageName));
-    vflipButton.addActionListener(e -> features.applyVerticalFlip(this.imageName));
-    colorCorrectionButton.addActionListener(e -> features.applyColorCorrect(this.imageName));
-    splitButton.addActionListener(e -> features.applySplit(this.textField.getText(),this.commandName,
-    this.imageName));
-
+    this.loadButton.addActionListener(e -> features.loadImage());
+    this.saveButton.addActionListener(e -> features.saveImage(this.imageName));
+    this.blurButton.addActionListener(e -> features.applyBlur(this.imageName));
+    this.sepiaButton.addActionListener(e -> features.applySepia(this.imageName));
+    this.sharpenButton.addActionListener(e -> features.applySharp(this.imageName));
+    this.redButton.addActionListener(e -> features.applyRed(this.imageName));
+    this.greenButton.addActionListener(e -> features.applyGreen(this.imageName));
+    this.blueButton.addActionListener(e -> features.applyBlue(this.imageName));
+    this.valueButton.addActionListener(e -> features.applyValue(this.imageName));
+    this.lumaButton.addActionListener(e -> features.applyLuma(this.imageName));
+    this.intensityButton.addActionListener(e -> features.applyIntensity(this.imageName));
+    this.hflipButton.addActionListener(e -> features.applyHorizontalFlip(this.imageName));
+    this.vflipButton.addActionListener(e -> features.applyVerticalFlip(this.imageName));
+    this.colorCorrectionButton.addActionListener(e -> features.applyColorCorrect(this.imageName));
+    this.splitButton.addActionListener(e -> features.applySplit(this.textField.getText(),
+            this.commandName, this.imageName));
+    this.applyButton.addActionListener(e -> features.commandGenerator(this.commandName,
+            this.imageName));
+    this.applyButton.addActionListener(e -> {
+      JOptionPane.showMessageDialog(splitFrame, "Filter applied successfully.",
+              "Filter Applied", JOptionPane.INFORMATION_MESSAGE);
+      splitFrame.dispose();
+    });
+    this.cancelButton.addActionListener(e -> splitFrame.dispose());
   }
-
-
 
   @Override
   public void splitPreview(String commandName) {
     this.commandName = commandName;
     splitFrame = new JFrame("Split Preview");
-    splitFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    splitFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     splitFrame.setResizable(true);
-
     int height = (int) (this.getHeight() * 0.75);
     int width = (int) (this.getWidth() * 0.75);
     splitFrame.setSize(width, height);
-
-    JLabel image = new JLabel();
-    image.setPreferredSize(new Dimension(500, 500));
-
-
     JLabel label = new JLabel("Enter a Percentage: ");
     JPanel inputPanel = new JPanel();
     inputPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -263,36 +285,43 @@ public class GuiView extends JFrame implements IView {
     inputPanel.add(this.textField);
     inputPanel.add(this.splitButton);
     inputPanel.add(this.applyButton);
-
-    // Set layout and add components to the main frame
+    inputPanel.add(this.cancelButton);
     splitFrame.setLayout(new BorderLayout());
     splitFrame.add(inputPanel, BorderLayout.NORTH);
-    splitFrame.add(image, BorderLayout.CENTER);
+    splitImagePanel = new JPanel();
+    splitImagePanel.setLayout(new BorderLayout());
+    JLabel placeholderLabel = new JLabel("Enter value and then press split " +
+            "to get the preview of the operation.", JLabel.CENTER);
+    splitImagePanel.add(placeholderLabel, BorderLayout.CENTER);
+    splitImagePanel.setPreferredSize(new Dimension(500, 500));
 
-    // Initialize splitimagePanel for displaying split images
-    splitimagePanel = new JPanel();
-    splitimagePanel.setLayout(new BorderLayout());
-    splitFrame.add(splitimagePanel, BorderLayout.SOUTH);
+    splitFrame.add(splitImagePanel, BorderLayout.CENTER);
 
+    splitFrame.setLocationRelativeTo(this);
     splitFrame.pack();
     splitFrame.setVisible(true);
   }
 
   @Override
-  public void showSplitImage(String name, BufferedImage image) {
-    System.out.println(name);
-    this.imageName = name;
-
-    JLabel img = new JLabel(new ImageIcon(image));
-    JScrollPane scrollPane = new JScrollPane(img);
-    scrollPane.setPreferredSize(new Dimension(300, 300));
-
-    this.splitimagePanel.removeAll();
-    this.splitimagePanel.add(scrollPane, BorderLayout.CENTER);
-    this.splitimagePanel.revalidate();
-    this.splitimagePanel.repaint();
+  public void showSplitImage(BufferedImage image) {
+    JLabel imgLabel = new JLabel(new ImageIcon(image));
+    JScrollPane scrollPane = new JScrollPane(imgLabel);
+    scrollPane.setPreferredSize(new Dimension(500, 500));
+    splitImagePanel.removeAll();
+    splitImagePanel.add(scrollPane, BorderLayout.CENTER);
+    splitImagePanel.revalidate();
+    splitImagePanel.repaint();
   }
 
+  @Override
+  public void showSaveSuccess() {
+    JOptionPane.showMessageDialog(
+            this,
+            "Image saved successful!",
+            "Save Success",
+            JOptionPane.INFORMATION_MESSAGE
+    );
+  }
 
   @Override
   public File getFilePath() {
@@ -310,6 +339,55 @@ public class GuiView extends JFrame implements IView {
       f = new File(path);
     }
     return f;
+  }
+
+  @Override
+  public File getSaveFilePath() {
+    String[] formats = {"PNG", "JPEG", "JPG", "PPM"};
+    JFileChooser fileChooser = new JFileChooser(".");
+    fileChooser.setDialogTitle("Save Image As");
+    fileChooser.setSelectedFile(new File(this.imageName));
+    FileFilter defaultFilter = null;
+    for (String format : formats) {
+      FileFilter filter = new FileFilter() {
+        @Override
+        public boolean accept(File f) {
+          return f.isDirectory() || f.getName().toLowerCase().endsWith("." + format.toLowerCase());
+        }
+        @Override
+        public String getDescription() {
+          return format + " (*." + format.toLowerCase() + ")";
+        }
+      };
+      fileChooser.addChoosableFileFilter(filter);
+      if (format.equals("JPG")) {
+        defaultFilter = filter;
+      }
+    }
+    if (defaultFilter != null) {
+      fileChooser.setFileFilter(defaultFilter);
+    }
+    while (true) {
+      int result = fileChooser.showSaveDialog(null);
+      if (result == JFileChooser.APPROVE_OPTION) {
+        File file = fileChooser.getSelectedFile();
+        String selectedFormat = fileChooser.getFileFilter().
+                getDescription().split(" ")[0].toLowerCase();
+        if (selectedFormat.equals("all")) {
+          JOptionPane.showMessageDialog(null, "Please select" +
+                          " a valid image format (PNG, JPEG, JPG, PPM).",
+                  "Invalid Format", JOptionPane.ERROR_MESSAGE);
+          continue;
+        }
+        String fileName = file.getName().toLowerCase();
+        if (!fileName.endsWith("." + selectedFormat)) {
+          file = new File(file.getAbsolutePath() + "." + selectedFormat);
+        }
+        return file;
+      } else {
+        return null;
+      }
+    }
   }
 
   @Override
@@ -338,10 +416,6 @@ public class GuiView extends JFrame implements IView {
     this.imagePanel.revalidate();
     this.imagePanel.repaint();
   }
-
-
-
-
 
   @Override
   public void showImageNotPresent() {

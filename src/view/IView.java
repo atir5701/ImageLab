@@ -11,6 +11,8 @@ public interface IView {
 
   File getFilePath();
 
+  File getSaveFilePath();
+
   boolean checkImage();
 
   void showImage(String name, BufferedImage image);
@@ -23,6 +25,8 @@ public interface IView {
 
   void showNumberError();
 
-  void showSplitImage(String name,BufferedImage image);
+  void showSplitImage(BufferedImage image);
+
+  void showSaveSuccess();
 
 }

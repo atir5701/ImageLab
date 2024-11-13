@@ -4,6 +4,8 @@ public interface Features {
 
   void loadImage();
 
+  void saveImage(String imageName);
+
   void applySepia(String imageName);
 
   void applyBlur(String imageName);
@@ -35,5 +37,7 @@ public interface Features {
   void applyLevelAdjust(String imageName,int b,int m,int w);
 
   void applySplit(String percentage,String commandName,String imageName);
+
+  void commandGenerator(String operation, String imageName);
 
 }
