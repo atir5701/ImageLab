@@ -16,13 +16,13 @@ public class ImageApplicationFeatures implements Features {
   public ImageApplicationFeatures(OperationsV2 model, IView view) {
     this.model = model;
     this.view = view;
-    commandHandler = new CommandHandler(model, new ViewHandler(System.out));
+    this.commandHandler = new CommandHandler(model, new ViewHandler(System.out));
   }
 
 
   private boolean checkImage(String imageName) {
     if (imageName == null) {
-      view.showImageNotPresent();
+      this.view.showImageNotPresent();
       return false;
     }
     return true;
@@ -31,20 +31,20 @@ public class ImageApplicationFeatures implements Features {
 
   private BufferedImage histogram(String imageName) {
     String command = "histogram " + imageName + " " + imageName + "hist";
-    commandHandler.readCommand(command.split(" "));
+    this.commandHandler.readCommand(command.split(" "));
     return this.convertToDisplay(imageName + "hist");
   }
 
   private void displayImage(String name) {
     BufferedImage image = this.convertToDisplay(name);
-    view.showImage(name, image);
+    this.view.showImage(name, image);
     BufferedImage histogram = this.histogram(name);
-    view.showHistogram(histogram);
+    this.view.showHistogram(histogram);
   }
 
   private void displaySplitImage(String name) {
     BufferedImage image = this.convertToDisplay(name);
-    view.showSplitImage(image);
+    this.view.showSplitImage(image);
   }
 
   private BufferedImage convertToDisplay(String name) {
@@ -71,49 +71,31 @@ public class ImageApplicationFeatures implements Features {
     }
     String command = operation + " " + imageName + " " + imageName + "_" + endName;
 
-    commandHandler.readCommand(command.split(" "));
+    this.commandHandler.readCommand(command.split(" "));
     this.displayImage(imageName + "_" + endName);
   }
 
   private void commandGeneratorSplit(String operation, String percentage, String imageName) {
     String command = operation + " " + imageName + " " + imageName + "_" + operation
             + "_Split" + " split " + percentage;
-    commandHandler.readCommand(command.split(" "));
+    System.out.println(command);
+    this.commandHandler.readCommand(command.split(" "));
     this.displaySplitImage(imageName + "_" + operation + "_Split");
-  }
-
-
-  @Override
-  public void doCompress(String percentage, String imageName) {
-    try{
-      double value = Double.parseDouble(percentage);
-      if(value<0 || value>100){
-        view.showNumberError();
-      }else {
-        String command = "compress" + " " + percentage + " " + imageName + " " + imageName +
-                "_Compress";
-        commandHandler.readCommand(command.split(" "));
-        this.displaySplitImage(imageName +
-                "_Compress");
-      }
-    }catch (NumberFormatException e){
-      view.showNumberError();
-    }
   }
 
   @Override
   public void loadImage() {
-    File path = view.getFilePath();
+    File path = this.view.getFilePath();
     if (path == null) {
       return;
     }
-    if (!view.checkImage()) {
+    if (!this.view.checkImage()) {
       return;
     }
     String temp = path.getName();
     String name = temp.substring(0, temp.lastIndexOf("."));
     String command = "load " + path.getAbsolutePath() + " " + name;
-    commandHandler.readCommand(command.split(" "));
+    this.commandHandler.readCommand(command.split(" "));
     this.displayImage(name);
   }
 
@@ -123,11 +105,11 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    File path = view.getSaveFilePath();
+    File path = this.view.getSaveFilePath();
     if (path != null) {
       String command = "save " + path.getAbsolutePath() + " " + imageName;
-      commandHandler.readCommand(command.split(" "));
-      view.showSaveSuccess();
+      this.commandHandler.readCommand(command.split(" "));
+      this.view.showSaveSuccess();
     }
   }
 
@@ -137,7 +119,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    view.splitPreview("sepia");
+    this.view.splitPreview("sepia");
   }
 
   @Override
@@ -146,7 +128,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    view.splitPreview("blur");
+    this.view.splitPreview("blur");
   }
 
   @Override
@@ -155,7 +137,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    view.splitPreview("sharpen");
+    this.view.splitPreview("sharpen");
   }
 
   @Override
@@ -182,7 +164,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    view.splitPreview("color-correct");
+    this.view.splitPreview("color-correct");
   }
 
   @Override
@@ -191,44 +173,66 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    view.LevelAdjust();
+    this.view.LevelAdjust();
   }
 
   @Override
   public void getLevelAdjust(String imageName, String bValue, String mValue, String wValue,
                              String percentage) {
+
+    if (!checkLevelAdjustProp(bValue, mValue, wValue)) {
+      return;
+    }
+    double value;
+    if(percentage.isEmpty()) {
+      value = 100.;
+    }else{
+      if(!percentageCheck(percentage)) {
+        return;
+      }else{
+        value = Double.valueOf(percentage);
+      }
+    }
+    int b = Integer.parseInt(bValue);
+    int m = Integer.parseInt(mValue);
+    int w = Integer.parseInt(wValue);
+    String command = "levels-adjust " + b + " " + m + " " + w + " " + imageName + " " +
+            imageName + "_adjusted " +
+            "split " + value;
+    this.commandHandler.readCommand(command.split(" "));
+    this.displaySplitImage(imageName + "_adjusted");
+  }
+
+  private boolean checkLevelAdjustProp(String bValue, String mValue, String wValue) {
     try {
       int b = Integer.parseInt(bValue);
       int m = Integer.parseInt(mValue);
       int w = Integer.parseInt(wValue);
-      double value = 100.00;
-
-      if (percentage.length() != 0) {
-        try {
-          value = Double.parseDouble(percentage);
-          if (value < 0 || value > 100) {
-            view.showNumberError();
-            return;
-          }
-        } catch (NumberFormatException e) {
-          view.showNumberError();
-          return;
-        }
-      }
       if (b < 0 || b > 255 || m < 0 || m > 255 || w < 0 || w > 255) {
-        view.showInvalidRangeError();
+        this.view.showInvalidRangeError();
+        return false;
       }
       if (!(b < m && m < w)) {
-        view.showOrderError();
+        this.view.showOrderError();
+        return false;
       }
-      String command = "levels-adjust " + b + " " + m + " " + w + " " + imageName + " " + imageName + "_adjusted " +
-              "split " + value;
-      commandHandler.readCommand(command.split(" "));
-      BufferedImage image = this.convertToDisplay(imageName + "_adjusted");
-      view.showSplitImage(image);
+      return true;
     } catch (NumberFormatException e) {
-      view.showNullValueError();
+      this.view.showNullValueError();
     }
+    return false;
+  }
+
+  @Override
+  public boolean generateLevelAdjust(String bValue, String mValue, String wValue, String imageName) {
+    if (!checkLevelAdjustProp(bValue, mValue, wValue)) {
+      return false;
+    }
+    int b = Integer.parseInt(bValue);
+    int m = Integer.parseInt(mValue);
+    int w = Integer.parseInt(wValue);
+    this.commandGenerator("levels-adjust " + b + " " + m + " " + w, imageName);
+    return true;
   }
 
   @Override
@@ -238,6 +242,26 @@ public class ImageApplicationFeatures implements Features {
       return;
     }
     view.compressImage();
+  }
+
+  @Override
+  public void getCompress(String percentage, String imageName) {
+    if (!this.percentageCheck(percentage)) {
+      return;
+    }
+    String command = "compress" + " " + percentage + " " + imageName + " "
+            + imageName + "_Compress";
+    this.commandHandler.readCommand(command.split(" "));
+    this.displaySplitImage(imageName + "_Compress");
+  }
+
+  @Override
+  public boolean generateCompress(String percentage, String imageName) {
+    if (!this.percentageCheck(percentage)) {
+      return false;
+    }
+    this.commandGenerator("compress " + percentage, imageName);
+    return true;
   }
 
   @Override
@@ -251,7 +275,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    view.splitPreview("luma-component");
+    this.view.splitPreview("luma-component");
   }
 
   @Override
@@ -260,7 +284,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    view.splitPreview("value-component");
+    this.view.splitPreview("value-component");
   }
 
   @Override
@@ -269,7 +293,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    view.splitPreview("intensity-component");
+    this.view.splitPreview("intensity-component");
   }
 
   @Override
@@ -278,7 +302,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    view.splitPreview("red-component");
+    this.view.splitPreview("red-component");
   }
 
   @Override
@@ -287,7 +311,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    view.splitPreview("green-component");
+    this.view.splitPreview("green-component");
   }
 
   @Override
@@ -296,22 +320,29 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    view.splitPreview("blue-component");
+    this.view.splitPreview("blue-component");
   }
 
   @Override
   public void applySplit(String percentage, String commandName, String imageName) {
-    try {
-      double temp = Double.parseDouble(percentage);
-      if (temp < 0 || temp > 100) {
-        view.showNumberError();
-      } else {
-        this.commandGeneratorSplit(commandName, percentage, imageName);
-      }
-    } catch (NumberFormatException e) {
-      view.showNumberError();
+    if (!this.percentageCheck(percentage)) {
+      return;
     }
+    this.commandGeneratorSplit(commandName, percentage, imageName);
   }
 
+  private boolean percentageCheck(String percentage) {
+    try {
+      double value = Double.parseDouble(percentage);
+      if (value < 0 || value > 100) {
+        this.view.showNumberError();
+        return false;
+      }
+      return true;
+    } catch (NumberFormatException e) {
+      this.view.showNumberError();
+      return false;
+    }
+  }
 
 }

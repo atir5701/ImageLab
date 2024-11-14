@@ -552,7 +552,6 @@ public class ImageOperationsV2 extends ImageOperations implements OperationsV2 {
     }
   }
 
-
   /**
    * Method to apply levels adjustment operation on the given image.
    * This method modifies pixel intensity levels of the image based on

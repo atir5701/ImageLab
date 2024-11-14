@@ -42,7 +42,10 @@ public interface Features {
 
   void commandGenerator(String operation, String imageName);
 
-  void doCompress(String percentage,String imageName);
+  void getCompress(String percentage, String imageName);
 
+  boolean generateLevelAdjust(String bValue,String mValue,String wValue,String imageName);
+
+  boolean generateCompress(String pValue,String imageName);
 
 }

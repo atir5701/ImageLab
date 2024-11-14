@@ -4,9 +4,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import javax.swing.*;
+
 import javax.swing.filechooser.FileFilter;
 
-import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -34,7 +35,6 @@ public class GuiView extends JFrame implements IView {
   private JButton adjButton;
   private JButton previewButtonLevel;
   private JButton applyButtonLevel;
-  private JButton cancelButtonLevel;
   private JButton splitButtonComp;
   private JButton applyButtonComp;
   private JLabel imageLabel;
@@ -46,14 +46,15 @@ public class GuiView extends JFrame implements IView {
   private JPanel imagePanel;
   private JPanel splitImagePanel;
   private JPanel histogramPanel;
-  private JDialog splitFrame;
-  private JDialog leveladjFrame;
-  private JTextField textField;
+  private JPanel inputPanel;
+  private JPanel buttonPanel;
+  private JFrame splitFrame;
   private JTextField bField;
   private JTextField mField;
   private JTextField wField;
   private JTextField pField;
   private Font font;
+  private boolean isSplitFrameOpen = false;
 
   public GuiView(String caption) {
     this.setTitle(caption);
@@ -125,35 +126,32 @@ public class GuiView extends JFrame implements IView {
   }
 
   private void initializeComponents() {
-    font = new Font("SansSerif", Font.BOLD, 14);
-    loadButton = new JToggleButton("Load Image");
-    saveButton = new JToggleButton("Save Image");
-    blurButton = new JButton("Blur");
-    sepiaButton = new JButton("Sepia");
-    sharpenButton = new JButton("Sharpen");
-    redButton = new JButton("Red-component");
-    greenButton = new JButton("Green-component");
-    blueButton = new JButton("Blue-component");
-    valueButton = new JButton("Value-component");
-    lumaButton = new JButton("Luma-component");
-    intensityButton = new JButton("Intensity-component");
-    hflipButton = new JButton("Horizontal-Flip");
-    vflipButton = new JButton("Vertical-Flip");
-    colorCorrectionButton = new JButton("Color Correction");
-    compressButton = new JButton("Compression");
-    adjButton = new JButton("Levels-Adjust");
-    previewButtonLevel = new JButton("Preview");
-    applyButtonLevel = new JButton("Apply");
-    cancelButtonLevel = new JButton("Cancel");
-    splitButton = new JButton("Split");
-    applyButton = new JButton("Apply");
-    cancelButton = new JButton("Cancel");
-    splitButtonComp = new JButton("Compress");
-    applyButtonComp = new JButton("Apply");
-
-
-    imageLabel = new JLabel();
-    histogramLabel = new JLabel();
+    this.font = new Font("SansSerif", Font.BOLD, 14);
+    this.loadButton = new JToggleButton("Load Image");
+    this.saveButton = new JToggleButton("Save Image");
+    this.blurButton = new JButton("Blur");
+    this.sepiaButton = new JButton("Sepia");
+    this.sharpenButton = new JButton("Sharpen");
+    this.redButton = new JButton("Red-component");
+    this.greenButton = new JButton("Green-component");
+    this.blueButton = new JButton("Blue-component");
+    this.valueButton = new JButton("Value-component");
+    this.lumaButton = new JButton("Luma-component");
+    this.intensityButton = new JButton("Intensity-component");
+    this.hflipButton = new JButton("Horizontal-Flip");
+    this.vflipButton = new JButton("Vertical-Flip");
+    this.colorCorrectionButton = new JButton("Color Correction");
+    this.compressButton = new JButton("Compression");
+    this.adjButton = new JButton("Levels-Adjust");
+    this.previewButtonLevel = new JButton("Preview");
+    this.applyButtonLevel = new JButton("Apply");
+    this.splitButton = new JButton("Preview");
+    this.applyButton = new JButton("Apply");
+    this.cancelButton = new JButton("Cancel");
+    this.splitButtonComp = new JButton("Preview");
+    this.applyButtonComp = new JButton("Apply");
+    this.imageLabel = new JLabel();
+    this.histogramLabel = new JLabel();
   }
 
   private void createTopPanel() {
@@ -176,8 +174,9 @@ public class GuiView extends JFrame implements IView {
     gbc.insets = new Insets(5, 5, 5, 5);
 
     Dimension buttonSize = new Dimension(150, 40);
-    JButton[] buttons = {blurButton, sepiaButton, sharpenButton, colorCorrectionButton, redButton, greenButton, blueButton,
-            valueButton, lumaButton, intensityButton, hflipButton, vflipButton, compressButton, adjButton};
+    JButton[] buttons = {blurButton, sepiaButton, sharpenButton, colorCorrectionButton,
+            redButton, greenButton, blueButton, valueButton, lumaButton, intensityButton,
+            hflipButton, vflipButton, compressButton, adjButton};
 
     for (JButton button : buttons) {
       setButtonProperties(button, buttonSize);
@@ -225,7 +224,7 @@ public class GuiView extends JFrame implements IView {
             SwingConstants.CENTER);
     JScrollPane scroll = new JScrollPane(label);
     scroll.setPreferredSize(new Dimension(200, 200));
-    imagePanel.add(scroll);
+    this.imagePanel.add(scroll);
   }
 
   @Override
@@ -247,135 +246,170 @@ public class GuiView extends JFrame implements IView {
     this.colorCorrectionButton.addActionListener(e -> features.applyColorCorrect(this.imageName));
     this.adjButton.addActionListener(e -> features.applyLevelAdjust(this.imageName));
 
-    this.splitButton.addActionListener(e -> features.applySplit(this.textField.getText(),
+    this.splitButton.addActionListener(e -> features.applySplit(this.pField.getText(),
             this.commandName, this.imageName));
     this.applyButton.addActionListener(e -> features.commandGenerator(this.commandName,
             this.imageName));
     this.applyButton.addActionListener(e -> {
+      this.splitFrame.setVisible(false);
       JOptionPane.showMessageDialog(this, "Filter applied successfully.",
               "Filter Applied", JOptionPane.INFORMATION_MESSAGE);
-      splitFrame.dispose();
+      this.splitFrame.dispose();
+      this.isSplitFrameOpen = false;
     });
-    this.cancelButton.addActionListener(e -> splitFrame.dispose());
 
-    this.splitButtonComp.addActionListener(e -> features.doCompress(this.textField.getText(),
+    this.cancelButton.addActionListener(e -> {
+      this.splitFrame.setVisible(false);
+      this.splitFrame.dispose();
+      this.isSplitFrameOpen = false;
+    });
+
+    this.splitButtonComp.addActionListener(e -> features.getCompress(this.pField.getText(),
             this.imageName));
-    this.applyButtonComp.addActionListener(e -> features.commandGenerator("compress " + this.textField.getText()
-            , this.imageName));
     this.applyButtonComp.addActionListener(e -> {
+      boolean t = features.generateCompress(this.pField.getText(), this.imageName);
+      if (!t) {
+        return;
+      }
+      this.splitFrame.setVisible(false);
       JOptionPane.showMessageDialog(this, "Filter applied successfully.",
               "Filter Applied", JOptionPane.INFORMATION_MESSAGE);
-      splitFrame.dispose();
+      this.splitFrame.dispose();
+      this.isSplitFrameOpen = false;
+
     });
 
-    this.cancelButtonLevel.addActionListener(e -> leveladjFrame.dispose());
     this.previewButtonLevel.addActionListener(e -> features.getLevelAdjust(this.imageName,
             this.bField.getText(), this.mField.getText(), this.wField.getText(),
             this.pField.getText()));
-    this.applyButtonLevel.addActionListener(e -> features.commandGenerator("levels-adjust " +
-            this.bField.getText() + " " + this.mField.getText() + " " + this.wField.getText(), this.imageName));
+
     this.applyButtonLevel.addActionListener(e -> {
+      boolean t = features.generateLevelAdjust(this.bField.getText(), this.mField.getText(),
+              this.wField.getText(), this.imageName);
+      if (!t) {
+        return;
+      }
+      this.splitFrame.setVisible(false);
       JOptionPane.showMessageDialog(this, "Filter applied successfully.",
               "Filter Applied", JOptionPane.INFORMATION_MESSAGE);
-      leveladjFrame.dispose();
+      this.splitFrame.dispose();
+      this.isSplitFrameOpen = false;
     });
 
+  }
 
+  private void initializeFrame(String frameName) {
+    this.splitFrame = new JFrame(frameName);
+    this.splitFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    this.splitFrame.setResizable(true);
+    int height = (int) (this.getHeight() * 0.8);
+    int width = (int) (this.getWidth() * 0.9);
+    this.splitFrame.setSize(width, height);
+    this.splitFrame.setMinimumSize(new Dimension(width, height));
+    this.splitFrame.setLayout(new BorderLayout());
+    this.splitFrame.setLocationRelativeTo(this);
+    this.inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+    this.buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    this.splitImagePanel = new JPanel();
+    this.splitImagePanel.setLayout(new BorderLayout());
+    JLabel placeholderLabel = new JLabel("Enter value and then press preview to " +
+            "get the preview of the operation.", JLabel.CENTER);
+    this.splitImagePanel.add(placeholderLabel, BorderLayout.CENTER);
+    this.splitImagePanel.setPreferredSize(new Dimension(500, 500));
+    this.splitFrame.add(this.inputPanel, BorderLayout.NORTH);
+    this.splitFrame.add(this.splitImagePanel, BorderLayout.CENTER);
+    this.splitFrame.add(this.buttonPanel, BorderLayout.SOUTH);
+    this.isSplitFrameOpen = true;
+    this.splitFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+      @Override
+      public void windowClosing(java.awt.event.WindowEvent e) {
+        isSplitFrameOpen = false; // Reset flag on close
+        if (splitFrame != null) {
+          splitFrame.dispose();
+        }
+      }
+    });
+  }
+
+  private boolean checkingFrame() {
+    if (isSplitFrameOpen) {
+      JOptionPane.showMessageDialog(this.splitFrame,
+              "Already a operation pop-up opened.",
+              "Error",
+              JOptionPane.ERROR_MESSAGE);
+      this.splitFrame.toFront();
+      return true;
+    }
+    return false;
   }
 
   @Override
   public void splitPreview(String commandName) {
+    if (this.checkingFrame()) {
+      return;
+    }
     this.commandName = commandName;
-    splitFrame = new JDialog(this, "Preview " + commandName, true);
-    splitFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    splitFrame.setResizable(true);
-    int height = (int) (this.getHeight() * 0.75);
-    int width = (int) (this.getWidth() * 0.75);
-    splitFrame.setSize(width, height);
+    this.initializeFrame("Preview " + commandName);
     JLabel label = new JLabel("Enter a Percentage: ");
-    JPanel inputPanel = new JPanel();
-    inputPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-    inputPanel.add(label);
-    textField = new JTextField("50", 5);
-    inputPanel.add(this.textField);
-    inputPanel.add(this.splitButton);
-    inputPanel.add(this.applyButton);
-    inputPanel.add(this.cancelButton);
-    splitFrame.setLayout(new BorderLayout());
-    splitFrame.add(inputPanel, BorderLayout.NORTH);
-    splitImagePanel = new JPanel();
-    splitImagePanel.setLayout(new BorderLayout());
-    JLabel placeholderLabel = new JLabel("Enter value and then press split " +
-            "to get the preview of the operation.", JLabel.CENTER);
-    splitImagePanel.add(placeholderLabel, BorderLayout.CENTER);
-    splitImagePanel.setPreferredSize(new Dimension(500, 500));
-    splitFrame.add(splitImagePanel, BorderLayout.CENTER);
-    splitFrame.setLocationRelativeTo(this);
-    splitFrame.pack();
-    splitFrame.setVisible(true);
+    this.inputPanel.add(label);
+    this.pField = new JTextField("50", 5);
+    this.inputPanel.add(this.pField);
+    this.buttonPanel.add(this.splitButton);
+    this.buttonPanel.add(this.applyButton);
+    this.buttonPanel.add(this.cancelButton);
+    this.splitFrame.add(this.inputPanel, BorderLayout.NORTH);
+    this.splitFrame.add(this.buttonPanel, BorderLayout.CENTER);
+    this.splitFrame.add(this.splitImagePanel, BorderLayout.SOUTH);
+    this.splitFrame.pack();
+    this.splitFrame.setVisible(true);
   }
 
   @Override
   public void LevelAdjust() {
-    this.leveladjFrame = new JDialog(this, "Levels Adjust Preview", true);
-    this.leveladjFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    int height = (int) (this.getHeight() * 0.9);
-    int width = (int) (this.getWidth() * 0.9);
-    this.leveladjFrame.setSize(width, height);
-    this.leveladjFrame.setLayout(new BorderLayout());
+    if (this.checkingFrame()) {
+      return;
+    }
+    this.initializeFrame("Level Adjustment Preview");
     this.bField = new JTextField(5);
     this.mField = new JTextField(5);
     this.wField = new JTextField(5);
-    this.pField = new JTextField("100", 5);
-    JPanel centerPanel = new JPanel();
-    centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-    JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-    inputPanel.add(new JLabel("Enter Black Value : "));
-    inputPanel.add(this.bField);
-    inputPanel.add(new JLabel("Enter Mid Value : "));
-    inputPanel.add(this.mField);
-    inputPanel.add(new JLabel("Enter White Value : "));
-    inputPanel.add(this.wField);
-    inputPanel.add(new JLabel("Percentage: "));
-    inputPanel.add(this.pField);
-    centerPanel.add(inputPanel);
-    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    buttonPanel.add(this.previewButtonLevel);
-    buttonPanel.add(this.applyButtonLevel);
-    buttonPanel.add(this.cancelButtonLevel);
-    centerPanel.add(buttonPanel);
-    this.leveladjFrame.add(centerPanel, BorderLayout.CENTER);
-    this.splitImagePanel = new JPanel();
-    this.splitImagePanel.setLayout(new BorderLayout());
-    JLabel placeholderLabel = new JLabel("Enter value and then press preview to get the preview of the operation.", JLabel.CENTER);
-    this.splitImagePanel.add(placeholderLabel, BorderLayout.CENTER);
-    this.splitImagePanel.setPreferredSize(new Dimension(500, 500));
-    this.leveladjFrame.add(this.splitImagePanel, BorderLayout.SOUTH);
-    this.leveladjFrame.setResizable(true);
-    this.leveladjFrame.setLocationRelativeTo(this);
-    this.leveladjFrame.pack();
-    this.leveladjFrame.setVisible(true);
+    this.pField = new JTextField("50", 5);
+    this.inputPanel.add(new JLabel("Enter Black Value : "));
+    this.inputPanel.add(this.bField);
+    this.inputPanel.add(new JLabel("Enter Mid Value : "));
+    this.inputPanel.add(this.mField);
+    this.inputPanel.add(new JLabel("Enter White Value : "));
+    this.inputPanel.add(this.wField);
+    this.inputPanel.add(new JLabel("Percentage: "));
+    this.inputPanel.add(this.pField);
+    this.buttonPanel.add(this.previewButtonLevel);
+    this.buttonPanel.add(this.applyButtonLevel);
+    this.buttonPanel.add(this.cancelButton);
+    this.splitFrame.add(this.inputPanel, BorderLayout.NORTH);
+    this.splitFrame.add(this.buttonPanel, BorderLayout.CENTER);
+    this.splitFrame.add(this.splitImagePanel, BorderLayout.SOUTH);
+    this.splitFrame.pack();
+    this.splitFrame.setVisible(true);
   }
 
   @Override
-  public void showSplitImage(BufferedImage image) {
-    JLabel imgLabel = new JLabel(new ImageIcon(image));
-    JScrollPane scrollPane = new JScrollPane(imgLabel);
-    scrollPane.setPreferredSize(new Dimension(500, 500));
-    splitImagePanel.removeAll();
-    splitImagePanel.add(scrollPane, BorderLayout.CENTER);
-    splitImagePanel.revalidate();
-    splitImagePanel.repaint();
-  }
-
-  @Override
-  public void showSaveSuccess() {
-    JOptionPane.showMessageDialog(
-            this,
-            "Image saved successful!",
-            "Save Success",
-            JOptionPane.INFORMATION_MESSAGE
-    );
+  public void compressImage() {
+    if (this.checkingFrame()) {
+      return;
+    }
+    this.initializeFrame("Compression Preview");
+    JLabel label = new JLabel("Enter a Percentage: ");
+    this.inputPanel.add(label);
+    this.pField = new JTextField("50", 5);
+    this.inputPanel.add(this.pField);
+    this.buttonPanel.add(this.splitButtonComp);
+    this.buttonPanel.add(this.applyButtonComp);
+    this.buttonPanel.add(this.cancelButton);
+    this.splitFrame.add(this.inputPanel, BorderLayout.NORTH);
+    this.splitFrame.add(this.buttonPanel, BorderLayout.CENTER);
+    this.splitFrame.add(this.splitImagePanel, BorderLayout.SOUTH);
+    this.splitFrame.pack();
+    this.splitFrame.setVisible(true);
   }
 
   @Override
@@ -408,21 +442,25 @@ public class GuiView extends JFrame implements IView {
       fileChooser.addChoosableFileFilter(new FileFilter() {
         @Override
         public boolean accept(File f) {
-          return f.isDirectory() || f.getName().toLowerCase().endsWith("." + format.toLowerCase());
+          return f.isDirectory() || f.getName().toLowerCase().endsWith("." +
+                  format.toLowerCase());
         }
+
         @Override
         public String getDescription() {
           return format + " (*." + format.toLowerCase() + ")";
         }
       });
       if (format.equals("JPEG")) {
-        fileChooser.setFileFilter(fileChooser.getChoosableFileFilters()[fileChooser.getChoosableFileFilters().length - 1]);
+        fileChooser.setFileFilter(fileChooser.getChoosableFileFilters()[
+                fileChooser.getChoosableFileFilters().length - 1]);
       }
     }
     int result = fileChooser.showSaveDialog(null);
     if (result == JFileChooser.APPROVE_OPTION) {
       File file = fileChooser.getSelectedFile();
-      String selectedFormat = fileChooser.getFileFilter().getDescription().split(" ")[0].toLowerCase();
+      String selectedFormat = fileChooser.getFileFilter().getDescription().split(" ")[0]
+              .toLowerCase();
       if (!file.getName().toLowerCase().endsWith("." + selectedFormat)) {
         file = new File(file.getAbsolutePath() + "." + selectedFormat);
       }
@@ -430,10 +468,38 @@ public class GuiView extends JFrame implements IView {
     } else {
       return null;
     }
-
-
   }
 
+  @Override
+  public void showImage(String name, BufferedImage image) {
+    this.imageName = name;
+    JLabel img = new JLabel(new ImageIcon(image));
+    JScrollPane scrollPane = new JScrollPane(img);
+    scrollPane.setPreferredSize(new Dimension(300, 300));
+    this.imagePanel.removeAll();
+    this.imagePanel.add(scrollPane);
+    this.imagePanel.revalidate();
+    this.imagePanel.repaint();
+  }
+
+  @Override
+  public void showHistogram(BufferedImage image) {
+    JLabel histogram = new JLabel(new ImageIcon(image));
+    JScrollPane scrollPane = new JScrollPane(histogram);
+    scrollPane.setPreferredSize(new Dimension(270, 270));
+    this.histogramPanel.removeAll();
+    this.histogramPanel.add(scrollPane);
+    this.histogramPanel.revalidate();
+    this.histogramPanel.repaint();
+  }
+
+  @Override
+  public void showImageNotPresent() {
+    JOptionPane.showMessageDialog(this,
+            "No image loaded! Please load an image before applying Operations.",
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+  }
 
   @Override
   public boolean checkImage() {
@@ -451,28 +517,29 @@ public class GuiView extends JFrame implements IView {
   }
 
   @Override
-  public void showImage(String name, BufferedImage image) {
-    this.imageName = name;
-    JLabel img = new JLabel(new ImageIcon(image));
-    JScrollPane scrollPane = new JScrollPane(img);
-    scrollPane.setPreferredSize(new Dimension(300, 300));
-    this.imagePanel.removeAll();
-    this.imagePanel.add(scrollPane);
-    this.imagePanel.revalidate();
-    this.imagePanel.repaint();
+  public void showSplitImage(BufferedImage image) {
+    JLabel imgLabel = new JLabel(new ImageIcon(image));
+    JScrollPane scrollPane = new JScrollPane(imgLabel);
+    scrollPane.setPreferredSize(new Dimension(500, 500));
+    this.splitImagePanel.removeAll();
+    this.splitImagePanel.add(scrollPane, BorderLayout.CENTER);
+    this.splitImagePanel.revalidate();
+    this.splitImagePanel.repaint();
   }
 
   @Override
-  public void showImageNotPresent() {
-    JOptionPane.showMessageDialog(this,
-            "No image loaded! Please load an image before applying Operations.",
-            "Error",
-            JOptionPane.ERROR_MESSAGE);
+  public void showSaveSuccess() {
+    JOptionPane.showMessageDialog(
+            this,
+            "Image saved successful!",
+            "Save Success",
+            JOptionPane.INFORMATION_MESSAGE
+    );
   }
 
   @Override
   public void showNumberError() {
-    JOptionPane.showMessageDialog(this,
+    JOptionPane.showMessageDialog(this.splitFrame,
             "Provide valid value of percentage.",
             "Error",
             JOptionPane.ERROR_MESSAGE);
@@ -480,7 +547,7 @@ public class GuiView extends JFrame implements IView {
 
   @Override
   public void showNullValueError() {
-    JOptionPane.showMessageDialog(leveladjFrame,
+    JOptionPane.showMessageDialog(this.splitFrame,
             "All values (B, M, and W) must be provided and all must be numeric value.",
             "Error",
             JOptionPane.ERROR_MESSAGE);
@@ -488,7 +555,7 @@ public class GuiView extends JFrame implements IView {
 
   @Override
   public void showInvalidRangeError() {
-    JOptionPane.showMessageDialog(leveladjFrame,
+    JOptionPane.showMessageDialog(this.splitFrame,
             "All values (B, M, and W) must be between 0 to 255",
             "Error",
             JOptionPane.ERROR_MESSAGE);
@@ -496,52 +563,10 @@ public class GuiView extends JFrame implements IView {
 
   @Override
   public void showOrderError() {
-    JOptionPane.showMessageDialog(leveladjFrame,
+    JOptionPane.showMessageDialog(this.splitFrame,
             "Value of B,M and W must be in ascending order",
             "Error",
             JOptionPane.ERROR_MESSAGE);
-  }
-
-  @Override
-  public void compressImage() {
-    splitFrame = new JDialog(this, "Compression", true);
-    splitFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    splitFrame.setResizable(true);
-    int height = (int) (this.getHeight() * 0.75);
-    int width = (int) (this.getWidth() * 0.75);
-    splitFrame.setSize(width, height);
-    JLabel label = new JLabel("Enter a Percentage: ");
-    JPanel inputPanel = new JPanel();
-    inputPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-    inputPanel.add(label);
-    textField = new JTextField("50", 5);
-    inputPanel.add(this.textField);
-    inputPanel.add(this.splitButtonComp);
-    inputPanel.add(this.applyButtonComp);
-    inputPanel.add(this.cancelButton);
-    splitFrame.setLayout(new BorderLayout());
-    splitFrame.add(inputPanel, BorderLayout.NORTH);
-    splitImagePanel = new JPanel();
-    splitImagePanel.setLayout(new BorderLayout());
-    JLabel placeholderLabel = new JLabel("Enter value and then press split " +
-            "to get the preview of the operation.", JLabel.CENTER);
-    splitImagePanel.add(placeholderLabel, BorderLayout.CENTER);
-    splitImagePanel.setPreferredSize(new Dimension(500, 500));
-    splitFrame.add(splitImagePanel, BorderLayout.CENTER);
-    splitFrame.setLocationRelativeTo(this);
-    splitFrame.pack();
-    splitFrame.setVisible(true);
-  }
-
-  @Override
-  public void showHistogram(BufferedImage image) {
-    JLabel histogram = new JLabel(new ImageIcon(image));
-    JScrollPane scrollPane = new JScrollPane(histogram);
-    scrollPane.setPreferredSize(new Dimension(270, 270));
-    this.histogramPanel.removeAll();
-    this.histogramPanel.add(scrollPane);
-    this.histogramPanel.revalidate();
-    this.histogramPanel.repaint();
   }
 
 }
