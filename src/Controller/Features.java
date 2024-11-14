@@ -18,7 +18,7 @@ public interface Features {
 
   void applyColorCorrect(String imageName);
 
-  void applyCompress(String imageName,double percentage);
+  void applyCompress(String imageName);
 
   void applyBrightness(String imageName,int value);
 
@@ -34,10 +34,15 @@ public interface Features {
 
   void applyBlue(String imageName);
 
-  void applyLevelAdjust(String imageName,int b,int m,int w);
+  void applyLevelAdjust(String imageName);
+
+  void getLevelAdjust(String imageName,String b,String m,String w,String percentage);
 
   void applySplit(String percentage,String commandName,String imageName);
 
   void commandGenerator(String operation, String imageName);
+
+  void doCompress(String percentage,String imageName);
+
 
 }

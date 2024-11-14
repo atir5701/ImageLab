@@ -12,7 +12,6 @@ public class ImageApplicationFeatures implements Features {
   private final CommandHandler commandHandler;
   private final OperationsV2 model;
   private final IView view;
-  private double percentage;
 
   public ImageApplicationFeatures(OperationsV2 model, IView view) {
     this.model = model;
@@ -65,16 +64,41 @@ public class ImageApplicationFeatures implements Features {
 
   @Override
   public void commandGenerator(String operation, String imageName) {
-    String command = operation + " " + imageName + " " + imageName + "_" + operation;
+    String endName = operation;
+    if (operation.length() != 1) {
+      String[] temp = operation.split(" ");
+      endName = temp[0];
+    }
+    String command = operation + " " + imageName + " " + imageName + "_" + endName;
+
     commandHandler.readCommand(command.split(" "));
-    this.displayImage(imageName + "_" + operation);
+    this.displayImage(imageName + "_" + endName);
   }
 
-  private void commandGeneratorSplit(String operation,String commandName,String imageName) {
+  private void commandGeneratorSplit(String operation, String percentage, String imageName) {
     String command = operation + " " + imageName + " " + imageName + "_" + operation
-            +"_Split"+" split "+this.percentage;
+            + "_Split" + " split " + percentage;
     commandHandler.readCommand(command.split(" "));
-    this.displaySplitImage(imageName + "_" + operation+"_Split");
+    this.displaySplitImage(imageName + "_" + operation + "_Split");
+  }
+
+
+  @Override
+  public void doCompress(String percentage, String imageName) {
+    try{
+      double value = Double.parseDouble(percentage);
+      if(value<0 || value>100){
+        view.showNumberError();
+      }else {
+        String command = "compress" + " " + percentage + " " + imageName + " " + imageName +
+                "_Compress";
+        commandHandler.readCommand(command.split(" "));
+        this.displaySplitImage(imageName +
+                "_Compress");
+      }
+    }catch (NumberFormatException e){
+      view.showNumberError();
+    }
   }
 
   @Override
@@ -94,19 +118,18 @@ public class ImageApplicationFeatures implements Features {
   }
 
   @Override
-  public void saveImage(String imageName){
+  public void saveImage(String imageName) {
     boolean t = this.checkImage(imageName);
-    if(!t){
+    if (!t) {
       return;
     }
     File path = view.getSaveFilePath();
-    if(path!=null){
-      String command = "save "+path.getAbsolutePath()+" "+imageName;
+    if (path != null) {
+      String command = "save " + path.getAbsolutePath() + " " + imageName;
       commandHandler.readCommand(command.split(" "));
       view.showSaveSuccess();
     }
   }
-
 
   @Override
   public void applySepia(String imageName) {
@@ -124,22 +147,6 @@ public class ImageApplicationFeatures implements Features {
       return;
     }
     view.splitPreview("blur");
-  }
-
-
-  @Override
-  public void applySplit(String percentage,String commandName,String imageName){
-    try {
-      double temp = Double.parseDouble(percentage);
-      if(temp<0 || temp>100){
-        view.showNumberError();
-      }else {
-        this.percentage = temp;
-        this.commandGeneratorSplit(commandName, percentage, imageName);
-      }
-    } catch (NumberFormatException e) {
-      view.showNumberError();
-    }
   }
 
   @Override
@@ -179,8 +186,58 @@ public class ImageApplicationFeatures implements Features {
   }
 
   @Override
-  public void applyCompress(String imageName, double percentage) {
+  public void applyLevelAdjust(String imageName) {
+    boolean t = this.checkImage(imageName);
+    if (!t) {
+      return;
+    }
+    view.LevelAdjust();
+  }
 
+  @Override
+  public void getLevelAdjust(String imageName, String bValue, String mValue, String wValue,
+                             String percentage) {
+    try {
+      int b = Integer.parseInt(bValue);
+      int m = Integer.parseInt(mValue);
+      int w = Integer.parseInt(wValue);
+      double value = 100.00;
+
+      if (percentage.length() != 0) {
+        try {
+          value = Double.parseDouble(percentage);
+          if (value < 0 || value > 100) {
+            view.showNumberError();
+            return;
+          }
+        } catch (NumberFormatException e) {
+          view.showNumberError();
+          return;
+        }
+      }
+      if (b < 0 || b > 255 || m < 0 || m > 255 || w < 0 || w > 255) {
+        view.showInvalidRangeError();
+      }
+      if (!(b < m && m < w)) {
+        view.showOrderError();
+      }
+      String command = "levels-adjust " + b + " " + m + " " + w + " " + imageName + " " + imageName + "_adjusted " +
+              "split " + value;
+      commandHandler.readCommand(command.split(" "));
+      BufferedImage image = this.convertToDisplay(imageName + "_adjusted");
+      view.showSplitImage(image);
+    } catch (NumberFormatException e) {
+      view.showNullValueError();
+    }
+  }
+
+  @Override
+  public void applyCompress(String imageName) {
+    boolean t = this.checkImage(imageName);
+    if (!t) {
+      return;
+    }
+    view.compressImage();
   }
 
   @Override
@@ -243,11 +300,18 @@ public class ImageApplicationFeatures implements Features {
   }
 
   @Override
-  public void applyLevelAdjust(String imageName, int b, int m, int w) {
-
+  public void applySplit(String percentage, String commandName, String imageName) {
+    try {
+      double temp = Double.parseDouble(percentage);
+      if (temp < 0 || temp > 100) {
+        view.showNumberError();
+      } else {
+        this.commandGeneratorSplit(commandName, percentage, imageName);
+      }
+    } catch (NumberFormatException e) {
+      view.showNumberError();
+    }
   }
-
-
 
 
 }

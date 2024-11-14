@@ -29,4 +29,15 @@ public interface IView {
 
   void showSaveSuccess();
 
+  void LevelAdjust();
+
+  void showNullValueError();
+
+  void showInvalidRangeError();
+
+  void showOrderError();
+
+
+  void compressImage();
+
 }
