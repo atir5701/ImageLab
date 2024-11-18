@@ -19,18 +19,21 @@ import static org.junit.Assert.assertEquals;
  */
 
 public class ImageOperationsTest {
-  OperationsV2 operations;
+  OperationsV3 operations;
 
   /**
    * The setup needed to carry out the test.
    */
   @Before
   public void setUp() {
-    this.operations = new ImageOperationsV2();
+    this.operations = new ImageOperationsV3();
     String file = "images\\manhattan-small.png";
     String f = "images\\galaxy.png";
+    String mask_path = "images\\mask.jpg";
     int[][][] org = this.getMatrix(file);
     int[][][] org1 = this.getMatrix(f);
+    int[][][] maskMatrix = this.getMatrix(mask_path);
+    this.operations.loadImage(maskMatrix, "mask");
     this.operations.loadImage(org, "man");
     this.operations.loadImage(org1, "galaxy");
     int[][][] temp = new int[][][]{
@@ -1554,7 +1557,6 @@ public class ImageOperationsTest {
     assertArrayEquals(actual, expected);
   }
 
-
   /**
    * Test Case to check if the split works correct
    * for color-correct.
@@ -1651,4 +1653,265 @@ public class ImageOperationsTest {
       }
     }
   }
+
+  /**
+   * Test Case to check if the mask works correct
+   * for blur.
+   */
+  @Test
+  public void checkMaskBlur() {
+    this.operations.blur("man", "man-blur");
+    int[][][] original = this.operations.saveImage("man");
+    int[][][] temp = this.operations.saveImage("man-blur");
+    this.operations.mask("man", "man-blur",
+            "mask", "man-mask-blur");
+    int[][][] mask = this.operations.saveImage("mask");
+    int[][][] output = this.operations.saveImage("man-mask-blur");
+    for (int i = 0; i < original.length; i++) {
+      for (int j = 0; j < original[0].length; j++) {
+        if (mask[i][j][0] == 0 && mask[i][j][1] == 0 && mask[i][j][2] == 0) {
+          assertEquals(output[i][j][0], temp[i][j][0]);
+          assertEquals(output[i][j][1], temp[i][j][1]);
+          assertEquals(output[i][j][2], temp[i][j][2]);
+        } else {
+          assertEquals(output[i][j][0], original[i][j][0]);
+          assertEquals(output[i][j][1], original[i][j][1]);
+          assertEquals(output[i][j][2], original[i][j][2]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check if the mask works correct
+   * for sharpen.
+   */
+  @Test
+  public void checkMaskSharpen() {
+    this.operations.sharpen("man", "man-sharp");
+    int[][][] original = this.operations.saveImage("man");
+    int[][][] temp = this.operations.saveImage("man-sharp");
+    this.operations.mask("man", "man-sharp",
+            "mask", "man-mask-sharp");
+    int[][][] mask = this.operations.saveImage("mask");
+    int[][][] output = this.operations.saveImage("man-mask-sharp");
+    for (int i = 0; i < original.length; i++) {
+      for (int j = 0; j < original[0].length; j++) {
+        if (mask[i][j][0] == 0 && mask[i][j][1] == 0 && mask[i][j][2] == 0) {
+          assertEquals(output[i][j][0], temp[i][j][0]);
+          assertEquals(output[i][j][1], temp[i][j][1]);
+          assertEquals(output[i][j][2], temp[i][j][2]);
+        } else {
+          assertEquals(output[i][j][0], original[i][j][0]);
+          assertEquals(output[i][j][1], original[i][j][1]);
+          assertEquals(output[i][j][2], original[i][j][2]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check if the mask works correct
+   * for Sepia.
+   */
+  @Test
+  public void checkMaskSepia() {
+    this.operations.sepia("man", "man-sepia");
+    int[][][] original = this.operations.saveImage("man");
+    int[][][] temp = this.operations.saveImage("man-sepia");
+    this.operations.mask("man", "man-sepia",
+            "mask", "man-mask-sepia");
+    int[][][] mask = this.operations.saveImage("mask");
+    int[][][] output = this.operations.saveImage("man-mask-sepia");
+    for (int i = 0; i < original.length; i++) {
+      for (int j = 0; j < original[0].length; j++) {
+        if (mask[i][j][0] == 0 && mask[i][j][1] == 0 && mask[i][j][2] == 0) {
+          assertEquals(output[i][j][0], temp[i][j][0]);
+          assertEquals(output[i][j][1], temp[i][j][1]);
+          assertEquals(output[i][j][2], temp[i][j][2]);
+        } else {
+          assertEquals(output[i][j][0], original[i][j][0]);
+          assertEquals(output[i][j][1], original[i][j][1]);
+          assertEquals(output[i][j][2], original[i][j][2]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check if the mask works correct
+   * for red-component.
+   */
+  @Test
+  public void checkMaskRedComponent() {
+    this.operations.getColorComponent("man", "man-red", 0);
+    int[][][] original = this.operations.saveImage("man");
+    int[][][] temp = this.operations.saveImage("man-red");
+    this.operations.mask("man", "man-red",
+            "mask", "man-mask-man-red");
+    int[][][] mask = this.operations.saveImage("mask");
+    int[][][] output = this.operations.saveImage("man-mask-man-red");
+
+    for (int i = 0; i < original.length; i++) {
+      for (int j = 0; j < original[0].length; j++) {
+        if (mask[i][j][0] == 0 && mask[i][j][1] == 0 && mask[i][j][2] == 0) {
+          assertEquals(output[i][j][0], temp[i][j][0]);
+          assertEquals(output[i][j][1], temp[i][j][1]);
+          assertEquals(output[i][j][2], temp[i][j][2]);
+        } else {
+          assertEquals(output[i][j][0], original[i][j][0]);
+          assertEquals(output[i][j][1], original[i][j][1]);
+          assertEquals(output[i][j][2], original[i][j][2]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check if the mask works correct
+   * for green-component.
+   */
+  @Test
+  public void checkMaskGreenComponent() {
+    this.operations.getColorComponent("man", "man-green", 1);
+    int[][][] original = this.operations.saveImage("man");
+    int[][][] temp = this.operations.saveImage("man-green");
+    this.operations.mask("man", "man-green",
+            "mask", "man-mask-man-green");
+    int[][][] mask = this.operations.saveImage("mask");
+    int[][][] output = this.operations.saveImage("man-mask-man-green");
+
+    for (int i = 0; i < original.length; i++) {
+      for (int j = 0; j < original[0].length; j++) {
+        if (mask[i][j][0] == 0 && mask[i][j][1] == 0 && mask[i][j][2] == 0) {
+          assertEquals(output[i][j][0], temp[i][j][0]);
+          assertEquals(output[i][j][1], temp[i][j][1]);
+          assertEquals(output[i][j][2], temp[i][j][2]);
+        } else {
+          assertEquals(output[i][j][0], original[i][j][0]);
+          assertEquals(output[i][j][1], original[i][j][1]);
+          assertEquals(output[i][j][2], original[i][j][2]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check if the mask works correct
+   * for blue-component.
+   */
+  @Test
+  public void checkMaskBlueComponent() {
+    this.operations.getColorComponent("man", "man-blue", 2);
+    int[][][] original = this.operations.saveImage("man");
+    int[][][] temp = this.operations.saveImage("man-blue");
+    this.operations.mask("man", "man-blue",
+            "mask", "man-mask-man-blue");
+    int[][][] mask = this.operations.saveImage("mask");
+    int[][][] output = this.operations.saveImage("man-mask-man-blue");
+    for (int i = 0; i < original.length; i++) {
+      for (int j = 0; j < original[0].length; j++) {
+        if (mask[i][j][0] == 0 && mask[i][j][1] == 0 && mask[i][j][2] == 0) {
+          assertEquals(output[i][j][0], temp[i][j][0]);
+          assertEquals(output[i][j][1], temp[i][j][1]);
+          assertEquals(output[i][j][2], temp[i][j][2]);
+        } else {
+          assertEquals(output[i][j][0], original[i][j][0]);
+          assertEquals(output[i][j][1], original[i][j][1]);
+          assertEquals(output[i][j][2], original[i][j][2]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check if the mask works correct
+   * for value-component.
+   */
+  @Test
+  public void checkMaskValueComponent() {
+    this.operations.getBrightnessComponent("man", "man-value",
+            "value-component");
+    int[][][] original = this.operations.saveImage("man");
+    int[][][] temp = this.operations.saveImage("man-value");
+    this.operations.mask("man", "man-value",
+            "mask", "man-mask-man-value");
+    int[][][] mask = this.operations.saveImage("mask");
+    int[][][] output = this.operations.saveImage("man-mask-man-value");
+
+    for (int i = 0; i < original.length; i++) {
+      for (int j = 0; j < original[0].length; j++) {
+        if (mask[i][j][0] == 0 && mask[i][j][1] == 0 && mask[i][j][2] == 0) {
+          assertEquals(output[i][j][0], temp[i][j][0]);
+          assertEquals(output[i][j][1], temp[i][j][1]);
+          assertEquals(output[i][j][2], temp[i][j][2]);
+        } else {
+          assertEquals(output[i][j][0], original[i][j][0]);
+          assertEquals(output[i][j][1], original[i][j][1]);
+          assertEquals(output[i][j][2], original[i][j][2]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check if the mask works correct
+   * for intensity-component.
+   */
+  @Test
+  public void checkMaskIntensityComponent() {
+    this.operations.getBrightnessComponent("man", "man-intensity",
+            "intensity-component");
+    int[][][] original = this.operations.saveImage("man");
+    int[][][] temp = this.operations.saveImage("man-intensity");
+    this.operations.mask("man", "man-intensity",
+            "mask", "man-mask-man-intensity");
+    int[][][] mask = this.operations.saveImage("mask");
+    int[][][] output = this.operations.saveImage("man-mask-man-intensity");
+
+    for (int i = 0; i < original.length; i++) {
+      for (int j = 0; j < original[0].length; j++) {
+        if (mask[i][j][0] == 0 && mask[i][j][1] == 0 && mask[i][j][2] == 0) {
+          assertEquals(output[i][j][0], temp[i][j][0]);
+          assertEquals(output[i][j][1], temp[i][j][1]);
+          assertEquals(output[i][j][2], temp[i][j][2]);
+        } else {
+          assertEquals(output[i][j][0], original[i][j][0]);
+          assertEquals(output[i][j][1], original[i][j][1]);
+          assertEquals(output[i][j][2], original[i][j][2]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check if the mask works correct
+   * for luma-component.
+   */
+  @Test
+  public void checkMaskLumaComponent() {
+    this.operations.getBrightnessComponent("man", "man-luma",
+            "luma-component");
+    int[][][] original = this.operations.saveImage("man");
+    int[][][] temp = this.operations.saveImage("man-luma");
+    this.operations.mask("man", "man-luma",
+            "mask", "man-mask-man-luma");
+    int[][][] mask = this.operations.saveImage("mask");
+    int[][][] output = this.operations.saveImage("man-mask-man-luma");
+
+    for (int i = 0; i < original.length; i++) {
+      for (int j = 0; j < original[0].length; j++) {
+        if (mask[i][j][0] == 0 && mask[i][j][1] == 0 && mask[i][j][2] == 0) {
+          assertEquals(output[i][j][0], temp[i][j][0]);
+          assertEquals(output[i][j][1], temp[i][j][1]);
+          assertEquals(output[i][j][2], temp[i][j][2]);
+        } else {
+          assertEquals(output[i][j][0], original[i][j][0]);
+          assertEquals(output[i][j][1], original[i][j][1]);
+          assertEquals(output[i][j][2], original[i][j][2]);
+        }
+      }
+    }
+  }
+
 }

@@ -1,6 +1,6 @@
 package controller;
 
-import model.OperationsV2;
+import model.OperationsV3;
 
 
 /**
@@ -48,7 +48,7 @@ class RGBCombine extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(OperationsV2 operations) {
+  public boolean execute(OperationsV3 operations) {
     this.imageCheck(operations, this.redImage);
     this.imageCheck(operations, this.greenImage);
     this.imageCheck(operations, this.blueImage);

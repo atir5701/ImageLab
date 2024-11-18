@@ -3,8 +3,8 @@ import java.io.InputStreamReader;
 import controller.CommandReader;
 import controller.ImageAppController;
 import controller.MVCController;
-import model.ImageOperationsV2;
-import model.OperationsV2;
+import model.ImageOperationsV3;
+import model.OperationsV3;
 import view.GuiView;
 import view.IView;
 import view.ProgramView;
@@ -25,29 +25,36 @@ public class ImageProcessingApplication {
    * Function initializes the objects of view, controller
    * and model.
    * From here the entire control is given to the controller class.
+   * Also from here the program determines which how will the user
+   * interacts with the program, whether GUI, direct script based or
+   * command line based.
    *
    * @param args the standard argument given to read data from
    *             command prompt.
    */
   public static void main(String[] args) {
-    OperationsV2 operations = new ImageOperationsV2();
-    ProgramView view = new ViewHandler(System.out);
-    IView v = new GuiView("Image Processing Application");
-
-//    ImageAppController src;
-//    if (args.length == 0) {
-//      src = new CommandReader(operations, new InputStreamReader(System.in), view);
-//    } else {
-//      StringBuilder nonInteractive = new StringBuilder();
-//      for (String arg : args) {
-//        nonInteractive.append(arg).append(" ");
-//      }
-//      nonInteractive.append("\n").append("quit");
-//      Reader in = new StringReader(nonInteractive.toString());
-//      src = new CommandReader(operations, in, view);
-//    }
-//    src.startApplication();
-    MVCController m = new MVCController();
-    m.go(operations,v);
+    OperationsV3 operations = new ImageOperationsV3();
+    if (args.length != 0) {
+      ImageAppController src;
+      ProgramView view = new ViewHandler(System.out);
+      if (args[0].equals("-file")) {
+        StringBuilder nonInteractive = new StringBuilder();
+        for (String arg : args) {
+          nonInteractive.append(arg).append(" ");
+        }
+        nonInteractive.append("\n").append("quit");
+        Reader in = new StringReader(nonInteractive.toString());
+        src = new CommandReader(operations, in, view);
+      } else if (args[0].equals("-text")) {
+        src = new CommandReader(operations, new InputStreamReader(System.in), view);
+      } else {
+        return;
+      }
+      src.startApplication();
+    } else {
+      IView view = new GuiView("Image Processing Application");
+      MVCController mvcController = new MVCController(operations,view);
+      mvcController.startGUIBasedApplication();
+    }
   }
 }

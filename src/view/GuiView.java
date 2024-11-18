@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -12,6 +14,20 @@ import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.Features;
+
+/**
+ * The GuiView class implements the IView interface and
+ * serves as the main graphical user interface
+ * for the image processing application.
+ * It handles the layout and functionality of the GUI,
+ * including buttons for various image processing
+ * operations such as blur, sepia, sharpening,
+ * brightness adjustment, and more.
+ * This class contains the necessary logic for
+ * handling user input, displaying results,
+ * and interacting with the image processing
+ * features of the application.
+ */
 
 public class GuiView extends JFrame implements IView {
   private JToggleButton loadButton;
@@ -28,17 +44,24 @@ public class GuiView extends JFrame implements IView {
   private JButton lumaButton;
   private JButton hflipButton;
   private JButton vflipButton;
+  private JButton brightButton;
   private JButton compressButton;
   private JButton splitButton;
   private JButton applyButton;
   private JButton cancelButton;
   private JButton adjButton;
-  private JButton previewButtonLevel;
-  private JButton applyButtonLevel;
-  private JButton splitButtonComp;
-  private JButton applyButtonComp;
+  private JButton previewLevel;
+  private JButton applyLevel;
+  private JButton previewComp;
+  private JButton applyComp;
+  private JButton previewBright;
+  private JButton applyBright;
+  private JButton downScaleButton;
+  private JButton applyDown;
+  private JButton previewDown;
   private JLabel imageLabel;
   private JLabel histogramLabel;
+  private JLabel messageLabel;
   private String imageName;
   private String commandName;
   private JPanel topPanel;
@@ -48,17 +71,29 @@ public class GuiView extends JFrame implements IView {
   private JPanel histogramPanel;
   private JPanel inputPanel;
   private JPanel buttonPanel;
+  private JPanel top;
   private JFrame splitFrame;
   private JTextField bField;
   private JTextField mField;
   private JTextField wField;
   private JTextField pField;
+  private JTextField heightField;
+  private JTextField widthField;
+  private JTextField brightnessField;
   private Font font;
   private boolean isSplitFrameOpen = false;
 
+  /**
+   * Constructs the main GUI view for the
+   * image processing application.
+   * Initializes the components,
+   * layout, panels, and sets up window behavior.
+   *
+   * @param caption The title to be displayed on the main window.
+   */
   public GuiView(String caption) {
     this.setTitle(caption);
-    this.setSize(800, 600);
+    this.setMinimumSize(new Dimension(1100, 700));
     this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     this.setResizable(true);
     this.initializeComponents();
@@ -119,12 +154,19 @@ public class GuiView extends JFrame implements IView {
         }
       }
     });
-
     this.add(splitPane, BorderLayout.CENTER);
     this.pack();
     this.setVisible(true);
   }
 
+  /**
+   * Initializes all GUI components for the image processing application.
+   * This includes buttons for image manipulation operations such as
+   * loading, saving, applying color filters, adjusting brightness,
+   * color correction, compression, and flipping the image.
+   * Components like labels and toggle buttons are also initialized
+   * to enable various functionality in the GUI.
+   */
   private void initializeComponents() {
     this.font = new Font("SansSerif", Font.BOLD, 14);
     this.loadButton = new JToggleButton("Load Image");
@@ -135,35 +177,57 @@ public class GuiView extends JFrame implements IView {
     this.redButton = new JButton("Red-component");
     this.greenButton = new JButton("Green-component");
     this.blueButton = new JButton("Blue-component");
-    this.valueButton = new JButton("Value-component");
-    this.lumaButton = new JButton("Luma-component");
-    this.intensityButton = new JButton("Intensity-component");
+    this.valueButton = new JButton("Greyscale-Value");
+    this.lumaButton = new JButton("Greyscale-Luma");
+    this.intensityButton = new JButton("Greyscale-Intensity");
     this.hflipButton = new JButton("Horizontal-Flip");
     this.vflipButton = new JButton("Vertical-Flip");
+    this.brightButton = new JButton("Brightness-Change");
     this.colorCorrectionButton = new JButton("Color Correction");
+    this.downScaleButton = new JButton("Downscale");
     this.compressButton = new JButton("Compression");
     this.adjButton = new JButton("Levels-Adjust");
-    this.previewButtonLevel = new JButton("Preview");
-    this.applyButtonLevel = new JButton("Apply");
+    this.previewLevel = new JButton("Preview");
+    this.applyLevel = new JButton("Apply");
     this.splitButton = new JButton("Preview");
     this.applyButton = new JButton("Apply");
     this.cancelButton = new JButton("Cancel");
-    this.splitButtonComp = new JButton("Preview");
-    this.applyButtonComp = new JButton("Apply");
+    this.previewComp = new JButton("Preview");
+    this.applyComp = new JButton("Apply");
+    this.previewBright = new JButton("Preview");
+    this.applyBright = new JButton("Apply");
+    this.applyDown = new JButton("Apply");
+    this.previewDown = new JButton("Preview");
     this.imageLabel = new JLabel();
     this.histogramLabel = new JLabel();
   }
 
+  /**
+   * Creates and configures the top panel of the GUI, which contains
+   * buttons for loading and saving images.
+   * This panel uses a flow layout aligned to the left with specified padding.
+   * A titled border with a customized font is added to distinguish the panel's purpose.
+   */
   private void createTopPanel() {
     this.topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
     this.topPanel.add(loadButton);
     this.topPanel.add(saveButton);
     TitledBorder border = BorderFactory.createTitledBorder("Load and Save");
-    border.setTitleFont(font);
+    border.setTitleFont(this.font);
     border.setTitleJustification(TitledBorder.LEFT);
     this.topPanel.setBorder(border);
   }
 
+  /**
+   * Creates and configures the operational panel,
+   * which contains buttons for
+   * various image processing operations
+   * (e.g., blur, sepia, sharpen, color adjustments).
+   * The panel uses a GridBagLayout to arrange the buttons
+   * in a grid structure with consistent padding between them.
+   * Each button is given a standard size, and the
+   * panel has a titled border to label it as the "Operations" section.
+   */
   private void createOperationalPanel() {
     this.operationPanel = new JPanel();
     this.operationPanel.setLayout(new GridBagLayout());
@@ -174,9 +238,11 @@ public class GuiView extends JFrame implements IView {
     gbc.insets = new Insets(5, 5, 5, 5);
 
     Dimension buttonSize = new Dimension(150, 40);
-    JButton[] buttons = {blurButton, sepiaButton, sharpenButton, colorCorrectionButton,
-            redButton, greenButton, blueButton, valueButton, lumaButton, intensityButton,
-            hflipButton, vflipButton, compressButton, adjButton};
+    JButton[] buttons = {this.blurButton, this.sepiaButton, this.sharpenButton,
+            this.colorCorrectionButton, this.redButton, this.greenButton,
+            this.blueButton, this.valueButton, this.lumaButton, this.intensityButton,
+            this.hflipButton, this.vflipButton, this.brightButton, this.compressButton,
+            this.adjButton, this.downScaleButton};
 
     for (JButton button : buttons) {
       setButtonProperties(button, buttonSize);
@@ -184,16 +250,33 @@ public class GuiView extends JFrame implements IView {
     }
 
     TitledBorder b = BorderFactory.createTitledBorder("Operations");
-    b.setTitleFont(font);
+    b.setTitleFont(this.font);
     b.setTitleJustification(TitledBorder.LEFT);
-    operationPanel.setBorder(b);
+    this.operationPanel.setBorder(b);
   }
 
+  /**
+   * Adds a button to the operational panel with
+   * specified layout constraints.
+   * Each button is added in a new row by
+   * incrementing the grid's y-coordinate.
+   *
+   * @param button the JButton to add to the panel
+   * @param gbc    the GridBagConstraints to specify the button's layout
+   */
   private void addButton(JButton button, GridBagConstraints gbc) {
     this.operationPanel.add(button, gbc);
     gbc.gridy++;
   }
 
+  /**
+   * Creates and configures the image panel,
+   * which displays the image in the center.
+   * The panel uses a BorderLayout to center the image label.
+   * A titled border is added to label the section as "Image".
+   * After configuring the panel, the initial image setup
+   * method is called to initialize the image display.
+   */
   private void createImagePanel() {
     this.imagePanel = new JPanel(new BorderLayout());
     this.imagePanel.add(this.imageLabel, BorderLayout.CENTER);
@@ -204,6 +287,14 @@ public class GuiView extends JFrame implements IView {
     this.initialImagePanel();
   }
 
+  /**
+   * Creates and configures the histogram panel,
+   * which displays the histogram of the image.
+   * The panel uses a BorderLayout to center
+   * the histogram label.
+   * A titled border is added to label the
+   * section as "Histogram of Image".
+   */
   private void createHistogramPanel() {
     this.histogramPanel = new JPanel(new BorderLayout());
     this.histogramPanel.add(this.histogramLabel, BorderLayout.CENTER);
@@ -213,12 +304,29 @@ public class GuiView extends JFrame implements IView {
     this.histogramPanel.setBorder(b);
   }
 
+  /**
+   * Sets uniform properties for a given button,
+   * including preferred size and text alignment.
+   * This method ensures that the button has a
+   * consistent size and that its text is centered
+   * both horizontally and vertically.
+   *
+   * @param button the JButton whose properties are to be set
+   * @param size   the preferred size of the button
+   */
   private void setButtonProperties(JButton button, Dimension size) {
     button.setPreferredSize(size); // Set uniform button size
     button.setHorizontalAlignment(SwingConstants.CENTER);
     button.setVerticalAlignment(SwingConstants.CENTER);// Horizontally center text
   }
 
+  /**
+   * Initializes the image panel with a placeholder
+   * label and adds a scroll pane to allow scrolling
+   * if the image exceeds the panel's dimensions.
+   * The label prompts the user to load an image
+   * for using the application.
+   */
   private void initialImagePanel() {
     JLabel label = new JLabel("Load an Image for using the application.",
             SwingConstants.CENTER);
@@ -227,8 +335,42 @@ public class GuiView extends JFrame implements IView {
     this.imagePanel.add(scroll);
   }
 
+  /**
+   * Adds action listeners to all the buttons in the GUI,
+   * linking each button to its corresponding image processing
+   * feature method.
+   * These actions allow the user to interact with the application
+   * by triggering various image processing operations,
+   * such as loading, saving, applying filters,
+   * and adjusting properties of the image.
+   * Attaches the feature controller to the view,
+   * allowing the controller to handle
+   * user actions from the view.
+   *
+   * @param features the controller interface that
+   *                 provides the core functionality
+   *                 of the application.
+   */
   @Override
   public void addFeature(Features features) {
+    this.addFeatureToButton(features);
+    this.addSplitOperationButton(features);
+    this.addCompressionButton(features);
+    this.addLevelAdjustButton(features);
+    this.addBrightButton(features);
+    this.addDownScalingButton(features);
+  }
+
+  /**
+   * Adds action listeners to all the buttons related to image processing operations.
+   * This method links each button to the corresponding method in the `Features` controller,
+   * enabling the user to perform various operations such as loading, saving, applying filters,
+   * and adjusting properties of the image.
+   *
+   * @param features the controller interface that provides the core functionality of the application,
+   *                 such as loading, saving, and processing the image.
+   */
+  private void addFeatureToButton(Features features) {
     this.loadButton.addActionListener(e -> features.loadImage());
     this.saveButton.addActionListener(e -> features.saveImage(this.imageName));
     this.blurButton.addActionListener(e -> features.applyBlur(this.imageName));
@@ -243,94 +385,285 @@ public class GuiView extends JFrame implements IView {
     this.intensityButton.addActionListener(e -> features.applyIntensity(this.imageName));
     this.hflipButton.addActionListener(e -> features.applyHorizontalFlip(this.imageName));
     this.vflipButton.addActionListener(e -> features.applyVerticalFlip(this.imageName));
+    this.downScaleButton.addActionListener(e -> features.applyDownScale(this.imageName));
     this.colorCorrectionButton.addActionListener(e -> features.applyColorCorrect(this.imageName));
     this.adjButton.addActionListener(e -> features.applyLevelAdjust(this.imageName));
+    this.brightButton.addActionListener(e -> features.applyBrightness(this.imageName));
+  }
 
+  /**
+   * Adds action listeners to the buttons related to the split operation,
+   * which allow the user to apply a split operation to the image.
+   * This method links the buttons to the corresponding methods in the `Features` controller
+   * and handles showing success messages upon completion of the operation.
+   *
+   * @param features the controller interface responsible for applying
+   *                 the split operation to the image.
+   */
+  private void addSplitOperationButton(Features features) {
     this.splitButton.addActionListener(e -> features.applySplit(this.pField.getText(),
             this.commandName, this.imageName));
     this.applyButton.addActionListener(e -> features.commandGenerator(this.commandName,
             this.imageName));
     this.applyButton.addActionListener(e -> {
       this.splitFrame.setVisible(false);
-      JOptionPane.showMessageDialog(this, "Filter applied successfully.",
-              "Filter Applied", JOptionPane.INFORMATION_MESSAGE);
+      this.successMessage("Filter applied successfully.");
       this.splitFrame.dispose();
       this.isSplitFrameOpen = false;
     });
-
     this.cancelButton.addActionListener(e -> {
       this.splitFrame.setVisible(false);
       this.splitFrame.dispose();
       this.isSplitFrameOpen = false;
     });
+  }
 
-    this.splitButtonComp.addActionListener(e -> features.getCompress(this.pField.getText(),
+  /**
+   * Adds action listeners to the buttons related to image compression operations,
+   * enabling the user to apply compression to the image.
+   * The method links the buttons to the appropriate methods in the `Features` controller
+   * and handles displaying success messages after the compression is applied.
+   *
+   * @param features the controller interface responsible
+   *                 for applying compression to the image.
+   */
+  private void addCompressionButton(Features features) {
+    this.previewComp.addActionListener(e -> features.getCompress(this.pField.getText(),
             this.imageName));
-    this.applyButtonComp.addActionListener(e -> {
+    this.applyComp.addActionListener(e -> {
       boolean t = features.generateCompress(this.pField.getText(), this.imageName);
       if (!t) {
         return;
       }
       this.splitFrame.setVisible(false);
-      JOptionPane.showMessageDialog(this, "Filter applied successfully.",
-              "Filter Applied", JOptionPane.INFORMATION_MESSAGE);
+      this.successMessage("Compress applied successfully.");
       this.splitFrame.dispose();
       this.isSplitFrameOpen = false;
 
     });
+  }
 
-    this.previewButtonLevel.addActionListener(e -> features.getLevelAdjust(this.imageName,
+  /**
+   * Adds action listeners to the buttons related to level adjustment operations,
+   * which allow the user to adjust the levels of the image.
+   * The method links the buttons to the corresponding methods in the `Features` controller
+   * and ensures that success messages are shown when the operation is applied.
+   *
+   * @param features the controller interface that handles level
+   *                 adjustment operations for the image.
+   */
+  private void addLevelAdjustButton(Features features) {
+    this.previewLevel.addActionListener(e -> features.getLevelAdjust(this.imageName,
             this.bField.getText(), this.mField.getText(), this.wField.getText(),
             this.pField.getText()));
 
-    this.applyButtonLevel.addActionListener(e -> {
+    this.applyLevel.addActionListener(e -> {
       boolean t = features.generateLevelAdjust(this.bField.getText(), this.mField.getText(),
               this.wField.getText(), this.imageName);
       if (!t) {
         return;
       }
       this.splitFrame.setVisible(false);
-      JOptionPane.showMessageDialog(this, "Filter applied successfully.",
-              "Filter Applied", JOptionPane.INFORMATION_MESSAGE);
+      this.successMessage("Operation applied successfully.");
+      this.splitFrame.dispose();
+      this.isSplitFrameOpen = false;
+    });
+  }
+
+  /**
+   * Adds action listeners to the brightness-related buttons,
+   * enabling the user to preview and apply brightness adjustments to the image.
+   * The method links the buttons to the appropriate methods in the `Features` controller
+   * and displays success messages when the brightness operation is completed.
+   *
+   * @param features the controller interface
+   *                 that handles brightness adjustments for the image.
+   */
+  private void addBrightButton(Features features) {
+    this.previewBright.addActionListener(e -> features.getBright(this.imageName,
+            this.brightnessField.getText()));
+    this.applyBright.addActionListener(e -> {
+      boolean t = features.generateBright(this.imageName, this.brightnessField.getText());
+      if (!t) {
+        return;
+      }
+      this.splitFrame.setVisible(false);
+      this.successMessage("Operation applied successfully.");
       this.splitFrame.dispose();
       this.isSplitFrameOpen = false;
     });
 
   }
 
+  /**
+   * Adds action listeners to the downscale-related buttons,
+   * allowing the user to preview and apply downscaling operations to the image.
+   * The method links the buttons to the corresponding methods in the Features controller
+   * and handles showing success messages once the downscaling operation is complete.
+   *
+   * @param features the controller interface that
+   *                 manages downscaling operations for the image.
+   */
+  private void addDownScalingButton(Features features) {
+    this.previewDown.addActionListener(e -> features.getDown(this.imageName,
+            this.widthField.getText(), this.heightField.getText()));
+    this.applyDown.addActionListener(e -> {
+      boolean t = features.generateDown(this.imageName, this.widthField.getText(),
+              this.heightField.getText());
+      if (!t) {
+        return;
+      }
+      this.splitFrame.setVisible(false);
+      this.successMessage("Operation applied successfully.");
+      this.splitFrame.dispose();
+      this.isSplitFrameOpen = false;
+    });
+  }
+
+  /**
+   * Initializes and configures the split frame for
+   * displaying operations such as previewing
+   * and applying image transformations.
+   * The frame is set up with specific dimensions, and
+   * contains panels for user input , buttons, and a placeholder for
+   * the image preview.
+   * The method ensures the frame is resizable,
+   * positioned relative to the main
+   * window, and handles the closing event to
+   * properly dispose of the frame and update the state.
+   *
+   * @param frameName the name to be given to the split frame window
+   */
   private void initializeFrame(String frameName) {
     this.splitFrame = new JFrame(frameName);
     this.splitFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     this.splitFrame.setResizable(true);
     int height = (int) (this.getHeight() * 0.8);
     int width = (int) (this.getWidth() * 0.9);
+
     this.splitFrame.setSize(width, height);
-    this.splitFrame.setMinimumSize(new Dimension(width, height));
+    this.splitFrame.setMinimumSize(new Dimension(900, 650));
     this.splitFrame.setLayout(new BorderLayout());
     this.splitFrame.setLocationRelativeTo(this);
-    this.inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-    this.buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+    this.top = new JPanel();
+    this.top.setLayout(new BoxLayout(this.top, BoxLayout.Y_AXIS));
+    this.top.setPreferredSize(new Dimension(width, 120));
+    this.inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
+
+    JLabel label = new JLabel("Enter a Percentage: ");
+    this.pField = new JTextField("50",5);
+    this.messageLabel = new JLabel("");
+    messageLabel.setForeground(Color.RED);
+    messageLabel.setVisible(false);
+
+    this.pField.addFocusListener(new FocusAdapter() {
+      @Override
+      public void focusGained(FocusEvent e) {
+        setMessageValue("Percentage must be between 0 to 100");
+        messageLabel.setVisible(true);
+      }
+
+      @Override
+      public void focusLost(FocusEvent e) {
+        messageLabel.setVisible(false);
+      }
+    });
+
+    this.inputPanel.add(this.pField, 0);
+    this.inputPanel.add(label, 0);
+
+    this.buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+    this.buttonPanel.add(this.cancelButton);
+
+    JPanel messagePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    messagePanel.add(messageLabel);
+    this.top.add(inputPanel);
+    this.top.add(messagePanel);
+    this.top.add(buttonPanel);
+
     this.splitImagePanel = new JPanel();
     this.splitImagePanel.setLayout(new BorderLayout());
     JLabel placeholderLabel = new JLabel("Enter value and then press preview to " +
             "get the preview of the operation.", JLabel.CENTER);
     this.splitImagePanel.add(placeholderLabel, BorderLayout.CENTER);
-    this.splitImagePanel.setPreferredSize(new Dimension(500, 500));
-    this.splitFrame.add(this.inputPanel, BorderLayout.NORTH);
-    this.splitFrame.add(this.splitImagePanel, BorderLayout.CENTER);
-    this.splitFrame.add(this.buttonPanel, BorderLayout.SOUTH);
+    JPanel bottom = new JPanel(new BorderLayout());
+    bottom.add(this.splitImagePanel, BorderLayout.CENTER);
+    this.splitFrame.add(top, BorderLayout.NORTH);
+    this.splitFrame.add(bottom, BorderLayout.CENTER);
     this.isSplitFrameOpen = true;
     this.splitFrame.addWindowListener(new java.awt.event.WindowAdapter() {
       @Override
       public void windowClosing(java.awt.event.WindowEvent e) {
-        isSplitFrameOpen = false; // Reset flag on close
+        isSplitFrameOpen = false;
         if (splitFrame != null) {
           splitFrame.dispose();
         }
       }
     });
+    this.splitFrame.pack();
+    this.splitFrame.setVisible(true);
   }
 
+  /**
+   * Updates the text displayed on the message label with the provided value.
+   * This method allows dynamic updates to the message displayed on the label,
+   * enabling the application to provide feedback or guidance to the user
+   * based on specific actions or input.
+   *
+   * @param p the message to be displayed on the label.
+   */
+  private void setMessageValue(String p) {
+    this.messageLabel.setText(p);
+  }
+
+  /**
+   * Initializes and configures the split frame to allow
+   * the user to adjust the brightness or darkness of an image.
+   * The method sets up the input panel with a text field for entering
+   * the brightness value, and adds buttons for
+   * previewing and applying the adjustment.
+   * It also handles the display of the image preview
+   * and ensures that the frame is properly
+   * set up for the brightness operation.
+   */
+  @Override
+  public void brightness() {
+    if (this.checkingFrame()) {
+      return;
+    }
+    this.initializeFrame("Brightness or Darkness Preview");
+    this.inputPanel.removeAll();
+    JLabel label = new JLabel("Enter a Value: ");
+    this.inputPanel.add(label);
+    this.brightnessField = new JTextField(5);
+    this.brightnessField.addFocusListener(new FocusAdapter() {
+      @Override
+      public void focusGained(FocusEvent e) {
+        setMessageValue("The value must be an Integer Value.");
+        messageLabel.setVisible(true);
+      }
+
+      @Override
+      public void focusLost(FocusEvent e) {
+        messageLabel.setVisible(false);
+      }
+    });
+    this.inputPanel.add(this.brightnessField);
+    this.buttonPanel.add(this.applyBright, 0);
+    this.buttonPanel.add(this.previewBright, 0);
+  }
+
+  /**
+   * Checks if a split frame is already open.
+   * If an operation pop-up is currently open,
+   * it displays an error message and brings
+   * the existing frame to the front.
+   * If no frame is open, it returns false,
+   * allowing the new operation to proceed.
+   *
+   * @return true if a split frame is already open, false otherwise
+   */
   private boolean checkingFrame() {
     if (isSplitFrameOpen) {
       JOptionPane.showMessageDialog(this.splitFrame,
@@ -343,75 +676,194 @@ public class GuiView extends JFrame implements IView {
     return false;
   }
 
+  /**
+   * Initializes and configures the split frame for
+   * previewing a specific image operation.
+   * It checks if another frame is open, and
+   * if not, sets up the input panel, buttons
+   * for previewing, applying, and canceling
+   * the operation.
+   * The frame is then displayed with the necessary
+   * components for the user to interact with.
+   *
+   * @param commandName the name of the operation
+   *                    that is being previewed
+   */
   @Override
-  public void splitPreview(String commandName) {
+  public boolean splitPreview(String commandName) {
     if (this.checkingFrame()) {
-      return;
+      return false;
     }
     this.commandName = commandName;
+
     this.initializeFrame("Preview " + commandName);
-    JLabel label = new JLabel("Enter a Percentage: ");
-    this.inputPanel.add(label);
-    this.pField = new JTextField("50", 5);
-    this.inputPanel.add(this.pField);
-    this.buttonPanel.add(this.splitButton);
-    this.buttonPanel.add(this.applyButton);
-    this.buttonPanel.add(this.cancelButton);
-    this.splitFrame.add(this.inputPanel, BorderLayout.NORTH);
-    this.splitFrame.add(this.buttonPanel, BorderLayout.CENTER);
-    this.splitFrame.add(this.splitImagePanel, BorderLayout.SOUTH);
-    this.splitFrame.pack();
-    this.splitFrame.setVisible(true);
+    this.buttonPanel.add(this.applyButton, 0);
+    this.buttonPanel.add(this.splitButton, 0);
+    return true;
   }
 
+  /**
+   * Initializes and configures the split frame for
+   * performing level adjustment on the image.
+   * The method sets up input fields for the
+   * user to enter the black, mid, and white values
+   * and adds buttons for previewing, applying,
+   * and canceling the adjustment.
+   * The frame is then displayed, allowing the user to preview
+   * the effect of the adjustment and apply it if desired.
+   */
   @Override
-  public void LevelAdjust() {
+  public void levelAdjust() {
     if (this.checkingFrame()) {
       return;
     }
     this.initializeFrame("Level Adjustment Preview");
+    this.pField.setText("");
     this.bField = new JTextField(5);
+    this.bField.addFocusListener(new FocusAdapter() {
+      @Override
+      public void focusGained(FocusEvent e) {
+        setMessageValue("The value of b must be between 0 and 255, " +
+                "and it should be smaller than both m and w.");
+        messageLabel.setVisible(true);
+      }
+
+      @Override
+      public void focusLost(FocusEvent e) {
+        messageLabel.setVisible(false);
+      }
+    });
     this.mField = new JTextField(5);
+    this.mField.addFocusListener(new FocusAdapter() {
+      @Override
+      public void focusGained(FocusEvent e) {
+        setMessageValue("The value of m must be between 0 and 255, and it should be" +
+                " smaller than w but larger than b.");
+        messageLabel.setVisible(true);
+      }
+
+      @Override
+      public void focusLost(FocusEvent e) {
+        messageLabel.setVisible(false);
+      }
+    });
     this.wField = new JTextField(5);
-    this.pField = new JTextField("50", 5);
-    this.inputPanel.add(new JLabel("Enter Black Value : "));
-    this.inputPanel.add(this.bField);
-    this.inputPanel.add(new JLabel("Enter Mid Value : "));
-    this.inputPanel.add(this.mField);
-    this.inputPanel.add(new JLabel("Enter White Value : "));
-    this.inputPanel.add(this.wField);
-    this.inputPanel.add(new JLabel("Percentage: "));
-    this.inputPanel.add(this.pField);
-    this.buttonPanel.add(this.previewButtonLevel);
-    this.buttonPanel.add(this.applyButtonLevel);
-    this.buttonPanel.add(this.cancelButton);
-    this.splitFrame.add(this.inputPanel, BorderLayout.NORTH);
-    this.splitFrame.add(this.buttonPanel, BorderLayout.CENTER);
-    this.splitFrame.add(this.splitImagePanel, BorderLayout.SOUTH);
-    this.splitFrame.pack();
-    this.splitFrame.setVisible(true);
+    this.wField.addFocusListener(new FocusAdapter() {
+      @Override
+      public void focusGained(FocusEvent e) {
+        setMessageValue("The value of w must be between 0 and 255, " +
+                "and it should be greater than both b and m.");
+        messageLabel.setVisible(true);
+      }
+
+      @Override
+      public void focusLost(FocusEvent e) {
+        messageLabel.setVisible(false);
+      }
+    });
+    this.inputPanel.add(this.wField, 0);
+    this.inputPanel.add(new JLabel("Enter White Value : "), 0);
+    this.inputPanel.add(this.mField, 0);
+    this.inputPanel.add(new JLabel("Enter Mid Value : "), 0);
+    this.inputPanel.add(this.bField, 0);
+    this.inputPanel.add(new JLabel("Enter Black Value : "), 0);
+    this.buttonPanel.add(this.applyLevel, 0);
+    this.buttonPanel.add(this.previewLevel, 0);
   }
 
+  /**
+   * Initializes and configures the split frame
+   * for previewing image compression.
+   * The method checks if another frame is
+   * open, and if not, sets up the necessary components
+   * such as buttons for previewing, applying,
+   * and canceling the compression operation.
+   * The frame is then displayed, allowing the
+   * user to interact with it and preview the
+   * compression effect before applying it.
+   */
   @Override
   public void compressImage() {
     if (this.checkingFrame()) {
       return;
     }
     this.initializeFrame("Compression Preview");
-    JLabel label = new JLabel("Enter a Percentage: ");
-    this.inputPanel.add(label);
-    this.pField = new JTextField("50", 5);
-    this.inputPanel.add(this.pField);
-    this.buttonPanel.add(this.splitButtonComp);
-    this.buttonPanel.add(this.applyButtonComp);
-    this.buttonPanel.add(this.cancelButton);
-    this.splitFrame.add(this.inputPanel, BorderLayout.NORTH);
-    this.splitFrame.add(this.buttonPanel, BorderLayout.CENTER);
-    this.splitFrame.add(this.splitImagePanel, BorderLayout.SOUTH);
-    this.splitFrame.pack();
-    this.splitFrame.setVisible(true);
+    this.pField.setText("");
+    this.buttonPanel.add(this.applyComp, 0);
+    this.buttonPanel.add(this.previewComp, 0);
   }
 
+  /**
+   * Initializes and configures the split frame
+   * for previewing down scaling of image.
+   * The method checks if another frame is
+   * open, and if not, sets up the necessary components
+   * such as buttons for previewing, applying,
+   * and canceling the compression operation.
+   * The frame is then displayed, allowing the
+   * user to interact with it and preview the
+   * downscale effect before applying it.
+   */
+  @Override
+  public void downScale(int height, int width) {
+    if (this.checkingFrame()) {
+      return;
+    }
+    this.initializeFrame("Down Scale Preview");
+    this.inputPanel.removeAll();
+    JPanel information = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    JLabel heightLabel = new JLabel("Current Image Height : " + height + " ");
+    JLabel widthLabel = new JLabel("Current Image Width : " + width);
+    information.add(heightLabel);
+    information.add(widthLabel);
+    this.top.add(information, 2);
+    this.widthField = new JTextField(5);
+    this.widthField.addFocusListener(new FocusAdapter() {
+      @Override
+      public void focusGained(FocusEvent e) {
+        setMessageValue("The value of width must be less than current " +
+                "Image width and non-negative");
+        messageLabel.setVisible(true);
+      }
+
+      @Override
+      public void focusLost(FocusEvent e) {
+        messageLabel.setVisible(false);
+      }
+    });
+    this.heightField = new JTextField(5);
+    this.heightField.addFocusListener(new FocusAdapter() {
+      @Override
+      public void focusGained(FocusEvent e) {
+        setMessageValue("The value of height must be less than current Image height" +
+                " and non-negative.");
+        messageLabel.setVisible(true);
+      }
+
+      @Override
+      public void focusLost(FocusEvent e) {
+        messageLabel.setVisible(false);
+      }
+    });
+    this.inputPanel.add(this.widthField, 0);
+    this.inputPanel.add(new JLabel("Enter Width Value : "), 0);
+    this.inputPanel.add(this.heightField, 0);
+    this.inputPanel.add(new JLabel("Enter Height Value : "), 0);
+    this.buttonPanel.add(this.applyDown, 0);
+    this.buttonPanel.add(this.previewDown, 0);
+  }
+
+  /**
+   * Opens a file chooser dialog to allow the
+   * user to select an image file.
+   * The dialog filters for files with extensions
+   * `.jpg`, `.jpeg`, `.png`, or `.ppm`.
+   * If the user selects a file,
+   * its absolute path is retrieved and returned as a `File` object.
+   *
+   * @return a `File` object representing the selected image file,
+   * or null if no file is selected.
+   */
   @Override
   public File getFilePath() {
     File f = null;
@@ -431,6 +883,18 @@ public class GuiView extends JFrame implements IView {
     return f;
   }
 
+  /**
+   * Opens a file chooser dialog to allow the user
+   * to select a location and format for saving an image.
+   * The user can choose from formats such as
+   * PNG, JPEG, JPG, or PPM.
+   * If the selected file does not
+   * have the correct file extension based on the
+   * selected format, the extension is automatically added.
+   *
+   * @return a `File` object representing the selected location,
+   * or null if the user cancels the operation
+   */
   @Override
   public File getSaveFilePath() {
     String[] formats = {"PNG", "JPEG", "JPG", "PPM"};
@@ -470,6 +934,17 @@ public class GuiView extends JFrame implements IView {
     }
   }
 
+  /**
+   * Displays the given image in the image panel of the GUI.
+   * This method updates the `imagePanel` with a new
+   * `JLabel` containing the image.
+   * The image is displayed inside a scroll
+   * pane with a preferred size of 300x300 pixels.
+   *
+   * @param name  the name of the image to be displayed
+   * @param image the `BufferedImage` object
+   *              representing the image to be shown
+   */
   @Override
   public void showImage(String name, BufferedImage image) {
     this.imageName = name;
@@ -482,6 +957,17 @@ public class GuiView extends JFrame implements IView {
     this.imagePanel.repaint();
   }
 
+  /**
+   * Displays the histogram of the given image in
+   * the histogram panel of the GUI.
+   * This method updates the `histogramPanel`
+   * with a new `JLabel` containing the histogram image.
+   * The histogram is displayed inside a scroll
+   * pane with a preferred size of 270x270 pixels.
+   *
+   * @param image the `BufferedImage` object
+   *              representing the image whose histogram is to be shown
+   */
   @Override
   public void showHistogram(BufferedImage image) {
     JLabel histogram = new JLabel(new ImageIcon(image));
@@ -493,14 +979,14 @@ public class GuiView extends JFrame implements IView {
     this.histogramPanel.repaint();
   }
 
-  @Override
-  public void showImageNotPresent() {
-    JOptionPane.showMessageDialog(this,
-            "No image loaded! Please load an image before applying Operations.",
-            "Error",
-            JOptionPane.ERROR_MESSAGE);
-  }
-
+  /**
+   * Checks if the user wants to overwrite the current image.
+   * If an image is loaded, this method shows a
+   * confirmation dialog asking whether
+   * the user is sure they want to overwrite the current image.
+   *
+   * @return true if the user chooses "Yes" to overwrite the image, false otherwise
+   */
   @Override
   public boolean checkImage() {
     if (this.imageName == null) {
@@ -516,6 +1002,15 @@ public class GuiView extends JFrame implements IView {
 
   }
 
+  /**
+   * Displays a split image in the split image panel.
+   * This method updates the `splitImagePanel`
+   * with a new `JLabel` containing the image.
+   * The image is displayed inside a scroll pane
+   * with a preferred size of 500x500 pixels.
+   *
+   * @param image the `BufferedImage` object representing the split image to be displayed
+   */
   @Override
   public void showSplitImage(BufferedImage image) {
     JLabel imgLabel = new JLabel(new ImageIcon(image));
@@ -527,6 +1022,12 @@ public class GuiView extends JFrame implements IView {
     this.splitImagePanel.repaint();
   }
 
+  /**
+   * Displays a success message after an image is
+   * successfully saved.
+   * This method shows a dialog box informing the
+   * user that the image has been saved successfully.
+   */
   @Override
   public void showSaveSuccess() {
     JOptionPane.showMessageDialog(
@@ -537,34 +1038,50 @@ public class GuiView extends JFrame implements IView {
     );
   }
 
+  /**
+   * Displays a success message after an operations on
+   * image is applied correctly.
+   * This method shows a dialog box informing the
+   * user that the operations has performed successfully.
+   */
+  private void successMessage(String msg) {
+    JOptionPane.showMessageDialog(
+            this,
+            msg,
+            "Success",
+            JOptionPane.INFORMATION_MESSAGE
+    );
+  }
+
+  /**
+   * Displays an error message in a modal dialog box.
+   * This method is used to inform the user about an error condition
+   * by showing a dialog box with the specified error message.
+   * The dialog is parented to the `splitFrame` component, ensuring
+   * that it stays associated with the application's split frame
+   * and appears in a contextually appropriate position.
+   *
+   * @param error the error message to display.
+   */
   @Override
-  public void showNumberError() {
+  public void showError(String error) {
     JOptionPane.showMessageDialog(this.splitFrame,
-            "Provide valid value of percentage.",
+            error,
             "Error",
             JOptionPane.ERROR_MESSAGE);
   }
 
+  /**
+   * Displays an error message when no image is
+   * loaded in the application.
+   * This method shows a dialog box informing
+   * the user that they need to load an image
+   * before performing any operations.
+   */
   @Override
-  public void showNullValueError() {
-    JOptionPane.showMessageDialog(this.splitFrame,
-            "All values (B, M, and W) must be provided and all must be numeric value.",
-            "Error",
-            JOptionPane.ERROR_MESSAGE);
-  }
-
-  @Override
-  public void showInvalidRangeError() {
-    JOptionPane.showMessageDialog(this.splitFrame,
-            "All values (B, M, and W) must be between 0 to 255",
-            "Error",
-            JOptionPane.ERROR_MESSAGE);
-  }
-
-  @Override
-  public void showOrderError() {
-    JOptionPane.showMessageDialog(this.splitFrame,
-            "Value of B,M and W must be in ascending order",
+  public void showImageNotPresent() {
+    JOptionPane.showMessageDialog(this,
+            "No image loaded! Please load an image before applying Operations.",
             "Error",
             JOptionPane.ERROR_MESSAGE);
   }

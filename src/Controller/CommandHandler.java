@@ -1,8 +1,7 @@
 package controller;
 
 
-import model.OperationsV2;
-import view.ProgramView;
+import model.OperationsV3;
 
 
 import java.util.HashMap;
@@ -18,9 +17,8 @@ import java.util.function.BiFunction;
 
 
 class CommandHandler {
-  private final OperationsV2 operations;
+  private final OperationsV3 operations;
   private final Map<String, BiFunction<String[], Integer, AbstractCommandExecuter>> commandMap;
-  private final ProgramView view;
 
   /**
    * Constructs a new instance of CommandHandler.
@@ -32,9 +30,8 @@ class CommandHandler {
    * blur, and sharpen, and manipulating color components.
    */
 
-  CommandHandler(OperationsV2 operations, ProgramView view) {
+  CommandHandler(OperationsV3 operations) {
     this.operations = operations;
-    this.view = view;
     commandMap = new HashMap<>();
     commandMap.put("load", (cmd, a) -> new Load(cmd, 3));
     commandMap.put("save", (cmd, a) -> new Save(cmd, 3));
@@ -74,7 +71,7 @@ class CommandHandler {
    *                                  found in the command map.
    */
 
-  void readCommand(String[] input) throws IllegalArgumentException {
+  boolean readCommand(String[] input) throws IllegalArgumentException {
 
     String command = input[0];
     BiFunction<String[], Integer, AbstractCommandExecuter> cmd = this.commandMap.get(command);
@@ -83,12 +80,7 @@ class CommandHandler {
     }
 
     AbstractCommandExecuter ex = cmd.apply(input, 0);
-    boolean status = ex.execute(operations);
-    if (status) {
-      this.view.setOutput(String.format(command + " executed successfully\n"));
-    } else {
-      this.view.setOutput(String.format(command + " not executed successfully\n"));
-    }
+    return ex.execute(operations);
   }
 
 

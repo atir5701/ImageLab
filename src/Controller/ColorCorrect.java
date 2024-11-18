@@ -1,6 +1,6 @@
 package controller;
 
-import model.OperationsV2;
+import model.OperationsV3;
 
 /**
  * A class that performs the task of performing the
@@ -73,7 +73,7 @@ class ColorCorrect extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(OperationsV2 operations) {
+  public boolean execute(OperationsV3 operations) {
     this.imageCheck(operations, this.currentImageName);
     if (this.percentage == 100.00) {
       return operations.colorCorrection(this.currentImageName, this.newImageName);

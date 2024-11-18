@@ -1,7 +1,7 @@
 package controller;
 
 
-import model.OperationsV2;
+import model.OperationsV3;
 
 /**
  * This interface defines the necessary method for
@@ -24,5 +24,5 @@ interface CommandExecuter {
    *                   which is to be executed on the input
    *                   image.
    */
-  boolean execute(OperationsV2 operations);
+  boolean execute(OperationsV3 operations);
 }

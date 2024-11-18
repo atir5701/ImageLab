@@ -1,6 +1,6 @@
 package controller;
 
-import model.OperationsV2;
+import model.OperationsV3;
 
 /**
  * A class that performs the LevelsAdjust operation on an
@@ -83,7 +83,7 @@ class LevelsAdjust extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(OperationsV2 operations) {
+  public boolean execute(OperationsV3 operations) {
     this.imageCheck(operations, this.currentImageName);
     if (this.percentage == 100.00) {
       return operations.levelAdjustment(this.currentImageName, this.newImageName, this.

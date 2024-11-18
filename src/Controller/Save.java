@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 import javax.imageio.ImageIO;
 
-import model.OperationsV2;
+import model.OperationsV3;
 
 /**
  * A class that performs the Save operation on an
@@ -23,7 +23,7 @@ class Save extends AbstractCommandExecuter {
   private final String filePath;
   private final String currentImageName;
   private final String extension;
-  private final Map<String, Function<OperationsV2, Boolean>> savingImage;
+  private final Map<String, Function<OperationsV3, Boolean>> savingImage;
 
   /**
    * Construct a Save command object.
@@ -63,9 +63,9 @@ class Save extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(OperationsV2 operations) {
+  public boolean execute(OperationsV3 operations) {
     this.imageCheck(operations, this.currentImageName);
-    Function<OperationsV2, Boolean> cmd = this.savingImage.get(this.extension);
+    Function<OperationsV3, Boolean> cmd = this.savingImage.get(this.extension);
     if (cmd == null) {
       throw new IllegalArgumentException("This extension is not Supported");
     }
@@ -93,7 +93,7 @@ class Save extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
 
-  private boolean save(OperationsV2 operations) {
+  private boolean save(OperationsV3 operations) {
     int[][][] arr = operations.saveImage(this.currentImageName);
     File file = new File(this.filePath);
     int width = arr[0].length;
@@ -126,7 +126,7 @@ class Save extends AbstractCommandExecuter {
    *                   save the image.
    */
 
-  private boolean savePPM(OperationsV2 operations) {
+  private boolean savePPM(OperationsV3 operations) {
     int[][][] arr = operations.saveImage(this.currentImageName);
     try {
       File output = new File(this.filePath);
@@ -135,10 +135,9 @@ class Save extends AbstractCommandExecuter {
       bw.write("#" + currentImageName + ".PPM Image\n");
       bw.write(arr[0].length + " " + arr.length + "\n");
       bw.write("255\n");
-
-      for (int i = 0; i < arr.length; i++) {
-        for (int j = 0; j < arr[i].length; j++) {
-          bw.write(arr[i][j][0] + " " + arr[i][j][1] + " " + arr[i][j][2] + " ");
+      for (int[][] ints : arr) {
+        for (int[] anInt : ints) {
+          bw.write(anInt[0] + " " + anInt[1] + " " + anInt[2] + " ");
         }
         bw.write("\n");
       }

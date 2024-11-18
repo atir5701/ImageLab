@@ -5,13 +5,12 @@ import org.junit.Before;
 import java.io.Reader;
 import java.io.StringReader;
 
-import model.OperationsV2;
+import model.OperationsV3;
 import view.ViewHandler;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
 
 
 /**
@@ -23,7 +22,7 @@ import org.junit.Test;
 public class ControllerMockTest {
   StringBuffer out;
   Reader in;
-  OperationsV2 mock;
+  OperationsV3 mock;
   StringBuilder log;
   ImageAppController controller;
   ViewHandler view;
@@ -34,7 +33,7 @@ public class ControllerMockTest {
   @Before
   public void setUp() {
     log = new StringBuilder();
-    mock = new ImageOperationsV2Mock(log);
+    mock = new ImageOperationsMock(log);
     out = new StringBuffer();
     view = new ViewHandler(out);
   }
@@ -493,5 +492,142 @@ public class ControllerMockTest {
     assertEquals(expected, log.toString());
   }
 
+  /**
+   * Test Case to check if the mask operation
+   * on the blur image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkBlurMask() {
+    in = new StringReader("blur man mask man-mask-blur");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "Blur man to man-mask-blur1567088117\n" +
+            "Mask on man to get man-mask-blur";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the mask operation
+   * on the sharpen image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkSharpenMask() {
+    in = new StringReader("sharpen man mask man-mask-sharpen");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "Sharpen man to man-mask-sharpen897370565\n" +
+            "Mask on man to get man-mask-sharpen";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the mask operation
+   * on the sepia image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkSepiaMask() {
+    in = new StringReader("sepia man mask man-mask-sepia");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "Sepia man to man-mask-sepia1350577704\n" +
+            "Mask on man to get man-mask-sepia";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the mask operation
+   * on the red-component image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkRedComponentMask() {
+    in = new StringReader("red-component man mask man-mask-red");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "GetColorComponent man to man-mask-red-919264957 0\n" +
+            "Mask on man to get man-mask-red";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the mask operation
+   * on the green-component image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkGreenComponentMask() {
+    in = new StringReader("green-component man mask man-mask-green");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "GetColorComponent man to man-mask-green1339872053 1\n" +
+            "Mask on man to get man-mask-green";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the mask operation
+   * on the blue-component image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkBlueComponentMask() {
+    in = new StringReader("blue-component man mask man-mask-blue");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "GetColorComponent man to man-mask-blue1567088104 2\n" +
+            "Mask on man to get man-mask-blue";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the mask operation
+   * on the value-component image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkValueComponentMask() {
+    in = new StringReader("value-component man mask man-mask-v");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "GetBrightnessComponent man to man-mask-v-537268824" +
+            " value-component\n" +
+            "Mask on man to get man-mask-v";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the mask operation
+   * on the luma-component image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkLumaComponentMask() {
+    in = new StringReader("luma-component man mask man-mask-luma");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "GetBrightnessComponent man to man-mask-luma1567394411 " +
+            "luma-component\n" +
+            "Mask on man to get man-mask-luma";
+    assertEquals(expected, log.toString());
+  }
+
+  /**
+   * Test Case to check if the mask operation
+   * on the intensity-component image is called correctly by
+   * controller.
+   */
+  @Test
+  public void checkIntensityComponentMask() {
+    in = new StringReader("intensity-component man mask man-mask-intensity");
+    controller = new CommandReader(mock, in, view);
+    controller.startApplication();
+    String expected = "GetBrightnessComponent man to man-mask-intensity1155380069 " +
+            "intensity-component\n" +
+            "Mask on man to get man-mask-intensity";
+    assertEquals(expected, log.toString());
+  }
 
 }

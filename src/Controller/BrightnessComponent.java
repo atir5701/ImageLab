@@ -1,6 +1,6 @@
 package controller;
 
-import model.OperationsV2;
+import model.OperationsV3;
 
 
 /**
@@ -15,14 +15,23 @@ class BrightnessComponent extends AbstractCommandExecuter {
   private final String newImageName;
   private final String handler;
   private final double percentage;
+  private final String maskImageName;
 
   /**
    * Construct a BrightnessComponent command object.
    * Validate the command length and initializes the image
    * names.
-   * As this command supports the split operation also so two check are made for
-   * the command length. If split is provided then percentage
-   * is set to the value provided by user else the value is set to 100.
+   * This constructor handles different command formats based on
+   * the provided input.
+   * It supports split and masking operations, with specific
+   * validation and initialization steps for each case.
+   * If the split operation is provided, the percentage is
+   * set to the value provided by the user; otherwise,
+   * it defaults to 100.
+   * If a mask is provided, the mask image name is set,
+   * and the masking operation is carried out accordingly.
+   * A check is performed to ensure the mask image
+   * exists if specified.
    *
    * @param cmd           the command array obtained by splitting
    *                      input using space.
@@ -34,10 +43,12 @@ class BrightnessComponent extends AbstractCommandExecuter {
       this.newImageName = cmd[2];
       this.handler = cmd[0];
       this.percentage = 100.00;
+      this.maskImageName = null;
     } else if (this.validCommandLength(cmd.length, 5)) {
       this.currentImageName = cmd[1];
       this.newImageName = cmd[2];
       this.handler = cmd[0];
+      this.maskImageName = null;
       if (!(cmd[3].equals("split"))) {
         throw new IllegalArgumentException("Invalid Command");
       }
@@ -49,40 +60,56 @@ class BrightnessComponent extends AbstractCommandExecuter {
       if (this.percentage < 0 || this.percentage > 100) {
         throw new IllegalArgumentException("Percentage must be between 0 and 100.");
       }
+    } else if (this.validCommandLength(cmd.length, 4)) {
+      this.currentImageName = cmd[1];
+      this.newImageName = cmd[3];
+      this.percentage = 100.00;
+      this.maskImageName = cmd[2];
+      this.handler = cmd[0];
     } else {
       throw new IllegalArgumentException("Invalid Command.");
     }
   }
 
   /**
-   * Execute the BrightnessComponent operation on the current image.
-   * The method first check if the image on which operation
-   * is to be done in present in the system or not.
-   * We pass a handler which denotes which specific Brightness Component
-   * is to be obtained from the input image.
-   * For the split operation a check if done on the value of the percentage,
-   * if the percentage is 100 then directly levels-adjust is applied.
-   * Else first the image is split, after split the operation is done on split
-   * half and at end the image is combines with the remaining half.
+   * Executes the brightness-component operation on the current image.
+   * The method first checks if the image on which
+   * the operation is to be performed is available in the system.
+   * It handles both standard brightness-component operations and operations
+   * involving image splitting and masking:
+   * If the percentage is 100 and no mask image is provided,
+   * the brightness-component operation is applied directly.
+   * If the percentage is less than 100, the image is split.
+   * The brightness-component operation is applied on one half,
+   * and then the image is recombined with the remaining half.
+   * If a mask image is provided, a masking operation is
+   * applied and then the to the brightness-component image.
+   * First a check is made is the mask image is present or not.
    *
-   * @param operations The operation instance which is
-   *                   used to call the getBrightnessComponent method
-   *                   which is to be executed on the input
-   *                   image.
-   * @return true if operation done successfully, else false.
+   * @param operations the instance that provides the methods to perform the brightness
+   *                   - component, split, and mask operations on the images.
+   * @return true if the operation is completed successfully; false otherwise.
+   * @throws IllegalArgumentException if the current image or mask
+   *                                  image (if provided) is not found in the system.
    */
 
   @Override
-  public boolean execute(OperationsV2 operations) {
+  public boolean execute(OperationsV3 operations) {
     this.imageCheck(operations, this.currentImageName);
-    if (this.percentage == 100.00) {
+    if (this.percentage == 100.00 && this.maskImageName == null) {
       return operations.getBrightnessComponent(this.currentImageName,
               this.newImageName, this.handler);
+    } else {
+      String temp = this.newImageName + this.newImageName.hashCode();
+      if(this.maskImageName != null) {
+        this.imageCheck(operations, this.maskImageName);
+        boolean t = operations.getBrightnessComponent(this.currentImageName, temp,this.handler);
+        return operations.mask(this.currentImageName, temp, this.maskImageName,
+                this.newImageName) & t;
+      }
+      operations.splitPreview(this.currentImageName, temp, this.percentage);
+      boolean t = operations.getBrightnessComponent(temp, temp,this.handler);
+      return operations.regain(this.currentImageName, temp, this.newImageName) & t;
     }
-    String temp = this.newImageName + this.newImageName.hashCode();
-    operations.splitPreview(this.currentImageName, temp, this.percentage);
-    boolean check1 = operations.getBrightnessComponent(temp, temp, this.handler);
-    return operations.regain(this.currentImageName, temp, this.newImageName) &
-            check1;
   }
 }

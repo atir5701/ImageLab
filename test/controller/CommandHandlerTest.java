@@ -8,8 +8,8 @@ import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import model.ImageOperationsV2;
-import model.OperationsV2;
+import model.ImageOperationsV3;
+import model.OperationsV3;
 import view.ViewHandler;
 
 
@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 public class CommandHandlerTest {
   ImageAppController controller;
-  OperationsV2 opr;
+  OperationsV3 opr;
   String cmd = "Enter the Command:\n";
   String cmdload = "Enter the Command:\n" + "load executed successfully\n";
   StringBuffer out;
@@ -31,7 +31,7 @@ public class CommandHandlerTest {
 
   @Before
   public void setUp() {
-    opr = new ImageOperationsV2();
+    opr = new ImageOperationsV3();
     out = new StringBuffer();
     v = new ViewHandler(out);
   }
@@ -426,7 +426,7 @@ public class CommandHandlerTest {
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
-    String expected = cmdload + "Invalid Command.\n";
+    String expected = cmdload + "The image to be processed is not present.\n";
     assertEquals(expected, output);
   }
 
@@ -587,7 +587,7 @@ public class CommandHandlerTest {
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
-    String expected = cmdload + "Invalid Command.\n";
+    String expected = cmdload + "The image to be processed is not present.\n";
     assertEquals(expected, output);
   }
 
@@ -748,7 +748,7 @@ public class CommandHandlerTest {
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
-    String expected = cmdload + "Invalid Command.\n";
+    String expected = cmdload + "The image to be processed is not present.\n";
     assertEquals(expected, output);
   }
 
@@ -930,9 +930,9 @@ public class CommandHandlerTest {
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
-    String expected = cmdload + "Invalid Command.\n"
-            + "Invalid Command.\n"
-            + "Invalid Command.\n";
+    String expected = cmdload + "The image to be processed is not present.\n"
+            + "The image to be processed is not present.\n"
+            + "The image to be processed is not present.\n";
     assertEquals(expected, output);
   }
 
@@ -1130,9 +1130,9 @@ public class CommandHandlerTest {
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
-    String expected = cmdload + "Invalid Command.\n"
-            + "Invalid Command.\n"
-            + "Invalid Command.\n";
+    String expected = cmdload + "The image to be processed is not present.\n"
+            + "The image to be processed is not present.\n"
+            + "The image to be processed is not present.\n";
     assertEquals(expected, output);
   }
 
@@ -1843,7 +1843,7 @@ public class CommandHandlerTest {
             "load executed successfully\n" +
             "Invalid Command.\n" +
             "The image to be processed is not present.\n" +
-            "Invalid Command.\n" +
+            "The image to be processed is not present.\n" +
             "Invalid Command.\n" +
             "The image to be processed is not present.\n" +
             "Percentage must be a number.\n" +
@@ -1941,9 +1941,9 @@ public class CommandHandlerTest {
             "Invalid Command.\n" +
             "green-component executed successfully\n" +
             "blue-component executed successfully\n" +
-            "Invalid Command.\n" +
+            "The image to be processed is not present.\n" +
             "Invalid Command\n" +
-            "Invalid Command.\n" +
+            "The image to be processed is not present.\n" +
             "horizontal-flip executed successfully\n" +
             "Invalid command length\n" +
             "vertical-flip executed successfully\n" +
@@ -2536,5 +2536,658 @@ public class CommandHandlerTest {
     assertEquals(expected, output);
   }
 
+  /**
+   * Test Case to check masking of the images with blur.
+   */
+  @Test
+  public void testBlurMask() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\mask.jpg mask\n" +
+            "blur man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "blur executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with blur
+   * when mask image is not present.
+   */
+  @Test
+  public void testBlurMaskImageNotPresent() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "blur man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "The image to be processed" +
+            " is not present.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with blur
+   * when mask image is smaller.
+   */
+  @Test
+  public void testBlurMaskImageSmall() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskSmall.jpeg mask\n" +
+            "blur man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with blur
+   * when mask image is bigger.
+   */
+  @Test
+  public void testBlurMaskImageBig() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskBig.jpg mask\n" +
+            "blur man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with sharpen.
+   */
+  @Test
+  public void testSharpenMask() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\mask.jpg mask\n" +
+            "sharpen man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "sharpen executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with sharpen
+   * when mask image is not present.
+   */
+  @Test
+  public void testSharpMaskImageNotPresent() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "sharpen man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "The image to be processed" +
+            " is not present.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with sharpen
+   * when mask image is smaller.
+   */
+  @Test
+  public void testSharpenMaskImageSmall() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskSmall.jpeg mask\n" +
+            "sharpen man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with sharpen
+   * when mask image is bigger.
+   */
+  @Test
+  public void testSharpenMaskImageBig() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskBig.jpg mask\n" +
+            "sharpen man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with Sepia.
+   */
+  @Test
+  public void testSepiaMask() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\mask.jpg mask\n" +
+            "sepia man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "sepia executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with sepia
+   * when mask image is not present.
+   */
+  @Test
+  public void testSepiaMaskImageNotPresent() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "sepia man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "The image to be processed" +
+            " is not present.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with sepia
+   * when mask image is smaller.
+   */
+  @Test
+  public void testSepiaMaskImageSmall() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskSmall.jpeg mask\n" +
+            "sepia man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with sepia
+   * when mask image is bigger.
+   */
+  @Test
+  public void testSepiaMaskImageBig() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskBig.jpg mask\n" +
+            "blur man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with
+   * red-component.
+   */
+  @Test
+  public void testRedComponentMask() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\mask.jpg mask\n" +
+            "red-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "red-component executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with red-component
+   * when mask image is not present.
+   */
+  @Test
+  public void testRedCompMaskImageNotPresent() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "red-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "The image to be processed" +
+            " is not present.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with red-
+   * -component when mask image is smaller.
+   */
+  @Test
+  public void testRedCompMaskImageSmall() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskSmall.jpeg mask\n" +
+            "red-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with
+   * red-component when mask image is bigger.
+   */
+  @Test
+  public void testRedCompMaskImageBig() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskBig.jpg mask\n" +
+            "red-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with
+   * green-component.
+   */
+  @Test
+  public void testGreenComponentMask() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\mask.jpg mask\n" +
+            "green-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "green-component executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with green-component
+   * when mask image is not present.
+   */
+  @Test
+  public void testGreenCompMaskImageNotPresent() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "green-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "The image to be processed" +
+            " is not present.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with green-
+   * -component when mask image is smaller.
+   */
+  @Test
+  public void testGreenCompMaskImageSmall() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskSmall.jpeg mask\n" +
+            "green-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with
+   * green-component when mask image is bigger.
+   */
+  @Test
+  public void testGreenCompMaskImageBig() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskBig.jpg mask\n" +
+            "green-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with
+   * blue-component.
+   */
+  @Test
+  public void testBlueComponentMask() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\mask.jpg mask\n" +
+            "blue-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "blue-component executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with blue-component
+   * when mask image is not present.
+   */
+  @Test
+  public void testBlueCompMaskImageNotPresent() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "blue-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "The image to be processed" +
+            " is not present.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with blue-
+   * -component when mask image is smaller.
+   */
+  @Test
+  public void testBlueCompMaskImageSmall() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskSmall.jpeg mask\n" +
+            "blue-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with
+   * blue-component when mask image is bigger.
+   */
+  @Test
+  public void testBlueCompMaskImageBig() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskBig.jpg mask\n" +
+            "blue-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with
+   * luma-component.
+   */
+  @Test
+  public void testLumaComponentMask() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\mask.jpg mask\n" +
+            "luma-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "luma-component executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with luma-component
+   * when mask image is not present.
+   */
+  @Test
+  public void testLumaCompMaskImageNotPresent() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "luma-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "The image to be processed" +
+            " is not present.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with luma-
+   * -component when mask image is smaller.
+   */
+  @Test
+  public void testLumaCompMaskImageSmall() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskSmall.jpeg mask\n" +
+            "luma-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with
+   * luma-component when mask image is bigger.
+   */
+  @Test
+  public void testLumaCompMaskImageBig() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskBig.jpg mask\n" +
+            "luma-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with
+   * value-component.
+   */
+  @Test
+  public void testValueComponentMask() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\mask.jpg mask\n" +
+            "value-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "value-component executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with value-component
+   * when mask image is not present.
+   */
+  @Test
+  public void testValueCompMaskImageNotPresent() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "value-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "The image to be processed" +
+            " is not present.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with value-
+   * -component when mask image is smaller.
+   */
+  @Test
+  public void testValueCompMaskImageSmall() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskSmall.jpeg mask\n" +
+            "value-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with
+   * value-component when mask image is bigger.
+   */
+  @Test
+  public void testValueCompMaskImageBig() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskBig.jpg mask\n" +
+            "value-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with
+   * intensity-component.
+   */
+  @Test
+  public void testIntensityComponentMask() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\mask.jpg mask\n" +
+            "intensity-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "intensity-component executed successfully\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with intensity-component
+   * when mask image is not present.
+   */
+  @Test
+  public void testIntensityCompMaskImageNotPresent() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "intensity-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "The image to be processed" +
+            " is not present.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with intensity-
+   * -component when mask image is smaller.
+   */
+  @Test
+  public void testIntensityCompMaskImageSmall() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskSmall.jpeg mask\n" +
+            "intensity-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
+
+  /**
+   * Test Case to check masking of the images with
+   * intensity-component when mask image is bigger.
+   */
+  @Test
+  public void testIntensityCompMaskImageBig() {
+    String command = "load images\\manhattan-small.png man\n" +
+            "load images\\maskBig.jpg mask\n" +
+            "intensity-component man mask man-blur";
+    Reader in = new StringReader(command);
+    controller = new CommandReader(opr, in, v);
+    controller.startApplication();
+    String output = out.toString();
+    String expected = cmdload + "load executed successfully\n" +
+            "The Dimensions of mask and the image " +
+            "to be processed are not same.\n";
+    assertEquals(expected, output);
+  }
 
 }

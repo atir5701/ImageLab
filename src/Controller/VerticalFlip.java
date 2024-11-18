@@ -1,6 +1,6 @@
 package controller;
 
-import model.OperationsV2;
+import model.OperationsV3;
 
 /**
  * A class that performs the task of performing
@@ -44,7 +44,7 @@ class VerticalFlip extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(OperationsV2 operations) {
+  public boolean execute(OperationsV3 operations) {
     this.imageCheck(operations, this.currentImageName);
     return operations.verticalFlip(this.currentImageName, this.newImageName);
   }

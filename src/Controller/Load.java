@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 import javax.imageio.ImageIO;
 
-import model.OperationsV2;
+import model.OperationsV3;
 
 /**
  * A class that performs the load operation on an
@@ -24,7 +24,7 @@ class Load extends AbstractCommandExecuter {
   private final String filePath;
   private final String currentImageName;
   private final String extension;
-  private final Map<String, Function<OperationsV2, Boolean>> loadingImage;
+  private final Map<String, Function<OperationsV3, Boolean>> loadingImage;
 
 
   /**
@@ -62,8 +62,8 @@ class Load extends AbstractCommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public boolean execute(OperationsV2 operations) {
-    Function<OperationsV2, Boolean> cmd = this.loadingImage.get(this.extension);
+  public boolean execute(OperationsV3 operations) {
+    Function<OperationsV3, Boolean> cmd = this.loadingImage.get(this.extension);
     if (cmd == null) {
       throw new IllegalArgumentException("Extension of the image is not supported.");
     }
@@ -79,8 +79,8 @@ class Load extends AbstractCommandExecuter {
    * @param operations operation interface used to load image.
    * @return true if operation done successfully, else false.
    */
-  private boolean load(OperationsV2 operations) {
-    File file = new File(filePath);
+  private boolean load(OperationsV3 operations) {
+    File file = new File(this.filePath);
     try {
       BufferedImage img = ImageIO.read(file);
       int height = img.getHeight();
@@ -109,7 +109,7 @@ class Load extends AbstractCommandExecuter {
    * @param operations operation interface used to load image.
    * @return true if operation done successfully, else false.
    **/
-  private boolean loadPpm(OperationsV2 operations) {
+  private boolean loadPpm(OperationsV3 operations) {
     Scanner sc;
     try {
       sc = new Scanner(new FileInputStream(filePath));
@@ -126,7 +126,8 @@ class Load extends AbstractCommandExecuter {
     sc = new Scanner(builder.toString());
     String token = sc.next();
     if (!token.equals("P3")) {
-      System.out.println("Invalid PPM file: plain RAW file should begin with P3.");
+      throw new IllegalArgumentException("Invalid PPM file: " +
+              "plain RAW file should begin with P3.");
     }
     int width = sc.nextInt();
     int height = sc.nextInt();

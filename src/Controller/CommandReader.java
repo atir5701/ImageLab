@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-import model.OperationsV2;
+import model.OperationsV3;
 import view.ProgramView;
 
 
@@ -32,13 +32,11 @@ public class CommandReader implements ImageAppController {
    * used to execute commands read from the script/command-line.
    */
 
-
-  public CommandReader(OperationsV2 operations, Readable in, ProgramView view) {
-    this.handler = new CommandHandler(operations, view);
+  public CommandReader(OperationsV3 operations, Readable in, ProgramView view) {
+    this.handler = new CommandHandler(operations);
     this.in = in;
     this.view = view;
   }
-
 
   /**
    * Reads commands from the specified script file and executes them.
@@ -62,7 +60,8 @@ public class CommandReader implements ImageAppController {
           String[] tokens = st.split(" ");
           tokens[0] = tokens[0].toLowerCase();
           try {
-            this.handler.readCommand(tokens);
+            boolean t = this.handler.readCommand(tokens);
+            this.outputMessage(t,tokens[0]);
           } catch (Exception e) {
             this.view.setOutput(String.format(e.getMessage() + "\n"));
           }
@@ -70,6 +69,24 @@ public class CommandReader implements ImageAppController {
       }
     } catch (Exception e) {
       throw new IllegalArgumentException("File not found");
+    }
+  }
+
+  /**
+   * Displays a message in the output view indicating whether a specific command
+   * was executed successfully or not.
+   * This method is typically used to provide feedback to the user
+   * or log the status of an operation performed in the application.
+   *
+   * @param t   a boolean flag representing the success status of the command:
+   *
+   * @param cmd the name of the command being reported. This is used to construct
+   */
+  private void outputMessage(boolean t,String cmd){
+    if (t) {
+      this.view.setOutput(String.format(cmd + " executed successfully\n"));
+    } else {
+      this.view.setOutput(String.format(cmd + " not executed successfully\n"));
     }
   }
 
@@ -96,7 +113,8 @@ public class CommandReader implements ImageAppController {
       String[] init = script.split(" ");
       if (!(init[0].equals("run") || init[0].equals("-file"))) {
         try {
-          this.handler.readCommand(init);
+          boolean t = this.handler.readCommand(init);
+          this.outputMessage(t,init[0]);
         } catch (Exception e) {
           this.view.setOutput(String.format(e.getMessage() + "\n"));
         }

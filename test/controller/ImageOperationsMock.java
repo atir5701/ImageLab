@@ -1,6 +1,6 @@
 package controller;
 
-import model.OperationsV2;
+import model.OperationsV3;
 
 /**
  * This is a mock class of the ImageOperationsV2 class.
@@ -8,7 +8,7 @@ import model.OperationsV2;
  * of the various methods defined in the ImageOperationV2 class.
  * This class extends the OperationsV2 interface.
  */
-public class ImageOperationsV2Mock implements OperationsV2 {
+public class ImageOperationsMock implements OperationsV3 {
   private final StringBuilder log;
 
   /**
@@ -17,7 +17,7 @@ public class ImageOperationsV2Mock implements OperationsV2 {
    * @param log string builder.
    */
 
-  public ImageOperationsV2Mock(StringBuilder log) {
+  public ImageOperationsMock(StringBuilder log) {
     this.log = log;
   }
 
@@ -30,7 +30,8 @@ public class ImageOperationsV2Mock implements OperationsV2 {
    * @return true.
    */
   @Override
-  public boolean compressImage(String currentImageName, String newImageName, double percentage) {
+  public boolean compressImage(String currentImageName,
+                               String newImageName, double percentage) {
     log.append("Compress ").append(currentImageName).append(" to ").append(newImageName);
     return true;
   }
@@ -157,6 +158,7 @@ public class ImageOperationsV2Mock implements OperationsV2 {
    */
   @Override
   public boolean getColorComponent(String currentImage, String newImage, int channel) {
+
     log.append("GetColorComponent ").append(currentImage).append(" to ")
             .append(newImage).append(" ").append(channel);
     return true;
@@ -316,4 +318,37 @@ public class ImageOperationsV2Mock implements OperationsV2 {
     return true;
   }
 
+  /**
+   * Mock Operation for the mask operation.
+   *
+   * @param currentImageName the name of original image on which mask
+   *                         is to be applied.
+   * @param temp             the name of the temporary image
+   *                         name on which operation is applied.
+   * @param maskImageName    the name of the mask Image Name.
+   * @param newImageName     the name of the new image after the masking is applied.
+   * @return true.
+   */
+  @Override
+  public boolean mask(String currentImageName, String temp,
+                      String maskImageName, String newImageName) {
+    log.append("\nMask on ").append(currentImageName).append(" to get ").append(newImageName);
+    return false;
+  }
+
+  /**
+   * Mock operation for the Downscaling operation.
+   *
+   * @param currentImageName the name of original image on which mask
+   *                         is to be applied.
+   * @param targetHeight     the height of resultant image.
+   * @param targetWidth      the width of the resultant image.
+   * @param newImageName     the name of the new image obtained after down scaling
+   *                         operations is applied.
+   */
+  @Override
+  public void downScale(String currentImageName, int targetHeight,
+                        int targetWidth, String newImageName) {
+    log.append("DownScale ").append(currentImageName).append(" to ").append(targetHeight);
+  }
 }

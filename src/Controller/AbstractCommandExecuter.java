@@ -1,6 +1,6 @@
 package controller;
 
-import model.OperationsV2;
+import model.OperationsV3;
 
 /**
  * An Abstract class that implements the CommandExecuter interface.
@@ -34,7 +34,7 @@ abstract class AbstractCommandExecuter implements CommandExecuter {
    *                   checked.
    * @throws IllegalArgumentException if the image is not found.
    */
-  protected void imageCheck(OperationsV2 operations, String imageName)
+  protected void imageCheck(OperationsV3 operations, String imageName)
           throws IllegalArgumentException {
     if (!(operations.checkImage(imageName))) {
       throw new IllegalArgumentException("The image to be processed is not present.");
@@ -51,7 +51,7 @@ abstract class AbstractCommandExecuter implements CommandExecuter {
    * @return true if operation done successfully, else false.
    */
   @Override
-  public abstract boolean execute(OperationsV2 operations);
+  public abstract boolean execute(OperationsV3 operations);
 
 
 }
