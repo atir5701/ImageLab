@@ -47,7 +47,7 @@ public class ControllerMockTest {
     in = new StringReader("brighten 50 man man-bright");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "Brighten man to man-bright 50";
+    String expected = "\nBrighten man to man-bright 50";
     assertEquals(expected, log.toString());
   }
 
@@ -61,7 +61,7 @@ public class ControllerMockTest {
     in = new StringReader("brighten -50 man man-dark");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "Brighten man to man-dark -50";
+    String expected = "\nBrighten man to man-dark -50";
     assertEquals(expected, log.toString());
   }
 
@@ -74,7 +74,7 @@ public class ControllerMockTest {
     in = new StringReader("compress 50 man mancomp");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "Compress man to mancomp";
+    String expected = "\nCompress man to mancomp";
     assertEquals(expected, log.toString());
   }
 
@@ -87,7 +87,7 @@ public class ControllerMockTest {
     in = new StringReader("histogram man manhist");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "Histogram man to manhist";
+    String expected = "\nHistogram man to manhist";
     assertEquals(expected, log.toString());
   }
 
@@ -100,7 +100,7 @@ public class ControllerMockTest {
     in = new StringReader("color-correct man mancolor-correct");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "ColorCorrection man to mancolor-correct";
+    String expected = "\nColorCorrection man to mancolor-correct";
     assertEquals(expected, log.toString());
   }
 
@@ -113,7 +113,7 @@ public class ControllerMockTest {
     in = new StringReader("levels-adjust 10 20 233 man man-level");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "LevelAdjustment man to man-level with 10 20 233";
+    String expected = "\nLevelAdjustment man to man-level with 10 20 233";
     assertEquals(expected, log.toString());
   }
 
@@ -139,7 +139,7 @@ public class ControllerMockTest {
     in = new StringReader("save images/manhattan.png man");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "Save image man";
+    String expected = "\nSave image man";
     assertEquals(expected, log.toString());
   }
 
@@ -153,7 +153,7 @@ public class ControllerMockTest {
     in = new StringReader("red-component man manred");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "GetColorComponent man to manred 0";
+    String expected = "\nGetColorComponent man to manred 0";
     assertEquals(expected, log.toString());
   }
 
@@ -166,7 +166,7 @@ public class ControllerMockTest {
     in = new StringReader("green-component man mangreen");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "GetColorComponent man to mangreen 1";
+    String expected = "\nGetColorComponent man to mangreen 1";
     assertEquals(expected, log.toString());
   }
 
@@ -179,7 +179,7 @@ public class ControllerMockTest {
     in = new StringReader("blue-component man manblue");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "GetColorComponent man to manblue 2";
+    String expected = "\nGetColorComponent man to manblue 2";
     assertEquals(expected, log.toString());
   }
 
@@ -192,7 +192,7 @@ public class ControllerMockTest {
     in = new StringReader("value-component man manvalue");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "GetBrightnessComponent man to manvalue value-component";
+    String expected = "\nGetBrightnessComponent man to manvalue value-component";
     assertEquals(expected, log.toString());
   }
 
@@ -205,7 +205,7 @@ public class ControllerMockTest {
     in = new StringReader("intensity-component man manin");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "GetBrightnessComponent man to manin intensity-component";
+    String expected = "\nGetBrightnessComponent man to manin intensity-component";
     assertEquals(expected, log.toString());
   }
 
@@ -218,7 +218,7 @@ public class ControllerMockTest {
     in = new StringReader("luma-component man manluma");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "GetBrightnessComponent man to manluma luma-component";
+    String expected = "\nGetBrightnessComponent man to manluma luma-component";
     assertEquals(expected, log.toString());
   }
 
@@ -231,7 +231,7 @@ public class ControllerMockTest {
     in = new StringReader("horizontal-flip man manhf");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "HorizontalFlip man to manhf";
+    String expected = "\nHorizontalFlip man to manhf";
     assertEquals(expected, log.toString());
   }
 
@@ -244,7 +244,7 @@ public class ControllerMockTest {
     in = new StringReader("vertical-flip man manvf");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "VerticalFlip man to manvf";
+    String expected = "\nVerticalFlip man to manvf";
     assertEquals(expected, log.toString());
   }
 
@@ -257,7 +257,7 @@ public class ControllerMockTest {
     in = new StringReader("rgb-split man manr mang manb");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "Split RBG man to manr mang manb";
+    String expected = "\nSplit RBG man to manr mang manb";
     assertEquals(expected, log.toString());
   }
 
@@ -270,7 +270,7 @@ public class ControllerMockTest {
     in = new StringReader("rgb-combine man manr mang manb");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "CombineRGB manr mang manb to man";
+    String expected = "\nCombineRGB manr mang manb to man";
     assertEquals(expected, log.toString());
   }
 
@@ -283,7 +283,7 @@ public class ControllerMockTest {
     in = new StringReader("blur man manblur");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "Blur man to manblur";
+    String expected = "\nBlur man to manblur";
     assertEquals(expected, log.toString());
   }
 
@@ -296,7 +296,7 @@ public class ControllerMockTest {
     in = new StringReader("sharpen man mansharp");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "Sharpen man to mansharp";
+    String expected = "\nSharpen man to mansharp";
     assertEquals(expected, log.toString());
   }
 
@@ -309,7 +309,7 @@ public class ControllerMockTest {
     in = new StringReader("sepia man mansepia");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "Sepia man to mansepia";
+    String expected = "\nSepia man to mansepia";
     assertEquals(expected, log.toString());
   }
 
@@ -323,9 +323,9 @@ public class ControllerMockTest {
     in = new StringReader("blur man man-blur split 30");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "SplitPreview on man with 30.0\n" +
-            "Blur man-blur75101434 to man-blur75101434\n" +
-            "Regain man to man-blur";
+    String expected = "\nSplitPreview on man with 30.0" +
+            "\nBlur man-blur75101434 to man-blur75101434" +
+            "\nRegain man to man-blur";
     assertEquals(expected, log.toString());
   }
 
@@ -339,9 +339,9 @@ public class ControllerMockTest {
     in = new StringReader("sharpen man man-sharp split 50.98");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "SplitPreview on man with 50.98\n" +
-            "Sharpen man-sharp-1951261257 to man-sharp-1951261257\n" +
-            "Regain man to man-sharp";
+    String expected = "\nSplitPreview on man with 50.98" +
+            "\nSharpen man-sharp-1951261257 to man-sharp-1951261257" +
+            "\nRegain man to man-sharp";
     assertEquals(expected, log.toString());
   }
 
@@ -355,9 +355,9 @@ public class ControllerMockTest {
     in = new StringReader("sepia man man-sepia split 0.98");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "SplitPreview on man with 0.98\n" +
-            "Sepia man-sepia-1951336509 to man-sepia-1951336509\n" +
-            "Regain man to man-sepia";
+    String expected = "\nSplitPreview on man with 0.98" +
+            "\nSepia man-sepia-1951336509 to man-sepia-1951336509" +
+            "\nRegain man to man-sepia";
     assertEquals(expected, log.toString());
   }
 
@@ -371,9 +371,9 @@ public class ControllerMockTest {
     in = new StringReader("red-component man man-red split 19.98");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "SplitPreview on man with 19.98\n" +
-            "GetColorComponent man-red833721758 to man-red833721758 0\n" +
-            "Regain man to man-red";
+    String expected = "\nSplitPreview on man with 19.98" +
+            "\nGetColorComponent man-red833721758 to man-red833721758 0" +
+            "\nRegain man to man-red";
     assertEquals(expected, log.toString());
   }
 
@@ -387,9 +387,9 @@ public class ControllerMockTest {
     in = new StringReader("green-component man man-green split 19.98");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "SplitPreview on man with 19.98\n" +
-            "GetColorComponent man-green-1962042160 to man-green-1962042160 1\n" +
-            "Regain man to man-green";
+    String expected = "\nSplitPreview on man with 19.98" +
+            "\nGetColorComponent man-green-1962042160 to man-green-1962042160 1" +
+            "\nRegain man to man-green";
     assertEquals(expected, log.toString());
   }
 
@@ -403,9 +403,9 @@ public class ControllerMockTest {
     in = new StringReader("blue-component man man-blue split 19.98");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "SplitPreview on man with 19.98\n" +
-            "GetColorComponent man-blue75101421 to man-blue75101421 2\n" +
-            "Regain man to man-blue";
+    String expected = "\nSplitPreview on man with 19.98" +
+            "\nGetColorComponent man-blue75101421 to man-blue75101421 2" +
+            "\nRegain man to man-blue";
     assertEquals(expected, log.toString());
   }
 
@@ -419,10 +419,10 @@ public class ControllerMockTest {
     in = new StringReader("value-component man man-value split 19.98");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "SplitPreview on man with 19.98\n" +
-            "GetBrightnessComponent man-value-1948688578 to man-value-1948688578" +
-            " value-component\n" +
-            "Regain man to man-value";
+    String expected = "\nSplitPreview on man with 19.98" +
+            "\nGetBrightnessComponent man-value-1948688578 to man-value-1948688578" +
+            " value-component" +
+            "\nRegain man to man-value";
     assertEquals(expected, log.toString());
   }
 
@@ -436,8 +436,8 @@ public class ControllerMockTest {
     in = new StringReader("intensity-component man man-in split 19.98");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "SplitPreview on man with 19.98\n" +
-            "GetBrightnessComponent man-in-1081484680 to man-in-1081484680 " +
+    String expected = "\nSplitPreview on man with 19.98" +
+            "\nGetBrightnessComponent man-in-1081484680 to man-in-1081484680 " +
             "intensity-component\n" +
             "Regain man to man-in";
     assertEquals(expected, log.toString());
@@ -453,7 +453,7 @@ public class ControllerMockTest {
     in = new StringReader("luma-component man man-luma split 19.98");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "SplitPreview on man with 19.98\n" +
+    String expected = "\nSplitPreview on man with 19.98\n" +
             "GetBrightnessComponent man-luma75407728 to man-luma75407728" +
             " luma-component\n" +
             "Regain man to man-luma";
@@ -470,8 +470,8 @@ public class ControllerMockTest {
     in = new StringReader("levels-adjust 10 200 255 man man-luma split 19.98");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "SplitPreview on man with 19.98\n" +
-            "LevelAdjustment man-luma75407728 to man-luma75407728 with 10 200 255\n" +
+    String expected = "\nSplitPreview on man with 19.98" +
+            "\nLevelAdjustment man-luma75407728 to man-luma75407728 with 10 200 255\n" +
             "Regain man to man-luma";
     assertEquals(expected, log.toString());
   }
@@ -486,8 +486,8 @@ public class ControllerMockTest {
     in = new StringReader("color-correct man man-luma split 19.98");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "SplitPreview on man with 19.98\n" +
-            "ColorCorrection man-luma75407728 to man-luma75407728\n" +
+    String expected = "\nSplitPreview on man with 19.98" +
+            "\nColorCorrection man-luma75407728 to man-luma75407728\n" +
             "Regain man to man-luma";
     assertEquals(expected, log.toString());
   }
@@ -502,7 +502,7 @@ public class ControllerMockTest {
     in = new StringReader("blur man mask man-mask-blur");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "Blur man to man-mask-blur1567088117\n" +
+    String expected = "\nBlur man to man-mask-blur1567088117\n" +
             "Mask on man to get man-mask-blur";
     assertEquals(expected, log.toString());
   }
@@ -517,7 +517,7 @@ public class ControllerMockTest {
     in = new StringReader("sharpen man mask man-mask-sharpen");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "Sharpen man to man-mask-sharpen897370565\n" +
+    String expected = "\nSharpen man to man-mask-sharpen897370565\n" +
             "Mask on man to get man-mask-sharpen";
     assertEquals(expected, log.toString());
   }
@@ -532,7 +532,7 @@ public class ControllerMockTest {
     in = new StringReader("sepia man mask man-mask-sepia");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "Sepia man to man-mask-sepia1350577704\n" +
+    String expected = "\nSepia man to man-mask-sepia1350577704\n" +
             "Mask on man to get man-mask-sepia";
     assertEquals(expected, log.toString());
   }
@@ -547,7 +547,7 @@ public class ControllerMockTest {
     in = new StringReader("red-component man mask man-mask-red");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "GetColorComponent man to man-mask-red-919264957 0\n" +
+    String expected = "\nGetColorComponent man to man-mask-red-919264957 0\n" +
             "Mask on man to get man-mask-red";
     assertEquals(expected, log.toString());
   }
@@ -562,7 +562,7 @@ public class ControllerMockTest {
     in = new StringReader("green-component man mask man-mask-green");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "GetColorComponent man to man-mask-green1339872053 1\n" +
+    String expected = "\nGetColorComponent man to man-mask-green1339872053 1\n" +
             "Mask on man to get man-mask-green";
     assertEquals(expected, log.toString());
   }
@@ -577,7 +577,7 @@ public class ControllerMockTest {
     in = new StringReader("blue-component man mask man-mask-blue");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "GetColorComponent man to man-mask-blue1567088104 2\n" +
+    String expected = "\nGetColorComponent man to man-mask-blue1567088104 2\n" +
             "Mask on man to get man-mask-blue";
     assertEquals(expected, log.toString());
   }
@@ -592,7 +592,7 @@ public class ControllerMockTest {
     in = new StringReader("value-component man mask man-mask-v");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "GetBrightnessComponent man to man-mask-v-537268824" +
+    String expected = "\nGetBrightnessComponent man to man-mask-v-537268824" +
             " value-component\n" +
             "Mask on man to get man-mask-v";
     assertEquals(expected, log.toString());
@@ -608,7 +608,7 @@ public class ControllerMockTest {
     in = new StringReader("luma-component man mask man-mask-luma");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "GetBrightnessComponent man to man-mask-luma1567394411 " +
+    String expected = "\nGetBrightnessComponent man to man-mask-luma1567394411 " +
             "luma-component\n" +
             "Mask on man to get man-mask-luma";
     assertEquals(expected, log.toString());
@@ -624,9 +624,9 @@ public class ControllerMockTest {
     in = new StringReader("intensity-component man mask man-mask-intensity");
     controller = new CommandReader(mock, in, view);
     controller.startApplication();
-    String expected = "GetBrightnessComponent man to man-mask-intensity1155380069 " +
-            "intensity-component\n" +
-            "Mask on man to get man-mask-intensity";
+    String expected = "\nGetBrightnessComponent man to man-mask-intensity1155380069 " +
+            "intensity-component" +
+            "\nMask on man to get man-mask-intensity";
     assertEquals(expected, log.toString());
   }
 

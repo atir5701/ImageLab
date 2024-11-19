@@ -77,7 +77,7 @@ class Sharpen extends AbstractCommandExecuter {
    * The sharpen operation is applied on one half,
    * and then the image is recombined with the remaining half.
    * If a mask image is provided, a masking operation is
-   * applied and then the to the blurred image. First a check is made is
+   * applied and then the to the sharpen image. First a check is made is
    * the mask image is present or not.
    *
    * @param operations the instance that provides the methods to perform the sharpen, split,

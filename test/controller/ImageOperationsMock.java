@@ -32,7 +32,7 @@ public class ImageOperationsMock implements OperationsV3 {
   @Override
   public boolean compressImage(String currentImageName,
                                String newImageName, double percentage) {
-    log.append("Compress ").append(currentImageName).append(" to ").append(newImageName);
+    log.append("\nCompress ").append(currentImageName).append(" to ").append(newImageName);
     return true;
   }
 
@@ -45,7 +45,7 @@ public class ImageOperationsMock implements OperationsV3 {
    */
   @Override
   public boolean histogram(String currentImageName, String newImageName) {
-    log.append("Histogram ").append(currentImageName).append(" to ").append(newImageName);
+    log.append("\nHistogram ").append(currentImageName).append(" to ").append(newImageName);
     return true;
   }
 
@@ -58,7 +58,7 @@ public class ImageOperationsMock implements OperationsV3 {
    */
   @Override
   public boolean colorCorrection(String currentImageName, String newImageName) {
-    log.append("ColorCorrection ").append(currentImageName).append(" to ").append(newImageName);
+    log.append("\nColorCorrection ").append(currentImageName).append(" to ").append(newImageName);
     return true;
   }
 
@@ -75,7 +75,7 @@ public class ImageOperationsMock implements OperationsV3 {
   @Override
   public boolean levelAdjustment(String currentImageName, String newImageName,
                                  int b, int m, int w) {
-    log.append("LevelAdjustment ").append(currentImageName).append(" to ")
+    log.append("\nLevelAdjustment ").append(currentImageName).append(" to ")
             .append(newImageName).append(" with ").append(b).append(" ")
             .append(m).append(" ").append(w);
     return true;
@@ -91,8 +91,7 @@ public class ImageOperationsMock implements OperationsV3 {
   @Override
   public void splitPreview(String currentImageName, String newImageName,
                            double percentage) {
-    log.append("SplitPreview on ").append(currentImageName).append(" with ").append(percentage)
-            .append("\n");
+    log.append("\nSplitPreview on ").append(currentImageName).append(" with ").append(percentage);
   }
 
   /**
@@ -129,8 +128,8 @@ public class ImageOperationsMock implements OperationsV3 {
    */
   @Override
   public int[][][] saveImage(String name) {
-    log.append("Save image ").append(name);
-    return new int[0][][];
+    log.append("\nSave image ").append(name);
+    return new int[1][1][3];
   }
 
   /**
@@ -159,7 +158,7 @@ public class ImageOperationsMock implements OperationsV3 {
   @Override
   public boolean getColorComponent(String currentImage, String newImage, int channel) {
 
-    log.append("GetColorComponent ").append(currentImage).append(" to ")
+    log.append("\nGetColorComponent ").append(currentImage).append(" to ")
             .append(newImage).append(" ").append(channel);
     return true;
   }
@@ -179,7 +178,7 @@ public class ImageOperationsMock implements OperationsV3 {
    */
   @Override
   public boolean getBrightnessComponent(String currentImage, String newImage, String handle) {
-    log.append("GetBrightnessComponent ").append(currentImage).append(" to ")
+    log.append("\nGetBrightnessComponent ").append(currentImage).append(" to ")
             .append(newImage).append(" ").append(handle);
     return true;
   }
@@ -195,7 +194,7 @@ public class ImageOperationsMock implements OperationsV3 {
    */
   @Override
   public boolean horizontalFlip(String currentImage, String newImage) {
-    log.append("HorizontalFlip ").append(currentImage).append(" to ").append(newImage);
+    log.append("\nHorizontalFlip ").append(currentImage).append(" to ").append(newImage);
     return true;
   }
 
@@ -210,7 +209,7 @@ public class ImageOperationsMock implements OperationsV3 {
    */
   @Override
   public boolean verticalFlip(String currentImage, String newImage) {
-    log.append("VerticalFlip ").append(currentImage).append(" to ").append(newImage);
+    log.append("\nVerticalFlip ").append(currentImage).append(" to ").append(newImage);
     return true;
   }
 
@@ -228,7 +227,7 @@ public class ImageOperationsMock implements OperationsV3 {
    */
   @Override
   public boolean brighten(String currentImage, String newImage, int intensity) {
-    log.append("Brighten ").append(currentImage).append(" to ").
+    log.append("\nBrighten ").append(currentImage).append(" to ").
             append(newImage).append(" ").append(intensity);
     return true;
   }
@@ -249,7 +248,7 @@ public class ImageOperationsMock implements OperationsV3 {
   @Override
   public boolean splitRGB(String currentImage, String newRedImage,
                           String newGreenImage, String newBlueImage) {
-    log.append("Split RBG ").append(currentImage).append(" to ").append(newRedImage)
+    log.append("\nSplit RBG ").append(currentImage).append(" to ").append(newRedImage)
             .append(" ").append(newGreenImage).append(" ").append(newBlueImage);
     return true;
   }
@@ -268,7 +267,7 @@ public class ImageOperationsMock implements OperationsV3 {
   @Override
   public boolean combineRGB(String redImage, String greenImage,
                             String blueImage, String newImage) throws IllegalArgumentException {
-    log.append("CombineRGB ").append(redImage).append(" ").append(greenImage).append(" ")
+    log.append("\nCombineRGB ").append(redImage).append(" ").append(greenImage).append(" ")
             .append(blueImage).append(" to ").append(newImage);
     return true;
   }
@@ -284,7 +283,7 @@ public class ImageOperationsMock implements OperationsV3 {
    */
   @Override
   public boolean blur(String currentImage, String newImage) {
-    log.append("Blur ").append(currentImage).append(" to ").append(newImage);
+    log.append("\nBlur ").append(currentImage).append(" to ").append(newImage);
     return true;
   }
 
@@ -299,7 +298,7 @@ public class ImageOperationsMock implements OperationsV3 {
    */
   @Override
   public boolean sharpen(String currentImage, String newImage) {
-    log.append("Sharpen ").append(currentImage).append(" to ").append(newImage);
+    log.append("\nSharpen ").append(currentImage).append(" to ").append(newImage);
     return true;
   }
 
@@ -314,7 +313,7 @@ public class ImageOperationsMock implements OperationsV3 {
    */
   @Override
   public boolean sepia(String currentImage, String newImage) {
-    log.append("Sepia ").append(currentImage).append(" to ").append(newImage);
+    log.append("\nSepia ").append(currentImage).append(" to ").append(newImage);
     return true;
   }
 
@@ -349,6 +348,6 @@ public class ImageOperationsMock implements OperationsV3 {
   @Override
   public void downScale(String currentImageName, int targetHeight,
                         int targetWidth, String newImageName) {
-    log.append("DownScale ").append(currentImageName).append(" to ").append(targetHeight);
+    log.append("\nDownScale ").append(currentImageName).append(" to ").append(targetHeight);
   }
 }

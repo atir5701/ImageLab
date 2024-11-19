@@ -46,7 +46,8 @@ class CommandHandler {
     commandMap.put("blue-component", (cmd, a) -> new ColorComponent(cmd, 3));
     commandMap.put("value-component", (cmd, a) -> new BrightnessComponent(cmd, 3));
     commandMap.put("luma-component", (cmd, a) -> new BrightnessComponent(cmd, 3));
-    commandMap.put("intensity-component", (cmd, a) -> new BrightnessComponent(cmd, 3));
+    commandMap.put("intensity-component", (cmd, a) -> new BrightnessComponent(cmd,
+            3));
     commandMap.put("rgb-split", (cmd, a) -> new RGBSplit(cmd, 5));
     commandMap.put("rgb-combine", (cmd, a) -> new RGBCombine(cmd, 5));
     commandMap.put("compress", (cmd, a) -> new Compress(cmd, 4));
@@ -72,13 +73,11 @@ class CommandHandler {
    */
 
   boolean readCommand(String[] input) throws IllegalArgumentException {
-
     String command = input[0];
     BiFunction<String[], Integer, AbstractCommandExecuter> cmd = this.commandMap.get(command);
     if (cmd == null) {
       throw new IllegalArgumentException("Unknown command: " + command);
     }
-
     AbstractCommandExecuter ex = cmd.apply(input, 0);
     return ex.execute(operations);
   }

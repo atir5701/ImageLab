@@ -1,19 +1,42 @@
 package view;
 
-import java.awt.*;
+
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-import javax.swing.*;
-
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
 import javax.swing.filechooser.FileFilter;
-
+import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
+
+import javax.swing.BoxLayout;
+import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
+import javax.swing.JFileChooser;
+import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.Features;
+
 
 /**
  * The GuiView class implements the IView interface and
@@ -164,7 +187,7 @@ public class GuiView extends JFrame implements IView {
    * This includes buttons for image manipulation operations such as
    * loading, saving, applying color filters, adjusting brightness,
    * color correction, compression, and flipping the image.
-   * Components like labels and toggle buttons are also initialized
+   * Components like labels, Frames and toggle buttons are also initialized
    * to enable various functionality in the GUI.
    */
   private void initializeComponents() {
@@ -236,13 +259,13 @@ public class GuiView extends JFrame implements IView {
     gbc.gridx = 0;
     gbc.gridy = 0;
     gbc.insets = new Insets(5, 5, 5, 5);
-
     Dimension buttonSize = new Dimension(150, 40);
-    JButton[] buttons = {this.blurButton, this.sepiaButton, this.sharpenButton,
-            this.colorCorrectionButton, this.redButton, this.greenButton,
-            this.blueButton, this.valueButton, this.lumaButton, this.intensityButton,
-            this.hflipButton, this.vflipButton, this.brightButton, this.compressButton,
-            this.adjButton, this.downScaleButton};
+    JButton[] buttons = new JButton[]{
+      this.blurButton, this.sepiaButton, this.sharpenButton, this.colorCorrectionButton,
+      this.redButton, this.greenButton, this.blueButton, this.valueButton,
+      this.lumaButton, this.intensityButton, this.hflipButton, this.vflipButton, this.brightButton,
+      this.compressButton, this.adjButton, this.downScaleButton
+    };
 
     for (JButton button : buttons) {
       setButtonProperties(button, buttonSize);
@@ -367,7 +390,8 @@ public class GuiView extends JFrame implements IView {
    * enabling the user to perform various operations such as loading, saving, applying filters,
    * and adjusting properties of the image.
    *
-   * @param features the controller interface that provides the core functionality of the application,
+   * @param features the controller interface that provides the core
+   *                 functionality of the application,
    *                 such as loading, saving, and processing the image.
    */
   private void addFeatureToButton(Features features) {
@@ -552,7 +576,7 @@ public class GuiView extends JFrame implements IView {
     this.inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
 
     JLabel label = new JLabel("Enter a Percentage: ");
-    this.pField = new JTextField("50",5);
+    this.pField = new JTextField("50", 5);
     this.messageLabel = new JLabel("");
     messageLabel.setForeground(Color.RED);
     messageLabel.setVisible(false);
@@ -861,8 +885,7 @@ public class GuiView extends JFrame implements IView {
    * If the user selects a file,
    * its absolute path is retrieved and returned as a `File` object.
    *
-   * @return a `File` object representing the selected image file,
-   * or null if no file is selected.
+   * @return a `File` object representing the selected image file, or null if no file is selected.
    */
   @Override
   public File getFilePath() {
@@ -892,8 +915,7 @@ public class GuiView extends JFrame implements IView {
    * have the correct file extension based on the
    * selected format, the extension is automatically added.
    *
-   * @return a `File` object representing the selected location,
-   * or null if the user cancels the operation
+   * @return a `File` object representing the selected location, or null.
    */
   @Override
   public File getSaveFilePath() {

@@ -10,7 +10,7 @@ import model.OperationsV3;
  * dimensions before performing the operation.
  */
 
-public class DownScaling extends AbstractCommandExecuter {
+class DownScaling extends AbstractCommandExecuter {
   private final String currentImageName;
   private final String newImageName;
   private final int newImageWidth;

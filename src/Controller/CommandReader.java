@@ -61,7 +61,7 @@ public class CommandReader implements ImageAppController {
           tokens[0] = tokens[0].toLowerCase();
           try {
             boolean t = this.handler.readCommand(tokens);
-            this.outputMessage(t,tokens[0]);
+            this.outputMessage(t, tokens[0]);
           } catch (Exception e) {
             this.view.setOutput(String.format(e.getMessage() + "\n"));
           }
@@ -79,10 +79,9 @@ public class CommandReader implements ImageAppController {
    * or log the status of an operation performed in the application.
    *
    * @param t   a boolean flag representing the success status of the command:
-   *
    * @param cmd the name of the command being reported. This is used to construct
    */
-  private void outputMessage(boolean t,String cmd){
+  private void outputMessage(boolean t, String cmd) {
     if (t) {
       this.view.setOutput(String.format(cmd + " executed successfully\n"));
     } else {
@@ -114,7 +113,7 @@ public class CommandReader implements ImageAppController {
       if (!(init[0].equals("run") || init[0].equals("-file"))) {
         try {
           boolean t = this.handler.readCommand(init);
-          this.outputMessage(t,init[0]);
+          this.outputMessage(t, init[0]);
         } catch (Exception e) {
           this.view.setOutput(String.format(e.getMessage() + "\n"));
         }

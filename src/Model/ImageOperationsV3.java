@@ -1,7 +1,36 @@
 package model;
 
+/**
+ * This class implements the new methods needed to be implemented by the program.
+ * It extends the older class ImageOperationV2 and implements
+ * the new OperationsV3 interface.
+ * It introduces the following new methods.
+ * Masking of image.
+ * DownScaling of image.
+ */
+
+
 public class ImageOperationsV3 extends ImageOperationsV2 implements OperationsV3 {
 
+  /**
+   * Applies a mask to the current image. Pixels of the
+   * current image are replaced with
+   * pixels from a temporary image wherever the
+   * corresponding mask image pixels are black
+   * (R=0, G=0, B=0). The result is saved as a new image.
+   *
+   * @param currentImageName the name of the current image to
+   *                         which the mask will be applied
+   * @param temp             the name of the temporary image providing
+   *                         replacement pixel values
+   * @param maskImageName    the name of the mask image used to
+   *                         determine which pixels to replace
+   * @param newImageName     the name under which the
+   *                         resulting image will be saved
+   * @return true if the masking operation is successful
+   * @throws IllegalArgumentException if the dimensions of
+   *                                  the mask and the current image differ
+   */
   @Override
   public boolean mask(String currentImageName, String temp, String maskImageName,
                       String newImageName) {
@@ -31,6 +60,18 @@ public class ImageOperationsV3 extends ImageOperationsV2 implements OperationsV3
     return true;
   }
 
+  /**
+   * Downscales the current image to a specified target height
+   * and width using bi-linear interpolation.
+   * The resulting image is saved under a new name.
+   *
+   * @param currentImageName the name of the current image to be downscaled
+   * @param targetHeight     the target height of the downscaled image
+   * @param targetWidth      the target width of the downscaled image
+   * @param newImageName     the name under which the downscaled image will be saved
+   * @throws IllegalArgumentException if targetHeight or
+   *                                  targetWidth is less than or equal to zero
+   */
   @Override
   public void downScale(String currentImageName, int targetHeight,
                         int targetWidth, String newImageName) {
@@ -67,7 +108,6 @@ public class ImageOperationsV3 extends ImageOperationsV2 implements OperationsV3
         }
       }
     }
-
     ImageModel newImage = new ImageModel(targetHeight, targetWidth, output);
     this.imageMap.put(newImageName, newImage);
   }

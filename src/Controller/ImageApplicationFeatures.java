@@ -23,7 +23,6 @@ public class ImageApplicationFeatures implements Features {
   private final OperationsV3 model;
   private final IView view;
 
-
   /**
    * Constructs an ImageApplicationFeatures object that acts as a controller
    * to facilitate communication between the model and the
@@ -184,11 +183,11 @@ public class ImageApplicationFeatures implements Features {
    */
   @Override
   public void loadImage() {
-    File path = this.view.getFilePath();
-    if (path == null) {
+    if (!this.view.checkImage()) {
       return;
     }
-    if (!this.view.checkImage()) {
+    File path = this.view.getFilePath();
+    if (path == null) {
       return;
     }
     String temp = path.getName();

@@ -36,7 +36,7 @@ class Sepia extends AbstractCommandExecuter {
    *                      input using space.
    * @param commandLength the expected length of command array.
    */
-  
+
   Sepia(String[] cmd, int commandLength) {
     if (this.validCommandLength(cmd.length, commandLength)) {
       this.currentImageName = cmd[1];
@@ -80,7 +80,7 @@ class Sepia extends AbstractCommandExecuter {
    * The sepia operation is applied on one half,
    * and then the image is recombined with the remaining half.
    * If a mask image is provided, a masking operation is
-   * applied and then the to the blurred image. First a check is made is
+   * applied and then the to the sepia image. First a check is made is
    * the mask image is present or not.
    *
    * @param operations the instance that provides the methods to perform the sepia, split,
@@ -96,7 +96,7 @@ class Sepia extends AbstractCommandExecuter {
       return operations.sepia(this.currentImageName, this.newImageName);
     } else {
       String temp = this.newImageName + this.newImageName.hashCode();
-      if(this.maskImageName != null) {
+      if (this.maskImageName != null) {
         this.imageCheck(operations, this.maskImageName);
         boolean t = operations.sepia(this.currentImageName, temp);
         return operations.mask(this.currentImageName, temp, this.maskImageName,

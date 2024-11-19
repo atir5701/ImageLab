@@ -27,7 +27,7 @@ public interface IView {
    * Attaches the feature controller to the view,
    * allowing the controller to handle
    * user actions from the view.
-
+   *
    * @param features the controller interface that
    *                 provides the core functionality
    *                 of the application.
@@ -42,8 +42,7 @@ public interface IView {
    * If the user selects a file,
    * its absolute path is retrieved and returned as a `File` object.
    *
-   * @return a `File` object representing the selected image file,
-   * or null if no file is selected.
+   * @return a `File` object representing the selected image file, or null if no file is selected.
    */
   File getFilePath();
 
@@ -56,8 +55,7 @@ public interface IView {
    * have the correct file extension based on the
    * selected format, the extension is automatically added.
    *
-   * @return a `File` object representing the selected location,
-   * or null if the user cancels the operation
+   * @return a `File` object representing the selected location,or null.
    */
   File getSaveFilePath();
 

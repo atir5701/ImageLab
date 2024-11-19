@@ -1595,7 +1595,6 @@ public class ImageOperationsTest {
     assertArrayEquals(actual, expected);
   }
 
-
   /**
    * Test Case to check if the histogram is generated correctly.
    * according to the property.
@@ -1909,6 +1908,28 @@ public class ImageOperationsTest {
           assertEquals(output[i][j][0], original[i][j][0]);
           assertEquals(output[i][j][1], original[i][j][1]);
           assertEquals(output[i][j][2], original[i][j][2]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Test Case to check if the Downscaling operation is
+   * working correctly.
+   */
+  @Test
+  public void downScaling() {
+    this.operations.downScale("matrix", 2, 2,
+            "down-scaled-matrix");
+    int[][][] actual = this.operations.saveImage("down-scaled-matrix");
+    int[][][] expected = new int[][][]{
+            {{1, 2, 3}, {1, 2, 3}},
+            {{7, 8, 9}, {7, 8, 9}}
+    };
+    for (int i = 0; i < actual.length; i++) {
+      for (int j = 0; j < actual[0].length; j++) {
+        for (int k = 0; k <= 2; k++) {
+          assertEquals(expected[i][j][k], actual[i][j][k]);
         }
       }
     }

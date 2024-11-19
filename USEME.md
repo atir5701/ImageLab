@@ -2,12 +2,34 @@
 
 ---
 
-This file provides instructions on how to operate the Image Processing Application. You can utilize this application through Command Line Interface (CLI).
+This file provides instructions on how to operate the Image Processing Application. You can utilize this application through Command Line Interface (CLI) and Graphical based User Interface (GUI).
 
 This application allows users to process images by running commands directly from a command prompt or through a script file. It supports a wide range of operations, including color manipulation, image transformations, and enhancement effects. Users can also preview split views of specific manipulations, where only part of the image is modified.
 
+
+The application offers a graphical user interface (GUI) that complements its command-line capabilities, providing users with an intuitive and user-friendly way to interact with the system. Through the GUI, users can effortlessly load images, save them in various formats, and perform all the operations available in the command-line interface, such as applying filters or modifying image properties.
+
+Moreover, the GUI introduces an exclusive feature: Image Downscaling, allowing users to resize images to smaller dimensions while maintaining their aspect ratio. This operation is not available through the command-line interface, making the GUI a more versatile and powerful tool for image processing tasks.
+
 This application features a command-based interface for executing various image processing operations. Below is an overview of the available commands, their functionality, examples of how to use them, and any applicable conditions or dependencies.
 
+# Table of Contents
+
+1. [Command Line Based Interaction](#Commandline-Based-Interaction-with)
+   - [Command Syntax and Structure](#Command-Syntax-and-Structure)
+   - [Supported Commands](#Supported-Commands)
+   - [Split Preview Mode](#Split-Preview-Mode)
+   - [Example](#Example-Workflow)
+4. [Graphical User Interface (GUI)](#graphical-user-interface-gui)
+   - [Features](#features)
+   - [Exclusive Features in GUI](#exclusive-features-in-gui)
+5. [Error Handling](#error-handling)
+6. [FAQ](#faq)
+7. [Troubleshooting](#troubleshooting)
+8. [License](#license)
+
+# Command line Based Interaction 
+All the sections below provide detailed information on how to use the program in command-line mode. 
 
 ## Command Syntax and Structure
 
@@ -19,13 +41,13 @@ Each command has a specific format and requires certain arguments. Commands are 
 
 Here’s an enhanced version of the **Supported Commands** section with more detailed descriptions and additional instructions.
 
----
 
 ### Supported Commands
+---
 
 Each command must adhere strictly to the specified syntax. If any command is incorrect or the image is not in the specified file path, the application will throw an exception. Additionally, for any operation to work on an image, it must already be loaded into the application’s memory with the specified name.
 
----
+
 
 #### 1. **Loading and Saving**
 
@@ -75,6 +97,10 @@ These commands isolate individual color channels (Red, Green, Blue) or specific 
   When used with the `split` argument, the application will apply the operation only to the specified percentage of the image, starting from the left side.
 
   Value of split percentage must be within  **0 and 100** and (decimal values are allowed).
+
+  This operation also supports `partial image manipulation`, which requires a mask image to be loaded into the system. Initially, the operation is applied to the entire image. Then, the mask image guides the final manipulation: regions of the mask containing black pixels indicate where the resulting values from the operation should be applied in the final image.
+
+  For the operation to be carried out successfully, the mask image must be loaded into the system, and its dimensions must match those of the image on which the operation is to be performed.
   
   Application will store output image into its memory. User can use `save` command to get the output image.
   
@@ -105,6 +131,21 @@ These commands isolate individual color channels (Red, Green, Blue) or specific 
   blue-component sample sample-blue split 89
   ```
 
+  The command with partial image manipulation are.
+
+    ```plaintext
+  red-component image-name mask-image-name dest-image-name
+  green-component image-name mask-image-name dest-image-name
+  blue-component image-name mask-image-name dest-image-name
+  ```
+
+  **Example**:
+  ```plaintext
+  red-component sample sample-red-mask sample-red
+  green-component sample sample-green-mask sample-green
+  blue-component sample sample-blue-mask sample-blue
+  ```
+
 - **Intensity/Value/Luma Component**: Creates a grayscale image based on different brightness calculations: 
    
   *Intensity* averages the RGB values.
@@ -119,34 +160,54 @@ These commands isolate individual color channels (Red, Green, Blue) or specific 
   When used with the `split` argument, the application will apply the operation only to the specified percentage of the image, starting from the left side.
 
   Value of split percentage must be within  **0 and 100** and (decimal values are allowed).
+
+  This operation also supports `partial image manipulation`, which requires a mask image to be loaded into the system. Initially, the operation is applied to the entire image. Then, the mask image guides the final manipulation: regions of the mask containing black pixels indicate where the resulting values from the operation should be applied in the final image.
+
+  For the operation to be carried out successfully, the mask image must be loaded into the system, and its dimensions must match those of the image on which the operation is to be performed.
   
   Application will store output image into its memory. User can use `save` command to get the output image.
     
-```plaintext
-  value-component image-name dest-image-name
-  intensity-component image-name dest-image-name
-  luma-component image-name dest-image-name
-  ```
-  **Example**:
   ```plaintext
-  value-component sample sample-red
-  intensity-component sample sample-intensity
-  luma-component sample sample-luma
-  ```
+    value-component image-name dest-image-name
+    intensity-component image-name dest-image-name
+    luma-component image-name dest-image-name
+    ```
+    **Example**:
+    ```plaintext
+    value-component sample sample-red
+    intensity-component sample sample-intensity
+    luma-component sample sample-luma
+    ```
   The commands with the split operations are.
 
-```plaintext
-  value-component image-name dest-image-name split percentage
-  intensity-component image-name dest-image-name split percentage
-  luma-component image-name dest-image-name split percentage
-  ```
-
-  **Example**:
   ```plaintext
-  value-component sample sample-value split 58.9
-  intensity-component sample sample-intensity split 34
-  luma-component sample sample-luma split 89
-  ```
+    value-component image-name dest-image-name split percentage
+    intensity-component image-name dest-image-name split percentage
+    luma-component image-name dest-image-name split percentage
+    ```
+
+    **Example**:
+    ```plaintext
+    value-component sample sample-value split 58.9
+    intensity-component sample sample-intensity split 34
+    luma-component sample sample-luma split 89
+    ```
+
+  The commands with the partial image manipulation.
+  
+  ```plaintext
+    value-component image-name masked-image-name dest-image-name 
+    intensity-component image-name masked-image-name dest-image-name 
+    luma-component image-name masked-image-name dest-image-name
+    ```
+
+    **Example**:
+    ```plaintext
+    value-component sample sample-value-masked sample-value
+    intensity-component sample sample-intensity-masked sample-intensity-masked
+    luma-component sample sample-luma-masked sample-luma
+    ```
+  
 
 
 #### 3. **Transformations**
@@ -251,7 +312,14 @@ These commands isolate individual color channels (Red, Green, Blue) or specific 
 
   Value of split percentage must be within  **0 and 100** and (decimal values are allowed).
   
+  This operation also supports `partial image manipulation`, which requires a mask image to be loaded into the system. Initially, the operation is applied to the entire image. Then, the mask image guides the final manipulation: regions of the mask containing black pixels indicate where the resulting values from the operation should be applied in the final image.
+
+  For the operation to be carried out successfully, the mask image must be loaded into the system, and its dimensions must match those of the image on which the operation is to be performed.
+  
+
   Application will store output image into its memory. User can use `save` command to get the output image.
+
+ 
 
   ```plaintext
   blur image-name dest-image-name
@@ -268,6 +336,16 @@ These commands isolate individual color channels (Red, Green, Blue) or specific 
   ```plaintext
   blur sample sample-blur split 45.7
   ```
+
+  The blur command with partial image manipulation.
+    ```plaintext
+  blur image-name masked-image-name dest-image-name
+  ```
+  **Example**:
+    ```plaintext
+    blur sample sample-masked sample-blur
+    ```
+  
   
 
 - **Sharpen**: Enhances the edges in an image, making details crisper.
@@ -277,6 +355,11 @@ These commands isolate individual color channels (Red, Green, Blue) or specific 
   When used with the `split` argument, the application will apply the operation only to the specified percentage of the image, starting from the left side.
 
   Value of split percentage must be within  **0 and 100** and (decimal values are allowed).
+
+   This operation also supports `partial image manipulation`, which requires a mask image to be loaded into the system. Initially, the operation is applied to the entire image. Then, the mask image guides the final manipulation: regions of the mask containing black pixels indicate where the resulting values from the operation should be applied in the final image.
+
+  For the operation to be carried out successfully, the mask image must be loaded into the system, and its dimensions must match those of the image on which the operation is to be performed.
+  
 
   Application will store output image into its memory. User can use `save` command to get the output image.
   
@@ -295,6 +378,15 @@ These commands isolate individual color channels (Red, Green, Blue) or specific 
   ```plaintext
   sharpen sample sample-sharpen split 45.7
   ```
+
+  The sharpen command with partial image manipulation.
+    ```plaintext
+  sharpen image-name masked-image-name dest-image-name
+  ```
+  **Example**:
+    ```plaintext
+    sharpen sample sample-masked sample-sharpen
+    ```
   
 #### 7. **Sepia Tone**
 
@@ -305,6 +397,11 @@ These commands isolate individual color channels (Red, Green, Blue) or specific 
   When used with the `split` argument, the application will apply the operation only to the specified percentage of the image, starting from the left side.
 
   Value of split percentage must be within  **0 and 100** and (decimal values are allowed).
+
+   This operation also supports `partial image manipulation`, which requires a mask image to be loaded into the system. Initially, the operation is applied to the entire image. Then, the mask image guides the final manipulation: regions of the mask containing black pixels indicate where the resulting values from the operation should be applied in the final image.
+
+  For the operation to be carried out successfully, the mask image must be loaded into the system, and its dimensions must match those of the image on which the operation is to be performed.
+  
   
   Application will store output image into its memory. User can use `save` command to get the output image.
   
@@ -325,6 +422,15 @@ These commands isolate individual color channels (Red, Green, Blue) or specific 
   sepia sample sample-sharpen split 45.7
   ```
 
+  The sepia command with partial image manipulation.
+    ```plaintext
+  sepia image-name masked-image-name dest-image-name
+  ```
+  **Example**:
+    ```plaintext
+    sepia sample sample-masked sample-sepia
+    ```
+
 #### 8. **Compression**
 
 - **Compress**: Reduces the file size of an image by a specified percentage, maintaining resolution but potentially affecting quality. The percentage parameter should lie between 0 and 100. It can be a decimal value as well.
@@ -334,13 +440,13 @@ These commands isolate individual color channels (Red, Green, Blue) or specific 
   Application will store output image into its memory. User can use `save` command to get the output image.
 
 
-```plaintext
-  compress percentage image-name dest-image-name
-  ```
-**Example**:
   ```plaintext
-  compress 56.8 sample sample-sharpen
-  ```
+    compress percentage image-name dest-image-name
+    ```
+  **Example**:
+    ```plaintext
+    compress 56.8 sample sample-sharpen
+    ```
 
 #### 9. **Histogram**
 
@@ -370,22 +476,22 @@ These commands isolate individual color channels (Red, Green, Blue) or specific 
   Application will store output image into its memory. User can use `save` command to get the output image.
  
 
-```plaintext
-  color-correct image-name dest-image-name
-  ```
-**Example**:
   ```plaintext
-  color-correct sample sample-color-correct
-  ```
-The color-correct command with split parameter is given as.
-```plaintext
-color-correct image-name dest-image-name split percentage
-  ```
+    color-correct image-name dest-image-name
+    ```
+  **Example**:
+    ```plaintext
+    color-correct sample sample-color-correct
+    ```
+  The color-correct command with split parameter is given as.
+  ```plaintext
+  color-correct image-name dest-image-name split percentage
+    ```
 
-**Example**:
-  ```plaintext
-  color-correct sample sample-color-correct split 57.9
-  ```
+  **Example**:
+    ```plaintext
+    color-correct sample sample-color-correct split 57.9
+    ```
 
 #### 11. **Levels Adjustment**
 
@@ -405,23 +511,23 @@ color-correct image-name dest-image-name split percentage
   
   Application will store output image into its memory. User can use `save` command to get the output image.
 
-```plaintext
-  levels-adjust b m w image-name dest-image-name
-  ```
-
-**Example**:
   ```plaintext
-  levels-adjust 20 100 245 sample sample-level
-  ```
-The levels-adjust command with split parameter is given as.
-```plaintext
-levels-adjust b m w image-name dest-image-name split percentage
-  ```
+    levels-adjust b m w image-name dest-image-name
+    ```
 
-**Example**:
+  **Example**:
+    ```plaintext
+    levels-adjust 20 100 245 sample sample-level
+    ```
+  The levels-adjust command with split parameter is given as.
   ```plaintext
-  levels-adjust 20 100 245 sample sample-level split 57.9
-  ```
+  levels-adjust b m w image-name dest-image-name split percentage
+    ```
+
+  **Example**:
+    ```plaintext
+    levels-adjust 20 100 245 sample sample-level split 57.9
+    ```
 
 
 #### 12. **Quit Application**
@@ -429,9 +535,9 @@ levels-adjust b m w image-name dest-image-name split percentage
 - **Quit**: Exits the application.
   When the application is closed, it will lose its memory, resulting in all loaded and processed images being discarded.
   
- ```plaintext
-  quit
-  ```
+  ```plaintext
+    quit
+    ```
 
 #### 13. **Run Script File**
 
@@ -445,14 +551,14 @@ levels-adjust b m w image-name dest-image-name split percentage
 
   Application will store output images into its memory. User can use `save` command to get the output images.  
 
-```plaintext
-  run absolute/path/to/script.txt
-  ```
-
-**Example**:
   ```plaintext
-  run res/script.txt
-  ```
+    run absolute/path/to/script.txt
+    ```
+
+  **Example**:
+    ```plaintext
+    run res/script.txt
+    ```
 
 ### Split Preview Mode
 
@@ -490,6 +596,10 @@ blur sample sample-blur split p
    quit
    ```
 
---- 
+# Graphical User Interface Based Interaction 
+All the sections below explain how the program operates using the graphical user interface (GUI).
+
+
+
 
 This `USEME.md` file provides a comprehensive guide to all commands, syntax, and examples. Follow each step and condition carefully to ensure a smooth experience with the application.

@@ -3,6 +3,7 @@ import java.io.InputStreamReader;
 import controller.CommandReader;
 import controller.ImageAppController;
 import controller.MVCController;
+import controller.MVCControllerGUI;
 import model.ImageOperationsV3;
 import model.OperationsV3;
 import view.GuiView;
@@ -37,7 +38,7 @@ public class ImageProcessingApplication {
     if (args.length != 0) {
       ImageAppController src;
       ProgramView view = new ViewHandler(System.out);
-      if (args[0].equals("-file")) {
+      if (args[0].equals("-file") && args.length == 2) {
         StringBuilder nonInteractive = new StringBuilder();
         for (String arg : args) {
           nonInteractive.append(arg).append(" ");
@@ -45,7 +46,7 @@ public class ImageProcessingApplication {
         nonInteractive.append("\n").append("quit");
         Reader in = new StringReader(nonInteractive.toString());
         src = new CommandReader(operations, in, view);
-      } else if (args[0].equals("-text")) {
+      } else if (args[0].equals("-text") && args.length == 1) {
         src = new CommandReader(operations, new InputStreamReader(System.in), view);
       } else {
         return;
@@ -53,7 +54,7 @@ public class ImageProcessingApplication {
       src.startApplication();
     } else {
       IView view = new GuiView("Image Processing Application");
-      MVCController mvcController = new MVCController(operations,view);
+      MVCControllerGUI mvcController = new MVCController(operations, view);
       mvcController.startGUIBasedApplication();
     }
   }
