@@ -425,10 +425,9 @@ public class MVCControllerTest {
     assertEquals(expected, log.toString());
   }
 
-//  @Test
-//  public void test
-//
-//
+  @Test
+  public void test
+
   @Test
   public void testapplyCompressCorrectCall() {
     f.loadImage();
