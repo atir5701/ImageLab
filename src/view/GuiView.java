@@ -62,8 +62,6 @@ public class GuiView extends JFrame implements IView {
   private JButton redButton;
   private JButton greenButton;
   private JButton blueButton;
-  private JButton valueButton;
-  private JButton intensityButton;
   private JButton lumaButton;
   private JButton hflipButton;
   private JButton vflipButton;
@@ -200,9 +198,7 @@ public class GuiView extends JFrame implements IView {
     this.redButton = new JButton("Red-component");
     this.greenButton = new JButton("Green-component");
     this.blueButton = new JButton("Blue-component");
-    this.valueButton = new JButton("Greyscale-Value");
     this.lumaButton = new JButton("Greyscale-Luma");
-    this.intensityButton = new JButton("Greyscale-Intensity");
     this.hflipButton = new JButton("Horizontal-Flip");
     this.vflipButton = new JButton("Vertical-Flip");
     this.brightButton = new JButton("Brightness-Change");
@@ -261,10 +257,10 @@ public class GuiView extends JFrame implements IView {
     gbc.insets = new Insets(5, 5, 5, 5);
     Dimension buttonSize = new Dimension(150, 40);
     JButton[] buttons = new JButton[]{
-      this.blurButton, this.sepiaButton, this.sharpenButton, this.colorCorrectionButton,
-      this.redButton, this.greenButton, this.blueButton, this.valueButton,
-      this.lumaButton, this.intensityButton, this.hflipButton, this.vflipButton, this.brightButton,
-      this.compressButton, this.adjButton, this.downScaleButton
+        this.blurButton, this.sepiaButton, this.sharpenButton, this.colorCorrectionButton,
+        this.redButton, this.greenButton, this.blueButton, this.lumaButton,
+        this.hflipButton, this.vflipButton, this.brightButton,
+        this.compressButton, this.adjButton, this.downScaleButton
     };
 
     for (JButton button : buttons) {
@@ -403,10 +399,8 @@ public class GuiView extends JFrame implements IView {
     this.redButton.addActionListener(e -> features.applyRed(this.imageName));
     this.greenButton.addActionListener(e -> features.applyGreen(this.imageName));
     this.blueButton.addActionListener(e -> features.applyBlue(this.imageName));
-    this.valueButton.addActionListener(e -> features.applyValue(this.imageName));
     this.lumaButton.addActionListener(e -> features.applyLuma(this.imageName));
     this.compressButton.addActionListener(e -> features.applyCompress(this.imageName));
-    this.intensityButton.addActionListener(e -> features.applyIntensity(this.imageName));
     this.hflipButton.addActionListener(e -> features.applyHorizontalFlip(this.imageName));
     this.vflipButton.addActionListener(e -> features.applyVerticalFlip(this.imageName));
     this.downScaleButton.addActionListener(e -> features.applyDownScale(this.imageName));

@@ -112,28 +112,6 @@ public interface Features {
   void applyLuma(String imageName);
 
   /**
-   * Applies the Value-Component effect to the specified image and
-   * preview it on GUI.
-   * This method checks if the image is loaded or not
-   * and then triggers the split preview for
-   * the Value effect in the view.
-   *
-   * @param imageName the name of the image to apply the Value effect.
-   */
-  void applyValue(String imageName);
-
-  /**
-   * Applies the Intensity-Component effect to the specified image and
-   * preview it on GUI.
-   * This method checks if the image is loaded or not
-   * and then triggers the split preview for
-   * the Intensity effect in the view.
-   *
-   * @param imageName the name of the image to apply the Intensity effect.
-   */
-  void applyIntensity(String imageName);
-
-  /**
    * Applies the red-component effect to the specified image and
    * preview it on GUI.
    * This method checks if the image is loaded or not

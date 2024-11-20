@@ -27,14 +27,14 @@ public class MVCControllerTest {
   }
 
   @Test
-  public void AddFeaturesTesting() {
+  public void addFeaturesTesting() {
     controller.startGUIBasedApplication();
-    String expected = "Features object added to the action listeners of the buttons.\n";
+    String expected = "Features object added to the action listeners of the buttons";
     assertEquals(expected, log.toString());
   }
 
   @Test
-  public void AddLoadImage() {
+  public void addLoadImage() {
     f.loadImage();
     String expected = "checkImage called successfully.\n" +
             "getFilePath called successfully.Load image manhattan-small\n" +
@@ -47,7 +47,7 @@ public class MVCControllerTest {
   }
 
   @Test
-  public void testSaveCorrectCall() {
+  public void saveCorrectCall() {
     f.loadImage();
     f.saveImage("manhattan-smallhist");
     String expected = "checkImage called successfully.\n" +
@@ -64,14 +64,14 @@ public class MVCControllerTest {
   }
 
   @Test
-  public void testShowErrorSave() {
+  public void showErrorSave() {
     f.saveImage(null);
     String expected = "\nImage not present error displayed successfully.";
     assertEquals(expected, log.toString());
   }
 
   @Test
-  public void testapplyBlurCorrectCall() {
+  public void applyBlurCorrectCall() {
     f.loadImage();
     f.applyBlur("manhattan-small");
     String expected = "checkImage called successfully.\n" +
@@ -98,7 +98,94 @@ public class MVCControllerTest {
   }
 
   @Test
-  public void testapplySepiaCorrectCall() {
+  public void testBlurPreview() {
+    f.loadImage();
+    f.applySplit("50", "blur", "manhattan");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "SplitPreview on manhattan with 50.0\n" +
+            "Blur manhattan_blur_Split8433089 to manhattan_blur_Split8433089\n" +
+            "Regain manhattan to manhattan_blur_Split\n" +
+            "Save image manhattan_blur_Split\n" +
+            "Split Image displayed successfully.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void negativePercentageBlur() {
+    f.loadImage();
+    f.applySplit("-60", "blur", "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void invalidPercentageBlur() {
+    f.loadImage();
+    f.applySplit("160", "blur", "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void stringPercentageForBlur() {
+    f.loadImage();
+    f.applySplit("adjbf", "blur", "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void blurFinalApply() {
+    f.loadImage();
+    f.commandGenerator("blur", "manhattan");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Blur manhattan to manhattan_blur\n" +
+            "Save image manhattan_blur\n" +
+            "Image manhattan_blur displayed correctly.\n" +
+            "Histogram manhattan_blur to manhattan_blurhist\n" +
+            "Save image manhattan_blurhist\n" +
+            "Histogram of image showed correctly";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void applySepiaCorrectCall() {
     f.loadImage();
     f.applySepia("manhattan-small");
     String expected = "checkImage called successfully.\n" +
@@ -126,7 +213,95 @@ public class MVCControllerTest {
   }
 
   @Test
-  public void testapplySharpenCorrectCall() {
+  public void testSepiaPreview() {
+    f.loadImage();
+    f.applySplit("50", "sepia", "manhattan");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "SplitPreview on manhattan with 50.0\n" +
+            "Sepia manhattan_sepia_Split892461746 to manhattan_sepia_Split892461746\n" +
+            "Regain manhattan to manhattan_sepia_Split\n" +
+            "Save image manhattan_sepia_Split\n" +
+            "Split Image displayed successfully.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void negativePercentageSepia() {
+    f.loadImage();
+    f.applySplit("-60", "blur", "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void invalidPercentageSepia() {
+    f.loadImage();
+    f.applySplit("160", "blur", "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void stringPercentageForSepia() {
+    f.loadImage();
+    f.applySplit("adjbf", "blur", "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void sepiaFinalApply() {
+    f.loadImage();
+    f.commandGenerator("sepia", "manhattan");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Sepia manhattan to manhattan_sepia\n" +
+            "Save image manhattan_sepia\n" +
+            "Image manhattan_sepia displayed correctly.\n" +
+            "Histogram manhattan_sepia to manhattan_sepiahist\n" +
+            "Save image manhattan_sepiahist\n" +
+            "Histogram of image showed correctly";
+    assertEquals(expected, log.toString());
+  }
+
+
+  @Test
+  public void applySharpenCorrectCall() {
     f.loadImage();
     f.applySharp("manhattan-smallBlur");
     String expected = "checkImage called successfully.\n" +
@@ -154,7 +329,148 @@ public class MVCControllerTest {
   }
 
   @Test
-  public void testapplyLumaCorrectCall() {
+  public void testSharpPreview() {
+    f.loadImage();
+    f.applySplit("50", "sharpen", "manhattan");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "SplitPreview on manhattan with 50.0\n" +
+            "Sharpen manhattan_sharpen_Split968469711 to manhattan_sharpen_Split968469711\n" +
+            "Regain manhattan to manhattan_sharpen_Split\n" +
+            "Save image manhattan_sharpen_Split\n" +
+            "Split Image displayed successfully.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void negativePercentageSharp() {
+    f.loadImage();
+    f.applySplit("-60", "sharpen", "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void invalidPercentageSharp() {
+    f.loadImage();
+    f.applySplit("160", "sharpen", "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void stringPercentageForSharp() {
+    f.loadImage();
+    f.applySplit("adjbf", "sharpen", "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void sharpFinalApply() {
+    f.loadImage();
+    f.commandGenerator("sharpen", "manhattan");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Sharpen manhattan to manhattan_sharpen\n" +
+            "Save image manhattan_sharpen\n" +
+            "Image manhattan_sharpen displayed correctly.\n" +
+            "Histogram manhattan_sharpen to manhattan_sharpenhist\n" +
+            "Save image manhattan_sharpenhist\n" +
+            "Histogram of image showed correctly";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void applyHorizontalFlipCorrectCall() {
+    f.loadImage();
+    f.applyHorizontalFlip("manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "HorizontalFlip manhattan-small to manhattan-small_horizontal-flip\n" +
+            "Save image manhattan-small_horizontal-flip\n" +
+            "Image manhattan-small_horizontal-flip displayed correctly.\n" +
+            "Histogram manhattan-small_horizontal-flip to manhattan-small_horizontal-fliphist\n" +
+            "Save image manhattan-small_horizontal-fliphist\n" +
+            "Histogram of image showed correctly";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void testShowErrorHorizontalFlip() {
+    f.applyHorizontalFlip(null);
+    String expected = "\nImage not present error displayed successfully.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void applyVerticalFlipCorrectCall() {
+    f.loadImage();
+    f.applyHorizontalFlip("manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "HorizontalFlip manhattan-small to manhattan-small_horizontal-flip\n" +
+            "Save image manhattan-small_horizontal-flip\n" +
+            "Image manhattan-small_horizontal-flip displayed correctly.\n" +
+            "Histogram manhattan-small_horizontal-flip to manhattan-small_horizontal-fliphist\n" +
+            "Save image manhattan-small_horizontal-fliphist\n" +
+            "Histogram of image showed correctly";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void testShowErrorVerticalFlip() {
+    f.applyVerticalFlip(null);
+    String expected = "\nImage not present error displayed successfully.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void applyLumaCorrectCall() {
     f.loadImage();
     f.applyLuma("manhattan-small");
     String expected = "checkImage called successfully.\n" +
@@ -182,9 +498,9 @@ public class MVCControllerTest {
   }
 
   @Test
-  public void testapplyHorizontalFlipCorrectCall() {
+  public void testLumaPreview() {
     f.loadImage();
-    f.applyHorizontalFlip("manhattan-small");
+    f.applySplit("50", "luma-component", "manhattan");
     String expected = "checkImage called successfully.\n" +
             "getFilePath called successfully.Load image manhattan-small\n" +
             "Save image manhattan-small\n" +
@@ -192,81 +508,19 @@ public class MVCControllerTest {
             "Histogram manhattan-small to manhattan-smallhist\n" +
             "Save image manhattan-smallhist\n" +
             "Histogram of image showed correctly\n" +
-            "HorizontalFlip manhattan-small to manhattan-small_horizontal-flip\n" +
-            "Save image manhattan-small_horizontal-flip\n" +
-            "Image manhattan-small_horizontal-flip displayed correctly.\n" +
-            "Histogram manhattan-small_horizontal-flip to manhattan-small_horizontal-fliphist\n" +
-            "Save image manhattan-small_horizontal-fliphist\n" +
-            "Histogram of image showed correctly";
-    assertEquals(expected, log.toString());
-  }
-
-  @Test
-  public void testShowErrorHorizontalFlip() {
-    f.applyHorizontalFlip(null);
-    String expected = "\nImage not present error displayed successfully.";
-    assertEquals(expected, log.toString());
-  }
-
-  @Test
-  public void testapplyVerticalFlipCorrectCall() {
-    f.loadImage();
-    f.applyHorizontalFlip("manhattan-small");
-    String expected = "checkImage called successfully.\n" +
-            "getFilePath called successfully.Load image manhattan-small\n" +
-            "Save image manhattan-small\n" +
-            "Image manhattan-small displayed correctly.\n" +
-            "Histogram manhattan-small to manhattan-smallhist\n" +
-            "Save image manhattan-smallhist\n" +
-            "Histogram of image showed correctly\n" +
-            "HorizontalFlip manhattan-small to manhattan-small_horizontal-flip\n" +
-            "Save image manhattan-small_horizontal-flip\n" +
-            "Image manhattan-small_horizontal-flip displayed correctly.\n" +
-            "Histogram manhattan-small_horizontal-flip to manhattan-small_horizontal-fliphist\n" +
-            "Save image manhattan-small_horizontal-fliphist\n" +
-            "Histogram of image showed correctly";
-    assertEquals(expected, log.toString());
-  }
-
-  @Test
-  public void testShowErrorVerticalFlip() {
-    f.applyVerticalFlip(null);
-    String expected = "\nImage not present error displayed successfully.";
-    assertEquals(expected, log.toString());
-  }
-
-  @Test
-  public void testapplyValueCorrectCall() {
-    f.loadImage();
-    f.applyValue("manhattan-small");
-    String expected = "checkImage called successfully.\n" +
-            "getFilePath called successfully.Load image manhattan-small\n" +
-            "Save image manhattan-small\n" +
-            "Image manhattan-small displayed correctly.\n" +
-            "Histogram manhattan-small to manhattan-smallhist\n" +
-            "Save image manhattan-smallhist\n" +
-            "Histogram of image showed correctly\n" +
-            "value-component preview called successfully.\n" +
-            "SplitPreview on manhattan-small with 50.0\n" +
-            "GetBrightnessComponent manhattan-small_value-component_Split1455224919" +
-            " to manhattan-small_value-component_Split1455224919 value-component\n" +
-            "Regain manhattan-small to manhattan-small_value-component_Split\n" +
-            "Save image manhattan-small_value-component_Split\n" +
+            "SplitPreview on manhattan with 50.0\n" +
+            "GetBrightnessComponent manhattan_luma-component_Split-1762141657 to" +
+            " manhattan_luma-component_Split-1762141657 luma-component\n" +
+            "Regain manhattan to manhattan_luma-component_Split\n" +
+            "Save image manhattan_luma-component_Split\n" +
             "Split Image displayed successfully.";
     assertEquals(expected, log.toString());
   }
 
   @Test
-  public void testShowErrorValue() {
-    f.applyValue(null);
-    String expected = "\nImage not present error displayed successfully.";
-    assertEquals(expected, log.toString());
-  }
-
-  @Test
-  public void testapplyIntensityCorrectCall() {
+  public void negativePercentageLuma() {
     f.loadImage();
-    f.applyIntensity("manhattan-small");
+    f.applySplit("-60", "luma-component", "manhattan-small");
     String expected = "checkImage called successfully.\n" +
             "getFilePath called successfully.Load image manhattan-small\n" +
             "Save image manhattan-small\n" +
@@ -274,25 +528,65 @@ public class MVCControllerTest {
             "Histogram manhattan-small to manhattan-smallhist\n" +
             "Save image manhattan-smallhist\n" +
             "Histogram of image showed correctly\n" +
-            "intensity-component preview called successfully.\n" +
-            "SplitPreview on manhattan-small with 50.0\n" +
-            "GetBrightnessComponent manhattan-small_intensity-component_Split987202969 " +
-            "to manhattan-small_intensity-component_Split987202969 intensity-component\n" +
-            "Regain manhattan-small to manhattan-small_intensity-component_Split\n" +
-            "Save image manhattan-small_intensity-component_Split\n" +
-            "Split Image displayed successfully.";
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
     assertEquals(expected, log.toString());
   }
 
   @Test
-  public void testShowErrorIntensity() {
-    f.applyIntensity(null);
-    String expected = "\nImage not present error displayed successfully.";
+  public void invalidPercentageLuma() {
+    f.loadImage();
+    f.applySplit("160", "luma-component", "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
     assertEquals(expected, log.toString());
   }
 
   @Test
-  public void testapplyColorCorrectCorrectCall() {
+  public void stringPercentageForLuma() {
+    f.loadImage();
+    f.applySplit("adjbf", "luma-component", "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void lumaFinalApply() {
+    f.loadImage();
+    f.commandGenerator("luma-component", "manhattan");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "GetBrightnessComponent manhattan to manhattan_luma-component luma-component\n" +
+            "Save image manhattan_luma-component\n" +
+            "Image manhattan_luma-component displayed correctly.\n" +
+            "Histogram manhattan_luma-component to manhattan_luma-componenthist\n" +
+            "Save image manhattan_luma-componenthist\n" +
+            "Histogram of image showed correctly";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void applyColorCorrectCorrectCall() {
     f.loadImage();
     f.applyColorCorrect("manhattan-small");
     String expected = "checkImage called successfully.\n" +
@@ -320,7 +614,98 @@ public class MVCControllerTest {
   }
 
   @Test
-  public void testapplyRedCorrectCall() {
+  public void testColorCorrectPreview() {
+    f.loadImage();
+    f.applySplit("50", "color-correct", "manhattan");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "SplitPreview on manhattan with 50.0\n" +
+            "ColorCorrection manhattan_color-correct_Split-1181917124 to " +
+            "manhattan_color-correct_Split-1181917124\n" +
+            "Regain manhattan to manhattan_color-correct_Split\n" +
+            "Save image manhattan_color-correct_Split\n" +
+            "Split Image displayed successfully.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void negativePercentageColorCorrect() {
+    f.loadImage();
+    f.applySplit("-60", "color-correct",
+            "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void invalidPercentageColorCorrect() {
+    f.loadImage();
+    f.applySplit("160", "color-correct",
+            "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void stringPercentageForColorCorrect() {
+    f.loadImage();
+    f.applySplit("adjbf", "color-correct",
+            "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void colorCorrectFinalApply() {
+    f.loadImage();
+    f.commandGenerator("color-correct", "manhattan");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "ColorCorrection manhattan to manhattan_color-correct\n" +
+            "Save image manhattan_color-correct\n" +
+            "Image manhattan_color-correct displayed correctly.\n" +
+            "Histogram manhattan_color-correct to manhattan_color-correcthist\n" +
+            "Save image manhattan_color-correcthist\n" +
+            "Histogram of image showed correctly";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void applyRedCorrectCall() {
     f.loadImage();
     f.applyRed("manhattan-small");
     String expected = "checkImage called successfully.\n" +
@@ -348,7 +733,98 @@ public class MVCControllerTest {
   }
 
   @Test
-  public void testapplyGreenCorrectCall() {
+  public void testRedCorrectPreview() {
+    f.loadImage();
+    f.applySplit("50", "red-component", "manhattan");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "SplitPreview on manhattan with 50.0\n" +
+            "GetColorComponent manhattan_red-component_Split-1561863619" +
+            " to manhattan_red-component_Split-1561863619 0\n" +
+            "Regain manhattan to manhattan_red-component_Split\n" +
+            "Save image manhattan_red-component_Split\n" +
+            "Split Image displayed successfully.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void negativePercentageRedCorrect() {
+    f.loadImage();
+    f.applySplit("-60", "red-component",
+            "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void invalidPercentageRedCorrect() {
+    f.loadImage();
+    f.applySplit("160", "red-component",
+            "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void stringPercentageForRedCorrect() {
+    f.loadImage();
+    f.applySplit("adjbf", "red-component",
+            "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void redComponentFinalApply() {
+    f.loadImage();
+    f.commandGenerator("color-correct", "manhattan");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "ColorCorrection manhattan to manhattan_color-correct\n" +
+            "Save image manhattan_color-correct\n" +
+            "Image manhattan_color-correct displayed correctly.\n" +
+            "Histogram manhattan_color-correct to manhattan_color-correcthist\n" +
+            "Save image manhattan_color-correcthist\n" +
+            "Histogram of image showed correctly";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void applyGreenCorrectCall() {
     f.loadImage();
     f.applyGreen("manhattan-small");
     String expected = "checkImage called successfully.\n" +
@@ -376,7 +852,98 @@ public class MVCControllerTest {
   }
 
   @Test
-  public void testapplyBlueCorrectCall() {
+  public void testBlueCorrectPreview() {
+    f.loadImage();
+    f.applySplit("50", "blue-component", "manhattan");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "SplitPreview on manhattan with 50.0\n" +
+            "GetColorComponent manhattan_blue-component_Split-1226927196 to " +
+            "manhattan_blue-component_Split-1226927196 2\n" +
+            "Regain manhattan to manhattan_blue-component_Split\n" +
+            "Save image manhattan_blue-component_Split\n" +
+            "Split Image displayed successfully.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void negativePercentageBlueCorrect() {
+    f.loadImage();
+    f.applySplit("-60", "blue-component",
+            "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void invalidPercentageBlueCorrect() {
+    f.loadImage();
+    f.applySplit("160", "blue-component",
+            "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void stringPercentageForBlueCorrect() {
+    f.loadImage();
+    f.applySplit("adjbf", "blue-component",
+            "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void blueComponentFinalApply() {
+    f.loadImage();
+    f.commandGenerator("blue-component", "manhattan");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "GetColorComponent manhattan to manhattan_blue-component 2\n" +
+            "Save image manhattan_blue-component\n" +
+            "Image manhattan_blue-component displayed correctly.\n" +
+            "Histogram manhattan_blue-component to manhattan_blue-componenthist\n" +
+            "Save image manhattan_blue-componenthist\n" +
+            "Histogram of image showed correctly";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void applyBlueCorrectCall() {
     f.loadImage();
     f.applyBlue("manhattan-small");
     String expected = "checkImage called successfully.\n" +
@@ -404,7 +971,7 @@ public class MVCControllerTest {
   }
 
   @Test
-  public void testapplyLeveladjustCorrectCall(){
+  public void applyLevelAdjustCorrectCall() {
     f.loadImage();
     f.applyLevelAdjust("manhattan-small");
     String expected = "checkImage called successfully.\n" +
@@ -419,19 +986,80 @@ public class MVCControllerTest {
   }
 
   @Test
-  public void testShowErrorLeveladjust() {
+  public void testShowErrorLevelAdjust() {
     f.applyLevelAdjust(null);
     String expected = "\nImage not present error displayed successfully.";
     assertEquals(expected, log.toString());
   }
 
   @Test
-  public void test
+  public void testLevelAdjustValueNotGiven() {
+    f.loadImage();
+    f.getLevelAdjust("manhattan-small", " ", " ", " ", "50");
+    String temp = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "All values (B, M, and W) must be provided and all must be whole value.";
+    assertEquals(temp, log.toString());
+  }
 
   @Test
-  public void testapplyCompressCorrectCall() {
+  public void testLevelAdjustValueNotInteger() {
     f.loadImage();
-    f.applyCompress("manhattan-small");
+    f.getLevelAdjust("manhattan-small", "afbf", "skfba", "ajfbsf", "50");
+    String temp = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "All values (B, M, and W) must be provided and all must be whole value.";
+    assertEquals(temp, log.toString());
+  }
+
+  @Test
+  public void testLevelAdjustNotInRangeNegative() {
+    f.loadImage();
+    f.getLevelAdjust("manhattan-small", "-123", "-255", "-2", "50");
+    String temp = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "All values (B, M, and W) must be between 0 to 255";
+    assertEquals(temp, log.toString());
+  }
+
+  @Test
+  public void testLevelAdjustNotInRange() {
+    f.loadImage();
+    f.getLevelAdjust("manhattan-small", "1230", "2550", "2000", "50");
+    String temp = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "All values (B, M, and W) must be between 0 to 255";
+    assertEquals(temp, log.toString());
+  }
+
+  @Test
+  public void negativePercentageLevelAdjust() {
+    f.loadImage();
+    f.getLevelAdjust("manhattan","60", "100","240","-123");
     String expected = "checkImage called successfully.\n" +
             "getFilePath called successfully.Load image manhattan-small\n" +
             "Save image manhattan-small\n" +
@@ -439,53 +1067,89 @@ public class MVCControllerTest {
             "Histogram manhattan-small to manhattan-smallhist\n" +
             "Save image manhattan-smallhist\n" +
             "Histogram of image showed correctly\n" +
-            "Compress split frame called successfully.";
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
     assertEquals(expected, log.toString());
   }
 
   @Test
-  public void testShowErrorCompress() {
-    Features f = new ImageApplicationFeatures(model, view);
-    f.applyCompress(null);
-    String expected = "\nImage not present error displayed successfully.";
-    assertEquals(expected, log.toString());
-  }
-
-  @Test
-  public void testShowErrorBrightness() {
-    f.applyBrightness(null);
-    String expected = "\nImage not present error displayed successfully.";
-    assertEquals(expected, log.toString());
-  }
-
-  @Test
-  public void testShowErrorDownScale() {
-    f.applyBrightness(null);
-    String expected = "\nImage not present error displayed successfully.";
-    assertEquals(expected, log.toString());
-  }
-
-
-  @Test
-  public void testapplySepia() {
+  public void invalidPercentageLevelAdjustCorrect() {
     f.loadImage();
-    f.applySepia("manhattan-smallSepia");
-    String expected = " checkImage called successfully.\n" +
+    f.getLevelAdjust("manhattan","60", "100","240","123");
+    String expected = "checkImage called successfully.\n" +
             "getFilePath called successfully.Load image manhattan-small\n" +
             "Save image manhattan-small\n" +
             "Image manhattan-small displayed correctly.\n" +
             "Histogram manhattan-small to manhattan-smallhist\n" +
             "Save image manhattan-smallhist\n" +
             "Histogram of image showed correctly\n" +
-            "sepia preview called successfully.\n" +
-            "SplitPreview on manhattan-smallSepia with 50.0\n" +
-            "Sepia manhattan-smallSepia_sepia_Split2008669134 to manhattan-small" +
-            "Sepia_sepia_Split2008669134\n" +
-            "Regain manhattan-smallSepia to manhattan-smallSepia_sepia_Split\n" +
-            "Save image manhattan-smallSepia_sepia_Split\n" +
-            "Split Image displayed successfully.";
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
     assertEquals(expected, log.toString());
   }
+
+  @Test
+  public void stringPercentageForLevelAdjustCorrect() {
+    f.loadImage();
+    f.getLevelAdjust("manhattan","60", "100","240","afk");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Provide valid value of percentage.";
+    assertEquals(expected, log.toString());
+  }
+
+  @Test
+  public void testLevelAdjustNotInAscending() {
+    f.loadImage();
+    f.getLevelAdjust("manhattan-small", "123", "25", "20", "50");
+    String temp = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "Error message displayed successfully.\n" +
+            "Value of B,M and W must be in ascending order (B < M < W)";
+    assertEquals(temp, log.toString());
+  }
+
+  @Test
+  public void testLevelAdjustApply() {
+    f.loadImage();
+    f.generateLevelAdjust("24", "50", "100", "manhattan-small");
+    String expected = "checkImage called successfully.\n" +
+            "getFilePath called successfully.Load image manhattan-small\n" +
+            "Save image manhattan-small\n" +
+            "Image manhattan-small displayed correctly.\n" +
+            "Histogram manhattan-small to manhattan-smallhist\n" +
+            "Save image manhattan-smallhist\n" +
+            "Histogram of image showed correctly\n" +
+            "LevelAdjustment manhattan-small to manhattan-small_levels-adjust with 24 50 100\n" +
+            "Save image manhattan-small_levels-adjust\n" +
+            "Image manhattan-small_levels-adjust displayed correctly.\n" +
+            "Histogram manhattan-small_levels-adjust to manhattan-small_levels-adjusthist\n" +
+            "Save image manhattan-small_levels-adjusthist\n" +
+            "Histogram of image showed correctly";
+    assertEquals(expected, log.toString());
+  }
+
+
+
+
+  @Test
+  public void testCompressError() {
+    f.applyCompress(null);
+    String expected = "\nImage not present error displayed successfully.";
+    assertEquals(expected, log.toString());
+  }
+
 
 
 }

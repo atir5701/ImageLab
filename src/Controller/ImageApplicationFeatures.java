@@ -360,48 +360,6 @@ public class ImageApplicationFeatures implements Features {
   }
 
   /**
-   * Applies the Value-Component effect to the specified image
-   * and preview it on GUI.
-   * This method checks if the image is loaded or not
-   * and then triggers the split preview for
-   * the Value effect in the view.
-   *
-   * @param imageName the name of the image to apply the Value effect.
-   */
-  @Override
-  public void applyValue(String imageName) {
-    boolean t = this.checkImage(imageName);
-    if (!t) {
-      return;
-    }
-    if (this.view.splitPreview("value-component")) {
-      this.commandGeneratorSplit("value-component",
-              "50", imageName);
-    }
-  }
-
-  /**
-   * Applies the Intensity-Component effect to the specified image
-   * and preview it on GUI.
-   * This method checks if the image is loaded or not
-   * and then triggers the split preview for
-   * the Intensity effect in the view.
-   *
-   * @param imageName the name of the image to apply the Intensity effect.
-   */
-  @Override
-  public void applyIntensity(String imageName) {
-    boolean t = this.checkImage(imageName);
-    if (!t) {
-      return;
-    }
-    if (this.view.splitPreview("intensity-component")) {
-      this.commandGeneratorSplit("intensity-component",
-              "50", imageName);
-    }
-  }
-
-  /**
    * Applies the red-component effect to the specified image
    * and preview it on GUI.
    * This method checks if the image is loaded or not

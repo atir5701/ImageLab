@@ -84,7 +84,8 @@ public class GuiViewMock implements IView {
 
   @Override
   public void showError(String error) {
-    log.append("\nError message displayed successfully.");
+    log.append("\nError message displayed successfully.\n")
+            .append(error);
   }
 
   @Override
