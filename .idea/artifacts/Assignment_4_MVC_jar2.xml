@@ -5,7 +5,7 @@
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/res/META-INF/MANIFEST.MF" />
       </element>
-      <element id="module-output" name="Assignment-4-MVC" />
+      <element id="module-output" name="ImageName" />
     </root>
   </artifact>
 </component>

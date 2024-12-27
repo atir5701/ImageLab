@@ -108,7 +108,7 @@ public interface IView {
    * @param commandName the name of the operation
    *                    that is being previewed
    */
-  boolean splitPreview(String commandName);
+  boolean splitPreview(String commandName, Features features);
 
   /**
    * Displays a split image in the split image panel.
@@ -139,7 +139,7 @@ public interface IView {
    * The frame is then displayed, allowing the user to preview
    * the effect of the adjustment and apply it if desired.
    */
-  void levelAdjust();
+  void levelAdjust(Features features);
 
   /**
    * Displays an error message when no image is
@@ -161,7 +161,7 @@ public interface IView {
    * user to interact with it and preview the
    * compression effect before applying it.
    */
-  void compressImage();
+  void compressImage(Features features);
 
   /**
    * Initializes and configures the split frame to allow
@@ -173,7 +173,7 @@ public interface IView {
    * and ensures that the frame is properly
    * set up for the brightness operation.
    */
-  void brightness();
+  void brightness(Features features);
 
   /**
    * Displays an error message in a modal dialog box.
@@ -198,6 +198,6 @@ public interface IView {
    * user to interact with it and preview the
    * downscale effect before applying it.
    */
-  void downScale(int height, int width);
+  void downScale(int height, int width, Features features);
 
 }

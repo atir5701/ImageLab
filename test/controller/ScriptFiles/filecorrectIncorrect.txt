@@ -1,6 +1,7 @@
 # Loading Multiple images in all format jpeg,ppm and png
 
 load images/manhattan-small.png bird
+load images/manhattan_mask.png bird_mask 
 
 
 # Red, Green, Blue, Value, Intensity, Luma component of all images
@@ -8,8 +9,10 @@ load images/manhattan-small.png bird
 red-component bird 
 
 green-component bird bird-green
+green-component bird bird_mask bird-green-mask 
 
 blue-component bird bird-blue
+blue-component bird bird_mask bird-blue-mask
 
 red-component bird bird-red split
 

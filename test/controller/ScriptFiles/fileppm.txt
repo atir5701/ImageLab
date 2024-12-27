@@ -1,27 +1,33 @@
 # Loading Multiple images in all format jpeg,ppm and png
 
 load images/koala.ppm bird
-
+load images/koala_mask.png bird_mask
 
 # Red, Green, Blue, Value, Intensity, Luma component of all images
 
 red-component bird bird-red
 red-component bird bird-split split 50
+red-component bird bird_mask bird-red-mask 
 
 green-component bird bird-green
 green-component bird bird-split split 60
+green-component bird bird_mask bird-green-mask
 
 blue-component bird bird-blue
 blue-component bird bird-split split 70
+blue-component bird bird_mask bird-blue-mask
 
 value-component bird bird-value
 value-component bird bird-split split 30
+value-component bird bird_mask bird-value-mask
 
 intensity-component bird bird-intensity
 intensity-component bird bird-split split 10
+intensity-component bird bird_mask bird-intensity-mask
 
 luma-component bird bird-luma
 luma-component bird bird-split split 15.6
+luma-component bird bird_mask bird-luma-mask
 
 
 
@@ -80,6 +86,8 @@ save test/controller/resultTest/bird-blur.ppm bird-blur
 save test/controller/resultTest/bird-blur.ppm bird-blur
 blur bird bird-split split 50
 save test/controller/resultTest/bird-split.ppm bird-split
+blur bird bird_mask bird-blur-mask
+save test/controller/resultTest/bird-blur-mask.jpg bird-blur-mask 
 
 # Sharpen
 
@@ -88,6 +96,8 @@ sharpen bird bird-sharpen
 save test/controller/resultTest/bird-sharpen.ppm bird-sharpen
 sharpen bird bird-split split 60
 save test/controller/resultTest/bird-split.png bird-split
+sharpen bird bird_mask bird-sharpen-mask
+save test/controller/resultTest/bird-sharpen-mask.jpg bird-sharpen-mask  
 
 
 # Sepia
@@ -96,6 +106,8 @@ sepia bird bird-sepia
 save test/controller/resultTest/bird-sepia.ppm bird-sepia
 sepia bird bird-sepia split 45.8
 save test/controller/resultTest/bird-sepia.jpg bird-sepia
+sepia bird bird_mask bird-sepia-mask
+save test/controller/resultTest/bird-sepia-mask.jpg bird-sepia-mask   
 
 # Compress
 compress 35 bird birdcomp

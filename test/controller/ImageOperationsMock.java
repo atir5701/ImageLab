@@ -3,10 +3,10 @@ package controller;
 import model.OperationsV3;
 
 /**
- * This is a mock class of the ImageOperationsV2 class.
+ * This is a mock class of the ImageOperationsV3 class.
  * The purpose of this class is to provide mock implementations
- * of the various methods defined in the ImageOperationV2 class.
- * This class extends the OperationsV2 interface.
+ * of the various methods defined in the ImageOperationV3 class.
+ * This class implements the OperationsV3 interface.
  */
 public class ImageOperationsMock implements OperationsV3 {
   private final StringBuilder log;
@@ -129,7 +129,7 @@ public class ImageOperationsMock implements OperationsV3 {
   @Override
   public int[][][] saveImage(String name) {
     log.append("\nSave image ").append(name);
-    return new int[1][1][3];
+    return new int[3][3][3];
   }
 
   /**

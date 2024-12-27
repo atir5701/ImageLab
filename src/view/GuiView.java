@@ -1,6 +1,7 @@
 package view;
 
 
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
@@ -67,19 +68,11 @@ public class GuiView extends JFrame implements IView {
   private JButton vflipButton;
   private JButton brightButton;
   private JButton compressButton;
-  private JButton splitButton;
+  private JButton previewButton;
   private JButton applyButton;
   private JButton cancelButton;
   private JButton adjButton;
-  private JButton previewLevel;
-  private JButton applyLevel;
-  private JButton previewComp;
-  private JButton applyComp;
-  private JButton previewBright;
-  private JButton applyBright;
   private JButton downScaleButton;
-  private JButton applyDown;
-  private JButton previewDown;
   private JLabel imageLabel;
   private JLabel histogramLabel;
   private JLabel messageLabel;
@@ -102,7 +95,7 @@ public class GuiView extends JFrame implements IView {
   private JTextField widthField;
   private JTextField brightnessField;
   private Font font;
-  private boolean isSplitFrameOpen = false;
+  private boolean isSplitFrameOpen;
 
   /**
    * Constructs the main GUI view for the
@@ -113,39 +106,81 @@ public class GuiView extends JFrame implements IView {
    * @param caption The title to be displayed on the main window.
    */
   public GuiView(String caption) {
+    this.isSplitFrameOpen = false;
     this.setTitle(caption);
     this.setMinimumSize(new Dimension(1100, 700));
     this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     this.setResizable(true);
     this.initializeComponents();
-
     this.setLayout(new BorderLayout());
 
-    JLabel headingLabel = new JLabel("Image Processing Application", JLabel.CENTER);
-    headingLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
-    headingLabel.setPreferredSize(new Dimension(800, 50));
-
-    this.add(headingLabel, BorderLayout.NORTH);
-
-    JPanel spacePanel = new JPanel();
-    spacePanel.setPreferredSize(new Dimension(800, 20));
-    this.add(spacePanel, BorderLayout.CENTER);
+    this.addHeadingLabel();
+    this.addSpacePanel();
 
     this.createTopPanel();
     this.createOperationalPanel();
     this.createImagePanel();
     this.createHistogramPanel();
 
+    this.addLeftPanel();
+    this.addSplitPane();
+    this.addWindowListener();
+
+    this.pack();
+    this.setVisible(true);
+  }
+
+  /**
+   * Creates and adds the heading label to the top of the window.
+   * The label displays the text "Image Processing Application" in
+   * a centered, bold SansSerif font.
+   * The label's preferred size is set to 800x50 pixels and is
+   * added to the NORTH region of the layout.
+   */
+  private void addHeadingLabel() {
+    JLabel headingLabel = new JLabel("Image Processing Application", JLabel.CENTER);
+    headingLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+    headingLabel.setPreferredSize(new Dimension(800, 50));
+    this.add(headingLabel, BorderLayout.NORTH);
+  }
+
+  /**
+   * Creates and adds a space panel to the center of the window.
+   * The space panel is a blank JPanel with a preferred size of 800x20 pixels.
+   * It serves as a visual spacer between other components and is added
+   * to the CENTER region of the layout.
+   */
+  private void addSpacePanel() {
+    JPanel spacePanel = new JPanel();
+    spacePanel.setPreferredSize(new Dimension(800, 20));
+    this.add(spacePanel, BorderLayout.CENTER);
+  }
+
+  /**
+   * Sets up and adds a vertical split pane to the main window.
+   * This method creates a right panel that contains the image and
+   * histogram panels stacked vertically.
+   * A vertical split pane is then created, displaying the image
+   * panel and histogram panel, allowing the user to resize the split area.
+   * The split pane is added to the center of the main window.
+   */
+  private void addLeftPanel() {
     JScrollPane operationScrollPane = new JScrollPane(this.operationPanel);
     operationScrollPane.setPreferredSize(new Dimension(180, 500));
     operationScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
     JPanel leftPanel = new JPanel();
     leftPanel.setLayout(new BorderLayout());
     leftPanel.add(this.topPanel, BorderLayout.NORTH);
     leftPanel.add(operationScrollPane, BorderLayout.CENTER);
     this.add(leftPanel, BorderLayout.WEST);
+  }
 
+  /**
+   * Configures and adds a vertical split pane to the GUI, dividing the image panel
+   * and histogram panel. The split pane supports adjustable resizing, with an initial
+   * divider location at the midpoint and one-touch expandability.
+   */
+  private void addSplitPane() {
     JPanel rightPanel = new JPanel(new BorderLayout());
     JPanel imageAndHistogramPanel = new JPanel();
     imageAndHistogramPanel.setLayout(new GridLayout(2, 1, 0, 10));
@@ -158,7 +193,16 @@ public class GuiView extends JFrame implements IView {
     splitPane.setOneTouchExpandable(true);
     splitPane.setResizeWeight(0.5);
     splitPane.setDividerLocation(0.5);
+    this.add(splitPane, BorderLayout.CENTER);
+  }
 
+  /**
+   * Adds a window listener to handle the window closing event.
+   * When the user attempts to close the application window, a confirmation dialog is shown
+   * asking if they are sure they want to exit.
+   * If the user confirms, the application window is disposed.
+   */
+  private void addWindowListener() {
     this.addWindowListener(new java.awt.event.WindowAdapter() {
       @Override
       public void windowClosing(java.awt.event.WindowEvent e) {
@@ -175,9 +219,6 @@ public class GuiView extends JFrame implements IView {
         }
       }
     });
-    this.add(splitPane, BorderLayout.CENTER);
-    this.pack();
-    this.setVisible(true);
   }
 
   /**
@@ -206,17 +247,9 @@ public class GuiView extends JFrame implements IView {
     this.downScaleButton = new JButton("Downscale");
     this.compressButton = new JButton("Compression");
     this.adjButton = new JButton("Levels-Adjust");
-    this.previewLevel = new JButton("Preview");
-    this.applyLevel = new JButton("Apply");
-    this.splitButton = new JButton("Preview");
+    this.previewButton = new JButton("Preview");
     this.applyButton = new JButton("Apply");
     this.cancelButton = new JButton("Cancel");
-    this.previewComp = new JButton("Preview");
-    this.applyComp = new JButton("Apply");
-    this.previewBright = new JButton("Preview");
-    this.applyBright = new JButton("Apply");
-    this.applyDown = new JButton("Apply");
-    this.previewDown = new JButton("Preview");
     this.imageLabel = new JLabel();
     this.histogramLabel = new JLabel();
   }
@@ -257,10 +290,10 @@ public class GuiView extends JFrame implements IView {
     gbc.insets = new Insets(5, 5, 5, 5);
     Dimension buttonSize = new Dimension(150, 40);
     JButton[] buttons = new JButton[]{
-        this.blurButton, this.sepiaButton, this.sharpenButton, this.colorCorrectionButton,
-        this.redButton, this.greenButton, this.blueButton, this.lumaButton,
-        this.hflipButton, this.vflipButton, this.brightButton,
-        this.compressButton, this.adjButton, this.downScaleButton
+      this.blurButton, this.sepiaButton, this.sharpenButton, this.colorCorrectionButton,
+      this.redButton, this.greenButton, this.blueButton, this.lumaButton,
+      this.hflipButton, this.vflipButton, this.brightButton,
+      this.compressButton, this.adjButton, this.downScaleButton
     };
 
     for (JButton button : buttons) {
@@ -334,9 +367,9 @@ public class GuiView extends JFrame implements IView {
    * @param size   the preferred size of the button
    */
   private void setButtonProperties(JButton button, Dimension size) {
-    button.setPreferredSize(size); // Set uniform button size
+    button.setPreferredSize(size);
     button.setHorizontalAlignment(SwingConstants.CENTER);
-    button.setVerticalAlignment(SwingConstants.CENTER);// Horizontally center text
+    button.setVerticalAlignment(SwingConstants.CENTER);
   }
 
   /**
@@ -372,25 +405,6 @@ public class GuiView extends JFrame implements IView {
    */
   @Override
   public void addFeature(Features features) {
-    this.addFeatureToButton(features);
-    this.addSplitOperationButton(features);
-    this.addCompressionButton(features);
-    this.addLevelAdjustButton(features);
-    this.addBrightButton(features);
-    this.addDownScalingButton(features);
-  }
-
-  /**
-   * Adds action listeners to all the buttons related to image processing operations.
-   * This method links each button to the corresponding method in the `Features` controller,
-   * enabling the user to perform various operations such as loading, saving, applying filters,
-   * and adjusting properties of the image.
-   *
-   * @param features the controller interface that provides the core
-   *                 functionality of the application,
-   *                 such as loading, saving, and processing the image.
-   */
-  private void addFeatureToButton(Features features) {
     this.loadButton.addActionListener(e -> features.loadImage());
     this.saveButton.addActionListener(e -> features.saveImage(this.imageName));
     this.blurButton.addActionListener(e -> features.applyBlur(this.imageName));
@@ -407,6 +421,11 @@ public class GuiView extends JFrame implements IView {
     this.colorCorrectionButton.addActionListener(e -> features.applyColorCorrect(this.imageName));
     this.adjButton.addActionListener(e -> features.applyLevelAdjust(this.imageName));
     this.brightButton.addActionListener(e -> features.applyBrightness(this.imageName));
+    this.cancelButton.addActionListener(e -> {
+      this.splitFrame.setVisible(false);
+      this.splitFrame.dispose();
+      this.isSplitFrameOpen = false;
+    });
   }
 
   /**
@@ -419,21 +438,12 @@ public class GuiView extends JFrame implements IView {
    *                 the split operation to the image.
    */
   private void addSplitOperationButton(Features features) {
-    this.splitButton.addActionListener(e -> features.applySplit(this.pField.getText(),
+    this.previewButton.addActionListener(e -> features.applySplit(this.pField.getText(),
             this.commandName, this.imageName));
     this.applyButton.addActionListener(e -> features.commandGenerator(this.commandName,
             this.imageName));
-    this.applyButton.addActionListener(e -> {
-      this.splitFrame.setVisible(false);
-      this.successMessage("Filter applied successfully.");
-      this.splitFrame.dispose();
-      this.isSplitFrameOpen = false;
-    });
-    this.cancelButton.addActionListener(e -> {
-      this.splitFrame.setVisible(false);
-      this.splitFrame.dispose();
-      this.isSplitFrameOpen = false;
-    });
+    this.applyButton.addActionListener(e ->
+            this.previewDisposalForAcceptButton("Filter applied successfully"));
   }
 
   /**
@@ -446,18 +456,14 @@ public class GuiView extends JFrame implements IView {
    *                 for applying compression to the image.
    */
   private void addCompressionButton(Features features) {
-    this.previewComp.addActionListener(e -> features.getCompress(this.pField.getText(),
-            this.imageName));
-    this.applyComp.addActionListener(e -> {
-      boolean t = features.generateCompress(this.pField.getText(), this.imageName);
+    this.previewButton.addActionListener(e -> features.generateCompress(this.pField.getText(),
+            this.imageName, true));
+    this.applyButton.addActionListener(e -> {
+      boolean t = features.generateCompress(this.pField.getText(), this.imageName, false);
       if (!t) {
         return;
       }
-      this.splitFrame.setVisible(false);
-      this.successMessage("Compress applied successfully.");
-      this.splitFrame.dispose();
-      this.isSplitFrameOpen = false;
-
+      this.previewDisposalForAcceptButton("Compress applied successfully");
     });
   }
 
@@ -471,20 +477,17 @@ public class GuiView extends JFrame implements IView {
    *                 adjustment operations for the image.
    */
   private void addLevelAdjustButton(Features features) {
-    this.previewLevel.addActionListener(e -> features.getLevelAdjust(this.imageName,
+    this.previewButton.addActionListener(e -> features.getLevelAdjust(this.imageName,
             this.bField.getText(), this.mField.getText(), this.wField.getText(),
             this.pField.getText()));
 
-    this.applyLevel.addActionListener(e -> {
+    this.applyButton.addActionListener(e -> {
       boolean t = features.generateLevelAdjust(this.bField.getText(), this.mField.getText(),
               this.wField.getText(), this.imageName);
       if (!t) {
         return;
       }
-      this.splitFrame.setVisible(false);
-      this.successMessage("Operation applied successfully.");
-      this.splitFrame.dispose();
-      this.isSplitFrameOpen = false;
+      this.previewDisposalForAcceptButton("Levels-adjust applied successfully");
     });
   }
 
@@ -498,17 +501,15 @@ public class GuiView extends JFrame implements IView {
    *                 that handles brightness adjustments for the image.
    */
   private void addBrightButton(Features features) {
-    this.previewBright.addActionListener(e -> features.getBright(this.imageName,
-            this.brightnessField.getText()));
-    this.applyBright.addActionListener(e -> {
-      boolean t = features.generateBright(this.imageName, this.brightnessField.getText());
+    this.previewButton.addActionListener(e -> features.generateBright(this.imageName,
+            this.brightnessField.getText(), true));
+    this.applyButton.addActionListener(e -> {
+      boolean t = features.generateBright(this.imageName, this.brightnessField.getText(),
+              false);
       if (!t) {
         return;
       }
-      this.splitFrame.setVisible(false);
-      this.successMessage("Operation applied successfully.");
-      this.splitFrame.dispose();
-      this.isSplitFrameOpen = false;
+      this.previewDisposalForAcceptButton("Brightness-Change applied successfully");
     });
 
   }
@@ -523,19 +524,30 @@ public class GuiView extends JFrame implements IView {
    *                 manages downscaling operations for the image.
    */
   private void addDownScalingButton(Features features) {
-    this.previewDown.addActionListener(e -> features.getDown(this.imageName,
-            this.widthField.getText(), this.heightField.getText()));
-    this.applyDown.addActionListener(e -> {
+    this.previewButton.addActionListener(e -> features.generateDown(this.imageName,
+            this.widthField.getText(), this.heightField.getText(), true));
+    this.applyButton.addActionListener(e -> {
       boolean t = features.generateDown(this.imageName, this.widthField.getText(),
-              this.heightField.getText());
+              this.heightField.getText(), false);
       if (!t) {
         return;
       }
-      this.splitFrame.setVisible(false);
-      this.successMessage("Operation applied successfully.");
-      this.splitFrame.dispose();
-      this.isSplitFrameOpen = false;
+      this.previewDisposalForAcceptButton("Down-Scaling applied successfully");
     });
+  }
+
+  /**
+   * Private helper method which is used to dispose the preview frame
+   * when apply button is clicked.
+   *
+   * @param message the success message to get displayed when apply is
+   *                clicked.
+   */
+  private void previewDisposalForAcceptButton(String message) {
+    this.splitFrame.setVisible(false);
+    this.successMessage(message);
+    this.splitFrame.dispose();
+    this.isSplitFrameOpen = false;
   }
 
   /**
@@ -558,17 +570,14 @@ public class GuiView extends JFrame implements IView {
     this.splitFrame.setResizable(true);
     int height = (int) (this.getHeight() * 0.8);
     int width = (int) (this.getWidth() * 0.9);
-
     this.splitFrame.setSize(width, height);
     this.splitFrame.setMinimumSize(new Dimension(900, 650));
     this.splitFrame.setLayout(new BorderLayout());
     this.splitFrame.setLocationRelativeTo(this);
-
     this.top = new JPanel();
     this.top.setLayout(new BoxLayout(this.top, BoxLayout.Y_AXIS));
     this.top.setPreferredSize(new Dimension(width, 120));
     this.inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
-
     JLabel label = new JLabel("Enter a Percentage: ");
     this.pField = new JTextField("50", 5);
     this.messageLabel = new JLabel("");
@@ -636,43 +645,6 @@ public class GuiView extends JFrame implements IView {
   }
 
   /**
-   * Initializes and configures the split frame to allow
-   * the user to adjust the brightness or darkness of an image.
-   * The method sets up the input panel with a text field for entering
-   * the brightness value, and adds buttons for
-   * previewing and applying the adjustment.
-   * It also handles the display of the image preview
-   * and ensures that the frame is properly
-   * set up for the brightness operation.
-   */
-  @Override
-  public void brightness() {
-    if (this.checkingFrame()) {
-      return;
-    }
-    this.initializeFrame("Brightness or Darkness Preview");
-    this.inputPanel.removeAll();
-    JLabel label = new JLabel("Enter a Value: ");
-    this.inputPanel.add(label);
-    this.brightnessField = new JTextField(5);
-    this.brightnessField.addFocusListener(new FocusAdapter() {
-      @Override
-      public void focusGained(FocusEvent e) {
-        setMessageValue("The value must be an Integer Value.");
-        messageLabel.setVisible(true);
-      }
-
-      @Override
-      public void focusLost(FocusEvent e) {
-        messageLabel.setVisible(false);
-      }
-    });
-    this.inputPanel.add(this.brightnessField);
-    this.buttonPanel.add(this.applyBright, 0);
-    this.buttonPanel.add(this.previewBright, 0);
-  }
-
-  /**
    * Checks if a split frame is already open.
    * If an operation pop-up is currently open,
    * it displays an error message and brings
@@ -695,8 +667,50 @@ public class GuiView extends JFrame implements IView {
   }
 
   /**
-   * Initializes and configures the split frame for
-   * previewing a specific image operation.
+   * Initializes and configures the preview frame to allow
+   * the user to adjust the brightness or darkness of an image.
+   * The method sets up the input panel with a text field for entering
+   * the brightness value, and adds buttons for
+   * previewing and applying the adjustment.
+   * It also handles the display of the image preview
+   * and ensures that the frame is properly
+   * set up for the brightness operation.
+   *
+   * @param features the controller interface responsible for applying
+   *                 the split operation to the image.
+   */
+  @Override
+  public void brightness(Features features) {
+    if (this.checkingFrame()) {
+      return;
+    }
+    this.initializeFrame("Brightness or Darkness Preview");
+    this.inputPanel.removeAll();
+    JLabel label = new JLabel("Enter a Value: ");
+    this.inputPanel.add(label);
+    this.brightnessField = new JTextField(5);
+    this.brightnessField.addFocusListener(new FocusAdapter() {
+      @Override
+      public void focusGained(FocusEvent e) {
+        setMessageValue("The value must be an Integer Value.");
+        messageLabel.setVisible(true);
+      }
+
+      @Override
+      public void focusLost(FocusEvent e) {
+        messageLabel.setVisible(false);
+      }
+    });
+    this.inputPanel.add(this.brightnessField);
+    this.addingButtonToPanel();
+    this.addBrightButton(features);
+  }
+
+  /**
+   * Initializes and configures the preview split frame for
+   * previewing a specific image operation like blur, sharpen,
+   * sepia, red-component, green-component, blue-component
+   * and luma-component.
    * It checks if another frame is open, and
    * if not, sets up the input panel, buttons
    * for previewing, applying, and canceling
@@ -706,22 +720,24 @@ public class GuiView extends JFrame implements IView {
    *
    * @param commandName the name of the operation
    *                    that is being previewed
+   * @param features    the controller interface responsible for applying
+   *                    the split operation to the image.
    */
   @Override
-  public boolean splitPreview(String commandName) {
+  public boolean splitPreview(String commandName, Features features) {
     if (this.checkingFrame()) {
       return false;
     }
     this.commandName = commandName;
 
     this.initializeFrame("Preview " + commandName);
-    this.buttonPanel.add(this.applyButton, 0);
-    this.buttonPanel.add(this.splitButton, 0);
+    this.addingButtonToPanel();
+    this.addSplitOperationButton(features);
     return true;
   }
 
   /**
-   * Initializes and configures the split frame for
+   * Initializes and configures the preview frame for
    * performing level adjustment on the image.
    * The method sets up input fields for the
    * user to enter the black, mid, and white values
@@ -729,9 +745,12 @@ public class GuiView extends JFrame implements IView {
    * and canceling the adjustment.
    * The frame is then displayed, allowing the user to preview
    * the effect of the adjustment and apply it if desired.
+   *
+   * @param features the controller interface responsible for applying
+   *                 the preview operation to the image.
    */
   @Override
-  public void levelAdjust() {
+  public void levelAdjust(Features features) {
     if (this.checkingFrame()) {
       return;
     }
@@ -785,12 +804,12 @@ public class GuiView extends JFrame implements IView {
     this.inputPanel.add(new JLabel("Enter Mid Value : "), 0);
     this.inputPanel.add(this.bField, 0);
     this.inputPanel.add(new JLabel("Enter Black Value : "), 0);
-    this.buttonPanel.add(this.applyLevel, 0);
-    this.buttonPanel.add(this.previewLevel, 0);
+    this.addingButtonToPanel();
+    this.addLevelAdjustButton(features);
   }
 
   /**
-   * Initializes and configures the split frame
+   * Initializes and configures the preview frame
    * for previewing image compression.
    * The method checks if another frame is
    * open, and if not, sets up the necessary components
@@ -799,20 +818,23 @@ public class GuiView extends JFrame implements IView {
    * The frame is then displayed, allowing the
    * user to interact with it and preview the
    * compression effect before applying it.
+   *
+   * @param features the controller interface responsible for applying
+   *                 the preview operation to the image.
    */
   @Override
-  public void compressImage() {
+  public void compressImage(Features features) {
     if (this.checkingFrame()) {
       return;
     }
     this.initializeFrame("Compression Preview");
     this.pField.setText("");
-    this.buttonPanel.add(this.applyComp, 0);
-    this.buttonPanel.add(this.previewComp, 0);
+    this.addingButtonToPanel();
+    this.addCompressionButton(features);
   }
 
   /**
-   * Initializes and configures the split frame
+   * Initializes and configures the preview frame
    * for previewing down scaling of image.
    * The method checks if another frame is
    * open, and if not, sets up the necessary components
@@ -821,9 +843,14 @@ public class GuiView extends JFrame implements IView {
    * The frame is then displayed, allowing the
    * user to interact with it and preview the
    * downscale effect before applying it.
+   *
+   * @param height   the height of current image.
+   * @param width    the width of current image.
+   * @param features the controller interface responsible for applying
+   *                 the preview operation to the image.
    */
   @Override
-  public void downScale(int height, int width) {
+  public void downScale(int height, int width, Features features) {
     if (this.checkingFrame()) {
       return;
     }
@@ -867,8 +894,31 @@ public class GuiView extends JFrame implements IView {
     this.inputPanel.add(new JLabel("Enter Width Value : "), 0);
     this.inputPanel.add(this.heightField, 0);
     this.inputPanel.add(new JLabel("Enter Height Value : "), 0);
-    this.buttonPanel.add(this.applyDown, 0);
-    this.buttonPanel.add(this.previewDown, 0);
+    this.addingButtonToPanel();
+    this.addDownScalingButton(features);
+  }
+
+  /**
+   * Helper method to add the buttons to the button panel
+   * when any of the preview panels gets opened.
+   */
+  private void addingButtonToPanel() {
+    this.buttonPanel.add(this.applyButton, 0);
+    this.buttonPanel.add(this.previewButton, 0);
+    this.removeAllListners(this.applyButton);
+    this.removeAllListners(this.previewButton);
+  }
+
+  /**
+   * Helper method to remove the current action listners associated with
+   * all button common to all preview panel.
+   *
+   * @param button the button whose action listners are to be removed.
+   */
+  private void removeAllListners(JButton button) {
+    for (ActionListener listners : button.getActionListeners()) {
+      button.removeActionListener(listners);
+    }
   }
 
   /**
@@ -925,7 +975,6 @@ public class GuiView extends JFrame implements IView {
           return f.isDirectory() || f.getName().toLowerCase().endsWith("." +
                   format.toLowerCase());
         }
-
         @Override
         public String getDescription() {
           return format + " (*." + format.toLowerCase() + ")";

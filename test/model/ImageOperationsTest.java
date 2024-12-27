@@ -27,9 +27,9 @@ public class ImageOperationsTest {
   @Before
   public void setUp() {
     this.operations = new ImageOperationsV3();
-    String file = "images\\manhattan-small.png";
-    String f = "images\\galaxy.png";
-    String mask_path = "images\\mask.jpg";
+    String file = "images/manhattan-small.png";
+    String f = "images/galaxy.png";
+    String mask_path = "images/mask.jpg";
     int[][][] org = this.getMatrix(file);
     int[][][] org1 = this.getMatrix(f);
     int[][][] maskMatrix = this.getMatrix(mask_path);
@@ -83,7 +83,7 @@ public class ImageOperationsTest {
     this.operations.brighten("man", "man-bright-50", 50);
     int[][][] manNew = this.operations.saveImage("man-bright-50");
     String file = "images" +
-            "\\manhattan-small-brighter-by-50.png";
+            "/manhattan-small-brighter-by-50.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -122,7 +122,7 @@ public class ImageOperationsTest {
     this.operations.brighten("man", "man-darken-50", -50);
     int[][][] manNew = this.operations.saveImage("man-darken-50");
     String file2 = "images" +
-            "\\manhattan-small-darker-by-50.png";
+            "/manhattan-small-darker-by-50.png";
     int[][][] compare = this.getMatrix(file2);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -142,7 +142,7 @@ public class ImageOperationsTest {
     this.operations.verticalFlip("man", "man-vflip");
     int[][][] manNew = this.operations.saveImage("man-vflip");
     String file2 = "images" +
-            "\\manhattan-small-vertical.png";
+            "/manhattan-small-vertical.png";
     int[][][] compare = this.getMatrix(file2);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -162,7 +162,7 @@ public class ImageOperationsTest {
     this.operations.horizontalFlip("man", "man-hflip");
     int[][][] manNew = this.operations.saveImage("man-hflip");
     String file2 = "images" +
-            "\\manhattan-small-horizontal.png";
+            "/manhattan-small-horizontal.png";
     int[][][] compare = this.getMatrix(file2);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -183,7 +183,7 @@ public class ImageOperationsTest {
     this.operations.verticalFlip("man-hflip", "man-hv");
     int[][][] manNew = this.operations.saveImage("man-hv");
     String file2 = "images" +
-            "\\manhattan-small-horizontal-vertical.png";
+            "/manhattan-small-horizontal-vertical.png";
     int[][][] compare = this.getMatrix(file2);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -204,7 +204,7 @@ public class ImageOperationsTest {
     this.operations.horizontalFlip("man-vflip", "man-vh");
     int[][][] manNew = this.operations.saveImage("man-vh");
     String file = "images" +
-            "\\manhattan-small-vertical-horizontal.png";
+            "/manhattan-small-vertical-horizontal.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -224,7 +224,7 @@ public class ImageOperationsTest {
     this.operations.sepia("man", "man-sepia");
     int[][][] manNew = this.operations.saveImage("man-sepia");
     String file = "images" +
-            "\\manhattan-small-sepia.png";
+            "/manhattan-small-sepia.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -244,7 +244,7 @@ public class ImageOperationsTest {
     this.operations.blur("man", "man-blur");
     int[][][] manNew = this.operations.saveImage("man-blur");
     String file = "images" +
-            "\\manhattan-small-blur.png";
+            "/manhattan-small-blur.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -265,7 +265,7 @@ public class ImageOperationsTest {
     this.operations.blur("man-blur", "man-blur");
     int[][][] manNew = this.operations.saveImage("man-blur");
     String file = "images" +
-            "\\manhattan-small-blur-2.png";
+            "/manhattan-small-blur-2.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -285,7 +285,7 @@ public class ImageOperationsTest {
     this.operations.sharpen("man", "man-sharp");
     int[][][] manNew = this.operations.saveImage("man-sharp");
     String file = "images" +
-            "\\manhattan-small-sharper.png";
+            "/manhattan-small-sharper.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -306,7 +306,7 @@ public class ImageOperationsTest {
     this.operations.sharpen("man-sharp", "man-sharp");
     int[][][] manNew = this.operations.saveImage("man-sharp");
     String file = "images" +
-            "\\manhattan-small-sharpen-2.png";
+            "/manhattan-small-sharpen-2.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -327,7 +327,7 @@ public class ImageOperationsTest {
             "man-value", "value-component");
     int[][][] manNew = this.operations.saveImage("man-value");
     String file = "images" +
-            "\\manhattan-small-value-greyscale.png";
+            "/manhattan-small-value-greyscale.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -348,7 +348,7 @@ public class ImageOperationsTest {
             "man-luma", "luma-component");
     int[][][] manNew = this.operations.saveImage("man-luma");
     String file = "images" +
-            "\\manhattan-small-luma-greyscale.png";
+            "/manhattan-small-luma-greyscale.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -370,7 +370,7 @@ public class ImageOperationsTest {
             "man-intensity", "intensity-component");
     int[][][] manNew = this.operations.saveImage("man-intensity");
     String file = "images" +
-            "\\manhattan-small-intensity-greyscale.png";
+            "/manhattan-small-intensity-greyscale.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -394,7 +394,7 @@ public class ImageOperationsTest {
             "man-red", 0);
     int[][][] manNew = this.operations.saveImage("man-red");
     String file = "images" +
-            "\\manhattan-small-red.png";
+            "/manhattan-small-red.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -414,7 +414,7 @@ public class ImageOperationsTest {
             "man-blue", 2);
     int[][][] manNew = this.operations.saveImage("man-blue");
     String file = "images" +
-            "\\manhattan-small-blue.png";
+            "/manhattan-small-blue.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -434,7 +434,7 @@ public class ImageOperationsTest {
             "man-green", 1);
     int[][][] manNew = this.operations.saveImage("man-green");
     String file = "images" +
-            "\\manhattan-small-green.png";
+            "/manhattan-small-green.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -455,7 +455,7 @@ public class ImageOperationsTest {
             "man-red", "man-green", "man-blue");
     int[][][] manNew = this.operations.saveImage("man-red");
     String file = "images" +
-            "\\manhattan-small-red.png";
+            "/manhattan-small-red.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -466,7 +466,7 @@ public class ImageOperationsTest {
     }
     manNew = this.operations.saveImage("man-green");
     file = "images" +
-            "\\manhattan-small-green.png";
+            "/manhattan-small-green.png";
     compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -478,7 +478,7 @@ public class ImageOperationsTest {
 
     manNew = this.operations.saveImage("man-blue");
     file = "images" +
-            "\\manhattan-small-blue.png";
+            "/manhattan-small-blue.png";
     compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -501,7 +501,7 @@ public class ImageOperationsTest {
             "man-blue", "manNew");
     int[][][] manNew = this.operations.saveImage("manNew");
     String file = "images" +
-            "\\manhattan-small.png";
+            "/manhattan-small.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -521,7 +521,7 @@ public class ImageOperationsTest {
     this.operations.splitRGB("man",
             "man-red", "man-green", "man-blue");
     String file1 = "images" +
-            "\\galaxy.png";
+            "/galaxy.png";
     int[][][] newImg = this.getMatrix(file1);
     this.operations.loadImage(newImg, "bird");
     this.operations.splitRGB("bird", "bird-red",
@@ -537,7 +537,7 @@ public class ImageOperationsTest {
   @Test
   public void checkOverridingOfImage() {
     String file1 = "images" +
-            "\\galaxy.png";
+            "/galaxy.png";
     int[][][] newImg = this.getMatrix(file1);
     this.operations.loadImage(newImg, "man");
     int[][][] reference = this.getMatrix(file1);
@@ -914,7 +914,7 @@ public class ImageOperationsTest {
     this.operations.regain("man", name, "man-new");
     int[][][] manNew = this.operations.saveImage("man-new");
     String file = "images" +
-            "\\manhattan-small-blur.png";
+            "/manhattan-small-blur.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -938,7 +938,7 @@ public class ImageOperationsTest {
     this.operations.regain("man", name, "man-new");
     int[][][] manNew = this.operations.saveImage("man-new");
     String file = "images" +
-            "\\manhattan-small-sepia.png";
+            "/manhattan-small-sepia.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -962,7 +962,7 @@ public class ImageOperationsTest {
     this.operations.regain("man", name, "man-new");
     int[][][] manNew = this.operations.saveImage("man-new");
     String file = "images" +
-            "\\manhattan-small-sharper.png";
+            "/manhattan-small-sharper.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -986,7 +986,7 @@ public class ImageOperationsTest {
     this.operations.regain("man", name, "man-new");
     int[][][] manNew = this.operations.saveImage("man-new");
     String file = "images" +
-            "\\manhattan-small-red.png";
+            "/manhattan-small-red.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -1010,7 +1010,7 @@ public class ImageOperationsTest {
     this.operations.regain("man", name, "man-new");
     int[][][] manNew = this.operations.saveImage("man-new");
     String file = "images" +
-            "\\manhattan-small-green.png";
+            "/manhattan-small-green.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -1034,7 +1034,7 @@ public class ImageOperationsTest {
     this.operations.regain("man", name, "man-new");
     int[][][] manNew = this.operations.saveImage("man-new");
     String file = "images" +
-            "\\manhattan-small-blue.png";
+            "/manhattan-small-blue.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -1058,7 +1058,7 @@ public class ImageOperationsTest {
     this.operations.regain("man", name, "man-new");
     int[][][] manNew = this.operations.saveImage("man-new");
     String file = "images" +
-            "\\manhattan-small-value-greyscale.png";
+            "/manhattan-small-value-greyscale.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -1082,7 +1082,7 @@ public class ImageOperationsTest {
     this.operations.regain("man", name, "man-new");
     int[][][] manNew = this.operations.saveImage("man-new");
     String file = "images" +
-            "\\manhattan-small-luma-greyscale.png";
+            "/manhattan-small-luma-greyscale.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -1106,7 +1106,7 @@ public class ImageOperationsTest {
     this.operations.regain("man", name, "man-new");
     int[][][] manNew = this.operations.saveImage("man-new");
     String file = "images" +
-            "\\manhattan-small-intensity-greyscale.png";
+            "/manhattan-small-intensity-greyscale.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -1134,7 +1134,7 @@ public class ImageOperationsTest {
     this.operations.regain("man", name, "man-new");
     int[][][] manNew = this.operations.saveImage("man-new");
     String file = "images" +
-            "\\galaxy-adjusted.png";
+            "/galaxy-adjusted.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {
@@ -1162,7 +1162,7 @@ public class ImageOperationsTest {
     this.operations.regain("man", name, "man-new");
     int[][][] manNew = this.operations.saveImage("man-new");
     String file = "images" +
-            "\\galaxy-corrected.png";
+            "/galaxy-corrected.png";
     int[][][] compare = this.getMatrix(file);
     for (int i = 0; i < manNew.length; i++) {
       for (int j = 0; j < manNew[i].length; j++) {

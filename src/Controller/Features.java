@@ -200,18 +200,6 @@ public interface Features {
   void applyCompress(String imageName);
 
   /**
-   * Applies compression to the specified image with
-   * the given percentage and displays the result.
-   * This method checks the validity of the compression percentage,
-   * constructs a command to compress the image,
-   * executes the command, and then displays the compressed image.
-   *
-   * @param percentage the percentage for image compression
-   * @param imageName  the name of the image to be compressed
-   */
-  void getCompress(String percentage, String imageName);
-
-  /**
    * Generates and applies compression to the specified
    * image based on the given percentage.
    * This method validates the compression percentage,
@@ -220,9 +208,10 @@ public interface Features {
    *
    * @param pValue    the percentage for image compression
    * @param imageName the name of the image to be compressed
+   * @param checker   a boolean value to check if the preview or apply button is pressed.
    * @return true if the compression was applied successfully, false if the percentage is invalid
    */
-  boolean generateCompress(String pValue, String imageName);
+  boolean generateCompress(String pValue, String imageName, boolean checker);
 
   /**
    * Applies brightness to the specified image.
@@ -235,18 +224,6 @@ public interface Features {
   void applyBrightness(String imageName);
 
   /**
-   * Adjusts the brightness of the specified image
-   * based on the provided value.
-   * This method parses the brightness change value,
-   * constructs a command to adjust the brightness,
-   * executes the command, and displays the adjusted image.
-   *
-   * @param imageName the name of the image to be adjusted
-   * @param value     the brightness adjustment value
-   */
-  void getBright(String imageName, String value);
-
-  /**
    * Generates and applies brightness adjustment to the
    * specified image based on the provided value.
    * This method validates the brightness change value,
@@ -255,9 +232,10 @@ public interface Features {
    *
    * @param imageName the name of the image to be adjusted
    * @param value     the brightness adjustment value
+   * @param checker   a boolean value to check if the preview or apply button is pressed.
    * @return true if the brightness was applied successfully, false if the value is invalid
    */
-  boolean generateBright(String imageName, String value);
+  boolean generateBright(String imageName, String value, boolean checker);
 
   /**
    * Applies a split operation to the specified
@@ -283,19 +261,6 @@ public interface Features {
   void applyDownScale(String imageName);
 
   /**
-   * Applies downscaling to the specified image
-   * based on the provided width and height.
-   * This method checks if the downscaling parameters are valid,
-   * then applies the downscaling and
-   * displays the resulting image in the split view.
-   *
-   * @param imageName the name of the image to be downscaled
-   * @param width     the target width for downscaling
-   * @param height    the target height for downscaling
-   */
-  void getDown(String imageName, String width, String height);
-
-  /**
    * Generates and applies downscaling to the specified
    * image based on the provided width and height.
    * This method checks if the downscaling parameters
@@ -307,7 +272,7 @@ public interface Features {
    * @param height    the target height for downscaling
    * @return true if downscaling was applied successfully, false if the parameters are invalid
    */
-  boolean generateDown(String imageName, String width, String height);
+  boolean generateDown(String imageName, String width, String height, boolean checker);
 
   /**
    * Generates a command based on the given operation and

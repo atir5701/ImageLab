@@ -15,7 +15,8 @@ public interface ImageAppController {
   /**
    * Starts the application by loading the necessary resources,
    * such as the script path required for the application's execution.
-   * This method initiates the process by invoking getCommand. If an error
+   * This method initiates the process by invoking getCommand or addFeatures
+   * according to the mode of execution. If an error
    * occurs during this process (e.g., file not found, permission issues),
    * an IOException will be caught, and an appropriate error message
    * will be printed to the console.

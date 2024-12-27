@@ -62,7 +62,7 @@ class ColorCorrect extends AbstractCommandExecuter {
    * The method first check if the image on which operation
    * is to be done in present in the system or not.
    * For the split operation a check if done on the value of the percentage,
-   * if the percentage is 100 then directly levels-adjust is applied.
+   * if the percentage is 100 then directly color-correct is applied.
    * Else first the image is split, after split the operation is done on split
    * half and at end the image is combines with the remaining half.
    *

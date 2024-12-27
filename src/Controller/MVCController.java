@@ -12,7 +12,7 @@ import view.IView;
  * the model and the view.
  */
 
-public class MVCController implements MVCControllerGUI {
+public class MVCController implements ImageAppController {
   private final IView view;
   private final Features f;
 
@@ -30,12 +30,12 @@ public class MVCController implements MVCControllerGUI {
   }
 
   /**
-   * Starts the GUI-based application by adding the feature to the view.
-   * This method sets up the necessary components for the user interface
-   * to interact with the application.
+   * Starts the application by adding the Features instance to the view.
+   * This method establishes the communication between the
+   * controller and the GUI-based view.
    */
   @Override
-  public void startGUIBasedApplication() {
+  public void startApplication() {
     this.view.addFeature(f);
   }
 }

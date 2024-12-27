@@ -3,7 +3,6 @@ import java.io.InputStreamReader;
 import controller.CommandReader;
 import controller.ImageAppController;
 import controller.MVCController;
-import controller.MVCControllerGUI;
 import model.ImageOperationsV3;
 import model.OperationsV3;
 import view.GuiView;
@@ -54,8 +53,8 @@ public class ImageProcessingApplication {
       src.startApplication();
     } else {
       IView view = new GuiView("Image Processing Application");
-      MVCControllerGUI mvcController = new MVCController(operations, view);
-      mvcController.startGUIBasedApplication();
+      ImageAppController mvcController = new MVCController(operations, view);
+      mvcController.startApplication();
     }
   }
 }

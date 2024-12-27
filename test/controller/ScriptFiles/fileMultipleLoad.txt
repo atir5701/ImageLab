@@ -5,6 +5,10 @@ load images/panda.png panda
 
 load images/bird.jpg bird
 
+load images/bird_mask.png bird_mask
+
+load images/panda_mask.png panda_mask  
+
 
 # Red, Green, Blue, Value, Intensity, Luma component of all images
 
@@ -12,25 +16,30 @@ load images/bird.jpg bird
 red-component panda panda-red
 red-component bird bird-red
 red-component bird bird-split split 50
+red-component panda panda_mask panda-red-mask 
 
 green-component bird bird-green
 green-component panda panda-green
 green-component panda panda-split split 60
+green-component panda panda_mask panda-green-mask
 
 blue-component bird bird-blue
 blue-component panda panda-blue
+blue-component panda panda_mask panda-blue-mask
 
 value-component bird bird-value
 value-component panda panda-value
+value-component panda panda_mask panda-value-mask
 
 intensity-component bird bird-intensity
 intensity-component panda panda-intensity
 intensity-component bird bird-split split 10
+intensity-component panda panda_mask panda-intensity-mask
 
 luma-component bird bird-luma
 luma-component panda panda-luma
 luma-component panda panda-split split 15.6
-
+luma-component panda panda_mask panda-luma-mask
 
 
 
@@ -98,6 +107,7 @@ save  test/controller/resultTest/panda-combine.jpeg pandacom
 blur panda panda-blur
 blur bird bird-blur
 blur bird bird-split split 50
+blur bird bird_mask bird-mask-blur 
 save test/controller/resultTest/bird-split.jpg bird-split
 save  test/controller/resultTest/panda-blur.jpeg panda-blur
 
@@ -109,6 +119,7 @@ save  test/controller/resultTest/bird-blur.png bird-blur
 sharpen panda panda-sharpen
 sharpen bird bird-sharpen
 sharpen panda panda-split split 60
+Sharpen bird bird_mask bird-mask-sharpen
 save  test/controller/resultTest/panda-sharpen.jpeg panda-sharpen
 
 save test/controller/resultTest/bird-sharpen.png bird-sharpen
@@ -130,6 +141,7 @@ save test/controller/resultTest/bird-sharpen-blur.ppm bird-sharpen-blur
 
 sepia panda panda-sepia
 sepia bird bird-sepia
+Sepia bird bird_mask bird-mask-sepia
 
 save  test/controller/resultTest/panda-sepia.jpeg panda-sepia
 

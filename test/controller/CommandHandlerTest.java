@@ -42,7 +42,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLoad() {
-    String command = "load images\\manhattan-small.png man";
+    String command = "load images/manhattan-small.png man";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
@@ -56,7 +56,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLoadPPM() {
-    String command = "load images\\koala.ppm man";
+    String command = "load images/koala.ppm man";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
@@ -70,7 +70,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLoadJPG() {
-    String command = "load images\\bird.jpg man";
+    String command = "load images/bird.jpg man";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
@@ -86,7 +86,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLoadIncorrectFormat() {
-    String command = "load images\\manhattan-small.png ";
+    String command = "load images/manhattan-small.png ";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
@@ -102,7 +102,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLoadWithIncorrectExtension() {
-    String command = "load images\\manhattan-small.oip man";
+    String command = "load images/manhattan-small.oip man";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
@@ -118,7 +118,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLoadWithIncorrectFilePath() {
-    String command = "load img\\manhattan-small.ppm man";
+    String command = "load img/manhattan-small.ppm man";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
@@ -134,7 +134,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBrighten() {
-    String command = "load images\\manhattan-small.png man\n " +
+    String command = "load images/manhattan-small.png man\n " +
             "brighten 100 man man-br";
     Reader in = new StringReader(command);
 
@@ -151,7 +151,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testDarken() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n brighten -100 man man-br";
     Reader in = new StringReader(command);
 
@@ -169,7 +169,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBrightenIfNoIntegerGiven() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n brighten 100.56 man man-br";
     Reader in = new StringReader(command);
 
@@ -187,7 +187,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBrightenIfStringGiven() {
-    String command = "load images\\manhattan-small.png man\n " +
+    String command = "load images/manhattan-small.png man\n " +
             "brighten hundred man man-br";
     Reader in = new StringReader(command);
 
@@ -204,7 +204,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBrightenIncorrectFormat() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n brighten 100 man-br";
     Reader in = new StringReader(command);
 
@@ -237,7 +237,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testHorizontalFlip() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n horizontal-flip man man-horizontal-flip";
     Reader in = new StringReader(command);
 
@@ -254,7 +254,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testHorizontalFlipInvalidCommand() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n horizontal-flip man-br";
     Reader in = new StringReader(command);
 
@@ -271,7 +271,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testHorizontalFlipImageNotFound() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             " horizontal-flip man-br man-horizontal";
     Reader in = new StringReader(command);
 
@@ -290,7 +290,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testVerticalFlip() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n vertical-flip  man man-vflip";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -306,7 +306,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testVerticalFlipInvalidCommand() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n vertical-flip man-br";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -322,7 +322,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testVerticalFlipImageNotFound() {
-    String command = "load images\\manhattan-small.png man\n " +
+    String command = "load images/manhattan-small.png man\n " +
             "vertical-flip man-br man-horizontal";
     Reader in = new StringReader(command);
 
@@ -339,7 +339,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlur() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "blur man man-blur";
     Reader in = new StringReader(command);
 
@@ -356,7 +356,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlurInvalidCommand() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n blur man-br";
     Reader in = new StringReader(command);
 
@@ -373,7 +373,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlurImageNotFound() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n blur man-br man-horizontal";
     Reader in = new StringReader(command);
 
@@ -389,7 +389,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlurWithSplit() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "blur man man-sharpen split 50\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -404,7 +404,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlurWithSplitDouble() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "blur man man-sharpen split 50.78\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -420,7 +420,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlurWithSplitNoValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "blur man man-red split\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -436,7 +436,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlurWithSplitNoNumValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "blur man man-red split hundred\n";
 
     Reader in = new StringReader(command);
@@ -452,7 +452,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlurWithNoSplit() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "blur man man-red sp 45\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -467,7 +467,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlurSplitInvalid() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "blur man man-level split -23\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -483,7 +483,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlurSplitValueMore100() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "blur man man-level split 123\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -500,7 +500,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSharpen() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n sharpen  man man-sharpen";
     Reader in = new StringReader(command);
 
@@ -517,7 +517,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSharpenInvalidCommand() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n sharpen man-br";
     Reader in = new StringReader(command);
 
@@ -534,7 +534,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSharpenImageNotFound() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n sharpen man-br man-horizontal";
     Reader in = new StringReader(command);
 
@@ -550,7 +550,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSharpenWithSplit() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sharpen man man-sharpen split 50\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -565,7 +565,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSharpenWithSplitDouble() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sharpen man man-sharpen split 50.78\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -581,7 +581,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSharpWithSplitNoValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sharpen man man-sharp split";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -597,7 +597,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSharpenWithSplitNoNumValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sharpen man man-red split hundred\n";
 
     Reader in = new StringReader(command);
@@ -613,7 +613,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSharpenWithNoSplit() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sharpen man man-red sp 45\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -628,7 +628,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSharpSplitInvalid() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sharpen man man-level split -23\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -643,7 +643,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSharpSplitValueMore100() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sharpen man man-level split 123\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -660,7 +660,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSepia() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n sepia  man man-sepia";
     Reader in = new StringReader(command);
 
@@ -677,7 +677,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSepiaInvalidCommand() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n sepia man-br";
     Reader in = new StringReader(command);
 
@@ -694,7 +694,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSepiaImageNotFound() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n sepia man-br man-horizontal";
     Reader in = new StringReader(command);
 
@@ -710,7 +710,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSepiaWithSplit() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sepia man man-sepia split 50\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -726,7 +726,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSepiaWithSplitDouble() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sepia man man-sepia split 80.90\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -742,7 +742,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSepiaWithSplitNoValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sepia man man-sepia split\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -758,7 +758,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSepiaWithSplitNoNumValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sepia man man-sepia split hundred\n";
 
     Reader in = new StringReader(command);
@@ -774,7 +774,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSepiaWithNoSplit() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sepia man man-sepia sp 45\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -789,7 +789,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSepiaSplitInvalid() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sepia man man-level split -23\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -805,7 +805,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSepiaSplitValueMore100() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sepia man man-level split 123\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -822,7 +822,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBrightnessComponent() {
-    String command = "load images\\manhattan-small.png man\n " +
+    String command = "load images/manhattan-small.png man\n " +
             "value-component  man man-value" +
             "\n intensity-component man man-intensity" +
             "\n luma-component man man-luma";
@@ -843,7 +843,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBrightnessComponentInvalidCommand() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             " value-component man" +
             "\n intensity-component man\n" +
             "luma-component man";
@@ -863,7 +863,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBrightnessComponentImageNotFound() {
-    String command = "load images\\manhattan-small.png man\n " +
+    String command = "load images/manhattan-small.png man\n " +
             "value-component man-br man-horizontal\n" +
             "intensity-component man-br man-horizontal "
             + "\n luma-component man-br man-horizontal";
@@ -883,7 +883,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBrightnessComponentWithSplit() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "value-component man man-value split 50\n" +
             "luma-component man man-luma split 50\n" +
             "intensity-component man man-intensity split 50\n";
@@ -902,7 +902,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBrightnessComponentWithSplitDouble() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "value-component man man-value split 50.67\n" +
             "luma-component man man-luma split 50.56\n" +
             "intensity-component man man-intensity split 50.56\n";
@@ -922,7 +922,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBrightnessComponentWithSplitNoValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "value-component man man-value split\n" +
             "luma-component man man-luma split \n" +
             "intensity-component man man-intensity split \n";
@@ -942,7 +942,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBrightnessComponentWithSplitNoNumValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "value-component man man-value split hundred\n" +
             "luma-component man man-luma split hundred\n" +
             "intensity-component man man-intensity split hundred\n";
@@ -962,7 +962,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBrightnessComponentWithNoSplit() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "value-component man man-value sp 45\n" +
             "luma-component man man-luma sp 34\n" +
             "intensity-component man man-intensity sp 23\n";
@@ -981,7 +981,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBrightnessComponentSplitInvalid() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "value-component man man-level split -23\n" +
             "intensity-component man man-level split -23\n" +
             "luma-component man man-level split -23";
@@ -1000,7 +1000,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBrightnessComponentSplitValueMore100() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "value-component man man-level split 123\n" +
             "luma-component man man-level split 123\n" +
             "intensity-component man man-level split 123";
@@ -1021,7 +1021,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorComponent() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "red-component  man man-red" +
             "\ngreen-component man man-green\n " +
             "blue-component man man-blue";
@@ -1042,7 +1042,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorComponentInvalidCommand() {
-    String command = "load images\\manhattan-small.png man\n " +
+    String command = "load images/manhattan-small.png man\n " +
             "red-component man" +
             "\n green-component man   \nblue-component man";
     Reader in = new StringReader(command);
@@ -1061,7 +1061,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorComponentImageNotFound() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             " red-component man-br " +
             "man-horizontal\n blue-component " +
             "man-br man-horizontal \n " +
@@ -1082,7 +1082,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorComponentWithSplit() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "red-component man man-red split 50\n" +
             "blue-component man man-blue split 50\n" +
             "green-component man man-green split 50\n";
@@ -1102,7 +1102,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorComponentWithSplitDouble() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "red-component man man-red split 50.89\n" +
             "blue-component man man-blue split 60.45\n" +
             "green-component man man-green split 50.23\n";
@@ -1122,7 +1122,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorComponentWithSplitNoValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "red-component man man-red split\n" +
             "blue-component man man-blue split \n" +
             "green-component man man-green split \n";
@@ -1142,7 +1142,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorComponentWithSplitNoNumValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "red-component man man-red split hundred\n" +
             "blue-component man man-blue split hundred\n" +
             "green-component man man-green split hundred\n";
@@ -1162,7 +1162,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorComponentWithNoSplit() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "red-component man man-red sp 45\n" +
             "blue-component man man-blue sp 34\n" +
             "green-component man man-green sp 23\n";
@@ -1181,7 +1181,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorComponentSplitInvalid() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "red-component man man-level split -23\n" +
             "blue-component man man-level split -23\n" +
             "green-component man man-level split -23";
@@ -1200,7 +1200,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorComponentSplitValueMore100() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "red-component man man-level split 123\n" +
             "blue-component man man-level split 123\n" +
             "green-component man man-level split 123";
@@ -1220,7 +1220,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRGBSplit() {
-    String command = "load images\\manhattan-small.png " +
+    String command = "load images/manhattan-small.png " +
             "man\n rgb-split man " +
             "man-red man-green man-blue";
     Reader in = new StringReader(command);
@@ -1238,7 +1238,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRGBSplitInvalidCommand() {
-    String command = "load images\\manhattan-small.png man" +
+    String command = "load images/manhattan-small.png man" +
             "\n rgb-split man red green";
     Reader in = new StringReader(command);
 
@@ -1256,7 +1256,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRGBSplitImageNotFound() {
-    String command = "load images\\manhattan-small.png man\n " +
+    String command = "load images/manhattan-small.png man\n " +
             "rgb-split man2 man-red "
             + "man-green man-blue";
     Reader in = new StringReader(command);
@@ -1274,7 +1274,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRGBCombine() {
-    String command = "load images\\manhattan-small.png man\n " +
+    String command = "load images/manhattan-small.png man\n " +
             "rgb-split man " +
             "man-red man-green man-blue\nrgb-combine " +
             "man-combine man-red man-green man-blue";
@@ -1294,7 +1294,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRGBCombineInvalidCommand() {
-    String command = "load images\\manhattan-small.png man\n " +
+    String command = "load images/manhattan-small.png man\n " +
             "rgb-split man " +
             "man-red man-green man-blue\nrgb-combine " +
             "man-combine man-red";
@@ -1314,7 +1314,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRGBCombineImageNotFound() {
-    String command = "load images\\manhattan-small.png man\n " +
+    String command = "load images/manhattan-small.png man\n " +
             "rgb-split man " +
             "man-red man-green man-blue\nrgb-combine " +
             "man-combine man-r man-g man-b";
@@ -1335,8 +1335,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSave() {
-    String command = "load images\\manhattan-small.png man\n " +
-            "save test\\controller\\resultTest\\man.png man";
+    String command = "load images/manhattan-small.png man\n " +
+            "save test/controller/resultTest/man.png man";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
@@ -1345,7 +1345,7 @@ public class CommandHandlerTest {
     String expected = cmdload + "save executed successfully\n";
     assertEquals(expected, output);
     assertTrue("Image not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\man.png")));
+            Files.exists(Paths.get("test/controller/resultTest/man.png")));
   }
 
   /**
@@ -1354,7 +1354,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSaveInvalidCommand() {
-    String command = "load images\\manhattan-small.png man\n " +
+    String command = "load images/manhattan-small.png man\n " +
             "save man";
     Reader in = new StringReader(command);
 
@@ -1371,8 +1371,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSaveImageNotFound() {
-    String command = "load images\\manhattan-small.png man\n " +
-            "save test\\controller\\resultTest\\man.png man-horizontal";
+    String command = "load images/manhattan-small.png man\n " +
+            "save test/controller/resultTest/man.png man-horizontal";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
@@ -1388,8 +1388,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSaveImageIncorrectFilePath() {
-    String command = "load images\\manhattan-small.png man\n " +
-            "save im\\man.png man";
+    String command = "load images/manhattan-small.png man\n " +
+            "save im/man.png man";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
@@ -1406,7 +1406,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testCommandWithWhiteSpaces() {
-    String command = "load images\\manhattan-small.png          man\n";
+    String command = "load images/manhattan-small.png          man\n";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
@@ -1440,8 +1440,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSaveImageExtensionNot() {
-    String command = "load images\\manhattan-small.png man\n " +
-            "save images\\man.ajd man";
+    String command = "load images/manhattan-small.png man\n " +
+            "save images/man.ajd man";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
@@ -1473,7 +1473,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRunFileNotFound() {
-    String command = "run test\\controller\\ScriptFiles\\src.txt";
+    String command = "run test/controller/ScriptFiles/src.txt";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
@@ -1489,7 +1489,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRunFileWithNoTXT() {
-    String command = "run test\\controller\\ScriptFiles\\src.pdf";
+    String command = "run test/controller/ScriptFiles/src.pdf";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
@@ -1506,23 +1506,31 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRunFilePng() {
-    String command = "run test\\controller\\ScriptFiles\\filepng.txt";
+    String command = "run test/controller/ScriptFiles/filepng.txt";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
-    String expected = cmd + "load executed successfully\n" +
+    String expected = cmd +
+            "load executed successfully\n" +
+            "load executed successfully\n" +
+            "red-component executed successfully\n" +
             "red-component executed successfully\n" +
             "red-component executed successfully\n" +
             "green-component executed successfully\n" +
             "green-component executed successfully\n" +
+            "green-component executed successfully\n" +
+            "blue-component executed successfully\n" +
             "blue-component executed successfully\n" +
             "blue-component executed successfully\n" +
             "value-component executed successfully\n" +
             "value-component executed successfully\n" +
+            "value-component executed successfully\n" +
             "intensity-component executed successfully\n" +
             "intensity-component executed successfully\n" +
+            "intensity-component executed successfully\n" +
+            "luma-component executed successfully\n" +
             "luma-component executed successfully\n" +
             "luma-component executed successfully\n" +
             "horizontal-flip executed successfully\n" +
@@ -1543,11 +1551,17 @@ public class CommandHandlerTest {
             "save executed successfully\n" +
             "blur executed successfully\n" +
             "save executed successfully\n" +
+            "blur executed successfully\n" +
+            "save executed successfully\n" +
+            "sharpen executed successfully\n" +
+            "save executed successfully\n" +
             "sharpen executed successfully\n" +
             "save executed successfully\n" +
             "sharpen executed successfully\n" +
             "save executed successfully\n" +
             "sepia executed successfully\n" +
+            "sepia executed successfully\n" +
+            "save executed successfully\n" +
             "sepia executed successfully\n" +
             "save executed successfully\n" +
             "compress executed successfully\n" +
@@ -1563,11 +1577,22 @@ public class CommandHandlerTest {
 
     assertEquals(expected, output);
     assertTrue("bird-histogram not save successfully",
-            Files.exists(Paths.get("test\\controller\\" +
-                    "resultTest\\bird-hist.png")));
+            Files.exists(Paths.get("test/controller/" +
+                    "resultTest/bird-hist.png")));
     assertTrue("bird-color-correct not save successfully",
-            Files.exists(Paths.get("test\\controller\\" +
-                    "resultTest\\bird-correct.png")));
+            Files.exists(Paths.get("test/controller/" +
+                    "resultTest/bird-correct.png")));
+    assertTrue("bird-blur-mask not save successfully",
+            Files.exists(Paths.get("test/controller/" +
+                    "resultTest/bird-blur-mask.jpg")));
+    assertTrue("bird-sharpen-mask not save successfully",
+            Files.exists(Paths.get("test/controller/" +
+                    "resultTest/bird-sharpen-mask.jpg")));
+    assertTrue("bird-sepia-mask not save successfully",
+            Files.exists(Paths.get("test/controller/" +
+                    "resultTest/bird-sepia-mask.jpg")));
+
+
   }
 
   /**
@@ -1577,23 +1602,30 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRunFileJpg() {
-    String command = "run test\\controller\\ScriptFiles\\filejpg.txt";
+    String command = "run test/controller/ScriptFiles/filejpg.txt";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "load executed successfully\n" +
+            "load executed successfully\n" +
+            "red-component executed successfully\n" +
             "red-component executed successfully\n" +
             "red-component executed successfully\n" +
             "green-component executed successfully\n" +
             "green-component executed successfully\n" +
+            "green-component executed successfully\n" +
+            "blue-component executed successfully\n" +
             "blue-component executed successfully\n" +
             "blue-component executed successfully\n" +
             "value-component executed successfully\n" +
             "value-component executed successfully\n" +
+            "value-component executed successfully\n" +
             "intensity-component executed successfully\n" +
             "intensity-component executed successfully\n" +
+            "intensity-component executed successfully\n" +
+            "luma-component executed successfully\n" +
             "luma-component executed successfully\n" +
             "luma-component executed successfully\n" +
             "horizontal-flip executed successfully\n" +
@@ -1614,10 +1646,16 @@ public class CommandHandlerTest {
             "save executed successfully\n" +
             "blur executed successfully\n" +
             "save executed successfully\n" +
+            "blur executed successfully\n" +
+            "save executed successfully\n" +
             "sharpen executed successfully\n" +
             "sharpen executed successfully\n" +
             "save executed successfully\n" +
+            "sharpen executed successfully\n" +
+            "save executed successfully\n" +
             "sepia executed successfully\n" +
+            "sepia executed successfully\n" +
+            "save executed successfully\n" +
             "sepia executed successfully\n" +
             "save executed successfully\n" +
             "compress executed successfully\n" +
@@ -1632,17 +1670,26 @@ public class CommandHandlerTest {
             "color-correct executed successfully\n";
     assertEquals(expected, output);
     assertTrue("bird-horizontal not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\bird-hor.jpg")));
+            Files.exists(Paths.get("test/controller/resultTest/bird-hor.jpg")));
     assertTrue("bird-bright not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\bird-dark-100.jpg")));
+            Files.exists(Paths.get("test/controller/resultTest/bird-dark-100.jpg")));
     assertTrue("bird-blur not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\" +
+            Files.exists(Paths.get("test/controller/resultTest/" +
                     "bird-split.jpg")));
     assertTrue("bird-compress not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\bird-comp.jpg")));
+            Files.exists(Paths.get("test/controller/resultTest/bird-comp.jpg")));
     assertTrue("bird-levels-adjust not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\" +
+            Files.exists(Paths.get("test/controller/resultTest/" +
                     "bird-level.png")));
+    assertTrue("bird-blur-mask not save successfully",
+            Files.exists(Paths.get("test/controller/" +
+                    "resultTest/bird-blur-mask.jpg")));
+    assertTrue("bird-sharpen-mask not save successfully",
+            Files.exists(Paths.get("test/controller/" +
+                    "resultTest/bird-sharpen-mask.jpg")));
+    assertTrue("bird-sepia-mask not save successfully",
+            Files.exists(Paths.get("test/controller/" +
+                    "resultTest/bird-sepia-mask.jpg")));
 
 
   }
@@ -1654,23 +1701,30 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRunFilePPM() {
-    String command = "run test\\controller\\ScriptFiles\\fileppm.txt";
+    String command = "run test/controller/ScriptFiles/fileppm.txt";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "load executed successfully\n" +
+            "load executed successfully\n" +
+            "red-component executed successfully\n" +
             "red-component executed successfully\n" +
             "red-component executed successfully\n" +
             "green-component executed successfully\n" +
             "green-component executed successfully\n" +
+            "green-component executed successfully\n" +
+            "blue-component executed successfully\n" +
             "blue-component executed successfully\n" +
             "blue-component executed successfully\n" +
             "value-component executed successfully\n" +
             "value-component executed successfully\n" +
+            "value-component executed successfully\n" +
             "intensity-component executed successfully\n" +
             "intensity-component executed successfully\n" +
+            "intensity-component executed successfully\n" +
+            "luma-component executed successfully\n" +
             "luma-component executed successfully\n" +
             "luma-component executed successfully\n" +
             "horizontal-flip executed successfully\n" +
@@ -1692,9 +1746,15 @@ public class CommandHandlerTest {
             "save executed successfully\n" +
             "blur executed successfully\n" +
             "save executed successfully\n" +
+            "blur executed successfully\n" +
+            "save executed successfully\n" +
             "sharpen executed successfully\n" +
             "save executed successfully\n" +
             "sharpen executed successfully\n" +
+            "save executed successfully\n" +
+            "sharpen executed successfully\n" +
+            "save executed successfully\n" +
+            "sepia executed successfully\n" +
             "save executed successfully\n" +
             "sepia executed successfully\n" +
             "save executed successfully\n" +
@@ -1712,23 +1772,32 @@ public class CommandHandlerTest {
             "color-correct executed successfully\n";
     assertEquals(expected, output);
     assertTrue("bird-vertical not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\bird-ver.ppm")));
+            Files.exists(Paths.get("test/controller/resultTest/bird-ver.ppm")));
     assertTrue("RGB-Split not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\bird-redsplit.ppm")));
+            Files.exists(Paths.get("test/controller/resultTest/bird-redsplit.ppm")));
     assertTrue("RGB-Split not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\bird-greensplit.ppm")));
+            Files.exists(Paths.get("test/controller/resultTest/bird-greensplit.ppm")));
     assertTrue("RGB-Split not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\bird-bluesplit.ppm")));
+            Files.exists(Paths.get("test/controller/resultTest/bird-bluesplit.ppm")));
     assertTrue("RGB-combine not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\bird-combine.ppm")));
+            Files.exists(Paths.get("test/controller/resultTest/bird-combine.ppm")));
     assertTrue("bird-blur not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\bird-blur.ppm")));
+            Files.exists(Paths.get("test/controller/resultTest/bird-blur.ppm")));
     assertTrue("bird-sharp not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\bird-sharpen.ppm")));
+            Files.exists(Paths.get("test/controller/resultTest/bird-sharpen.ppm")));
     assertTrue("bird-sharp-split not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\bird-split.png")));
+            Files.exists(Paths.get("test/controller/resultTest/bird-split.png")));
     assertTrue("bird-sepia-split not save successfully",
-            Files.exists(Paths.get("test\\controller\\resultTest\\bird-sepia.jpg")));
+            Files.exists(Paths.get("test/controller/resultTest/bird-sepia.jpg")));
+    assertTrue("bird-blur-mask not save successfully",
+            Files.exists(Paths.get("test/controller/" +
+                    "resultTest/bird-blur-mask.jpg")));
+    assertTrue("bird-sharpen-mask not save successfully",
+            Files.exists(Paths.get("test/controller/" +
+                    "resultTest/bird-sharpen-mask.jpg")));
+    assertTrue("bird-sepia-mask not save successfully",
+            Files.exists(Paths.get("test/controller/" +
+                    "resultTest/bird-sepia-mask.jpg")));
   }
 
   /**
@@ -1736,7 +1805,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRunLoadMultiple() {
-    String command = "run test\\controller\\ScriptFiles\\fileMultipleLoad.txt";
+    String command = "run test/controller/ScriptFiles/fileMultipleLoad.txt";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
@@ -1744,19 +1813,27 @@ public class CommandHandlerTest {
     String output = out.toString();
     String expected = cmd + "load executed successfully\n" +
             "load executed successfully\n" +
+            "load executed successfully\n" +
+            "load executed successfully\n" +
             "red-component executed successfully\n" +
             "red-component executed successfully\n" +
             "red-component executed successfully\n" +
+            "red-component executed successfully\n" +
+            "green-component executed successfully\n" +
             "green-component executed successfully\n" +
             "green-component executed successfully\n" +
             "green-component executed successfully\n" +
             "blue-component executed successfully\n" +
             "blue-component executed successfully\n" +
+            "blue-component executed successfully\n" +
             "value-component executed successfully\n" +
             "value-component executed successfully\n" +
+            "value-component executed successfully\n" +
             "intensity-component executed successfully\n" +
             "intensity-component executed successfully\n" +
             "intensity-component executed successfully\n" +
+            "intensity-component executed successfully\n" +
+            "luma-component executed successfully\n" +
             "luma-component executed successfully\n" +
             "luma-component executed successfully\n" +
             "luma-component executed successfully\n" +
@@ -1791,9 +1868,11 @@ public class CommandHandlerTest {
             "blur executed successfully\n" +
             "blur executed successfully\n" +
             "blur executed successfully\n" +
+            "blur executed successfully\n" +
             "save executed successfully\n" +
             "save executed successfully\n" +
             "save executed successfully\n" +
+            "sharpen executed successfully\n" +
             "sharpen executed successfully\n" +
             "sharpen executed successfully\n" +
             "sharpen executed successfully\n" +
@@ -1805,6 +1884,7 @@ public class CommandHandlerTest {
             "blur executed successfully\n" +
             "save executed successfully\n" +
             "save executed successfully\n" +
+            "sepia executed successfully\n" +
             "sepia executed successfully\n" +
             "sepia executed successfully\n" +
             "save executed successfully\n" +
@@ -1831,7 +1911,7 @@ public class CommandHandlerTest {
 
   @Test
   public void testRunFileError() {
-    String command = "run test\\controller\\ScriptFiles\\fileerror.txt";
+    String command = "run test/controller/ScriptFiles/fileerror.txt";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
@@ -1890,7 +1970,26 @@ public class CommandHandlerTest {
             "B,M and W value must be between 0 and 255\n" +
             "B,M and W value must be in ascending order\n" +
             "Unknown command: colorcorrect\n" +
-            "Percentage must be between 0 and 100.\n";
+            "Percentage must be between 0 and 100.\n" +
+            "The image to be processed is not present.\n" +
+            "The image to be processed is not present.\n" +
+            "The image to be processed is not present.\n" +
+            "The image to be processed is not present.\n" +
+            "The image to be processed is not present.\n" +
+            "The image to be processed is not present.\n" +
+            "The image to be processed is not present.\n" +
+            "The image to be processed is not present.\n" +
+            "The image to be processed is not present.\n" +
+            "load executed successfully\n" +
+            "The Dimensions of mask and the image to be processed are not same.\n" +
+            "The Dimensions of mask and the image to be processed are not same.\n" +
+            "The Dimensions of mask and the image to be processed are not same.\n" +
+            "The Dimensions of mask and the image to be processed are not same.\n" +
+            "The Dimensions of mask and the image to be processed are not same.\n" +
+            "The Dimensions of mask and the image to be processed are not same.\n" +
+            "The Dimensions of mask and the image to be processed are not same.\n" +
+            "The Dimensions of mask and the image to be processed are not same.\n" +
+            "The Dimensions of mask and the image to be processed are not same.\n";
     assertEquals(expected, output);
   }
 
@@ -1900,7 +1999,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testInterConversion() {
-    String command = "run test\\controller\\ScriptFiles\\fileconversion.txt";
+    String command = "run test/controller/ScriptFiles/fileconversion.txt";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
@@ -1931,15 +2030,18 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRunWithCorrectIncorrect() {
-    String command = "run test\\controller\\ScriptFiles\\filecorrectIncorrect.txt";
+    String command = "run test/controller/ScriptFiles/filecorrectIncorrect.txt";
     Reader in = new StringReader(command);
 
     controller = new CommandReader(opr, in, v);
     controller.startApplication();
     String output = out.toString();
     String expected = cmd + "load executed successfully\n" +
+            "load executed successfully\n" +
             "Invalid Command.\n" +
             "green-component executed successfully\n" +
+            "green-component executed successfully\n" +
+            "blue-component executed successfully\n" +
             "blue-component executed successfully\n" +
             "The image to be processed is not present.\n" +
             "Invalid Command\n" +
@@ -1985,7 +2087,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testCompress() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "compress 90 man man-compress";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2001,7 +2103,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testCompressWithDouble() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "compress 90.45 man man-compress";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2017,7 +2119,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testCompressNoValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "compress percent man man-compress";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2033,7 +2135,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testCompressStringValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "compress twenty man man-compress";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2049,7 +2151,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testCompressNegativeValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "compress -120 man man-compress";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2065,7 +2167,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testCompressInvalidValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "compress 120 man man-compress";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2081,7 +2183,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testCompressInvalidFormat() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "compress man man-compress";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2097,7 +2199,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testCompressWithoutImage() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "compress 90 man3 man-compress";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2113,7 +2215,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testHistogram() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "histogram man man-hist";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2129,7 +2231,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testHistogramInvalidFormat() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "histogram man";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2145,7 +2247,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testHistogramWithoutImage() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "histogram man3 man-compress";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2161,7 +2263,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorCorrect() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "color-correct man man-correct";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2177,7 +2279,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorCorrectInvalidFormat() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "color-correct man";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2193,7 +2295,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorCorrectWithoutImage() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "color-correct man3 man-compress";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2208,7 +2310,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorCorrectWithSplit() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "color-correct man man-level split 50";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2224,7 +2326,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorCorrectWithSplitDouble() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "color-correct man man-level split 50.78";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2240,7 +2342,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorCorrectWithSplitNoValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "color-correct man man-level split";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2256,7 +2358,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorCorrectWithSplitNoNumValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "color-correct man man-level split hundred";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2271,7 +2373,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorCorrectWithNoSplit() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "color-correct man man-level st 23";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2286,7 +2388,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorCorrectSplitInvalid() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "color-correct man man-level split -23";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2301,7 +2403,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testColorCorrectSplitValueMore100() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "color-correct man man-level split 123";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2317,7 +2419,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLevelsAdjust() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man man-level";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2332,7 +2434,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLevelsAdjustNoValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "levels-adjust 20 100 fifty man man-level\n" +
             "levels-adjust twenty 100 200 man man-level \n" +
             "levels-adjust 20 hundred 200 man man-level\n" +
@@ -2354,7 +2456,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLevelsAdjustNegativeValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "levels-adjust -20 100 255 man man-level \n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2370,7 +2472,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLevelsAdjustInvalidValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "levels-adjust 2000 10000 2550000 man man-level\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2386,7 +2488,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLevelsAdjustValueNotAscending() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "levels-adjust 100 20 255 man man-level\n";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2402,7 +2504,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLevelsAdjustInvalidFormat() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "levels-adjust 20 man man-compress";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2418,7 +2520,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLevelsAdjustWithoutImage() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man3 man-compress";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2433,7 +2535,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLevelWithSplit() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man man-level split 50";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2449,7 +2551,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLevelWithSplitDouble() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man man-level split 50.89";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2465,7 +2567,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLevelWithSplitNoValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man man-level split";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2481,7 +2583,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLevelWithSplitNoNumValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man man-level split hundred";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2496,7 +2598,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLevelWithNoSplit() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man man-level st 23";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2511,7 +2613,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLevelSplitInvalid() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man man-level split -23";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2526,7 +2628,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLevelSplitInvalidValue() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "levels-adjust 20 100 255 man man-level split 123";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2541,8 +2643,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlurMask() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\mask.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/mask.jpg mask\n" +
             "blur man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2559,7 +2661,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlurMaskImageNotPresent() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "blur man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2576,8 +2678,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlurMaskImageSmall() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskSmall.jpeg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskSmall.jpeg mask\n" +
             "blur man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2595,8 +2697,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlurMaskImageBig() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskBig.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskBig.jpg mask\n" +
             "blur man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2613,8 +2715,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSharpenMask() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\mask.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/mask.jpg mask\n" +
             "sharpen man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2631,7 +2733,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSharpMaskImageNotPresent() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sharpen man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2648,8 +2750,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSharpenMaskImageSmall() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskSmall.jpeg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskSmall.jpeg mask\n" +
             "sharpen man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2667,8 +2769,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSharpenMaskImageBig() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskBig.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskBig.jpg mask\n" +
             "sharpen man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2685,8 +2787,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSepiaMask() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\mask.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/mask.jpg mask\n" +
             "sepia man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2703,7 +2805,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSepiaMaskImageNotPresent() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "sepia man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2720,8 +2822,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSepiaMaskImageSmall() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskSmall.jpeg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskSmall.jpeg mask\n" +
             "sepia man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2739,8 +2841,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testSepiaMaskImageBig() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskBig.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskBig.jpg mask\n" +
             "blur man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2758,8 +2860,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRedComponentMask() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\mask.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/mask.jpg mask\n" +
             "red-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2776,7 +2878,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRedCompMaskImageNotPresent() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "red-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2793,8 +2895,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRedCompMaskImageSmall() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskSmall.jpeg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskSmall.jpeg mask\n" +
             "red-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2812,8 +2914,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testRedCompMaskImageBig() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskBig.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskBig.jpg mask\n" +
             "red-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2831,8 +2933,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testGreenComponentMask() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\mask.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/mask.jpg mask\n" +
             "green-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2849,7 +2951,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testGreenCompMaskImageNotPresent() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "green-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2866,8 +2968,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testGreenCompMaskImageSmall() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskSmall.jpeg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskSmall.jpeg mask\n" +
             "green-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2885,8 +2987,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testGreenCompMaskImageBig() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskBig.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskBig.jpg mask\n" +
             "green-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2904,8 +3006,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlueComponentMask() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\mask.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/mask.jpg mask\n" +
             "blue-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2922,7 +3024,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlueCompMaskImageNotPresent() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "blue-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2939,8 +3041,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlueCompMaskImageSmall() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskSmall.jpeg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskSmall.jpeg mask\n" +
             "blue-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2958,8 +3060,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testBlueCompMaskImageBig() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskBig.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskBig.jpg mask\n" +
             "blue-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2977,8 +3079,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLumaComponentMask() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\mask.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/mask.jpg mask\n" +
             "luma-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -2995,7 +3097,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLumaCompMaskImageNotPresent() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "luma-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -3012,8 +3114,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLumaCompMaskImageSmall() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskSmall.jpeg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskSmall.jpeg mask\n" +
             "luma-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -3031,8 +3133,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testLumaCompMaskImageBig() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskBig.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskBig.jpg mask\n" +
             "luma-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -3050,8 +3152,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testValueComponentMask() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\mask.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/mask.jpg mask\n" +
             "value-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -3068,7 +3170,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testValueCompMaskImageNotPresent() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "value-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -3085,8 +3187,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testValueCompMaskImageSmall() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskSmall.jpeg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskSmall.jpeg mask\n" +
             "value-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -3104,8 +3206,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testValueCompMaskImageBig() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskBig.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskBig.jpg mask\n" +
             "value-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -3123,8 +3225,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testIntensityComponentMask() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\mask.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/mask.jpg mask\n" +
             "intensity-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -3141,7 +3243,7 @@ public class CommandHandlerTest {
    */
   @Test
   public void testIntensityCompMaskImageNotPresent() {
-    String command = "load images\\manhattan-small.png man\n" +
+    String command = "load images/manhattan-small.png man\n" +
             "intensity-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -3158,8 +3260,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testIntensityCompMaskImageSmall() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskSmall.jpeg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskSmall.jpeg mask\n" +
             "intensity-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);
@@ -3177,8 +3279,8 @@ public class CommandHandlerTest {
    */
   @Test
   public void testIntensityCompMaskImageBig() {
-    String command = "load images\\manhattan-small.png man\n" +
-            "load images\\maskBig.jpg mask\n" +
+    String command = "load images/manhattan-small.png man\n" +
+            "load images/maskBig.jpg mask\n" +
             "intensity-component man mask man-blur";
     Reader in = new StringReader(command);
     controller = new CommandReader(opr, in, v);

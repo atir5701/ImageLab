@@ -77,9 +77,11 @@ class Blur extends AbstractCommandExecuter {
    * If the percentage is less than 100, the image is split.
    * The blur operation is applied on one half,
    * and then the image is recombined with the remaining half.
-   * If a mask image is provided, a masking operation is
-   * applied and then the to the blurred image. First a check is made is
-   * the mask image is present or not.
+   * If a mask image is provided, first a check is made if mask image
+   * is present or not. If present then a temporary image is created
+   * which is obtained as a result of blur operation on original image.
+   * Then the masking operation is called to obtain the final resultant
+   * image.
    *
    * @param operations the instance that provides the methods to perform the blur, split,
    *                   and mask operations on the images.
@@ -90,7 +92,6 @@ class Blur extends AbstractCommandExecuter {
   @Override
   public boolean execute(OperationsV3 operations) {
     this.imageCheck(operations, this.currentImageName);
-
     if (this.percentage == 100.00 && this.maskImageName == null) {
       return operations.blur(this.currentImageName, this.newImageName);
     } else {

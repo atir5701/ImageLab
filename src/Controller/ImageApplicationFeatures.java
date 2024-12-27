@@ -231,14 +231,7 @@ public class ImageApplicationFeatures implements Features {
    */
   @Override
   public void applySepia(String imageName) {
-    boolean t = this.checkImage(imageName);
-    if (!t) {
-      return;
-    }
-    if (this.view.splitPreview("sepia")) {
-      this.commandGeneratorSplit("sepia",
-              "50", imageName);
-    }
+    this.applySplitPreview(imageName, "sepia");
   }
 
   /**
@@ -252,14 +245,7 @@ public class ImageApplicationFeatures implements Features {
    */
   @Override
   public void applyBlur(String imageName) {
-    boolean t = this.checkImage(imageName);
-    if (!t) {
-      return;
-    }
-    if (this.view.splitPreview("blur")) {
-      this.commandGeneratorSplit("blur",
-              "50", imageName);
-    }
+    this.applySplitPreview(imageName, "blur");
   }
 
   /**
@@ -273,14 +259,7 @@ public class ImageApplicationFeatures implements Features {
    */
   @Override
   public void applySharp(String imageName) {
-    boolean t = this.checkImage(imageName);
-    if (!t) {
-      return;
-    }
-    if (this.view.splitPreview("sharpen")) {
-      this.commandGeneratorSplit("sharpen",
-              "50", imageName);
-    }
+    this.applySplitPreview(imageName, "sharpen");
   }
 
   /**
@@ -328,14 +307,7 @@ public class ImageApplicationFeatures implements Features {
    */
   @Override
   public void applyColorCorrect(String imageName) {
-    boolean t = this.checkImage(imageName);
-    if (!t) {
-      return;
-    }
-    if (this.view.splitPreview("color-correct")) {
-      this.commandGeneratorSplit("color-correct",
-              "50", imageName);
-    }
+    this.applySplitPreview(imageName, "color-correct");
   }
 
   /**
@@ -349,14 +321,7 @@ public class ImageApplicationFeatures implements Features {
    */
   @Override
   public void applyLuma(String imageName) {
-    boolean t = this.checkImage(imageName);
-    if (!t) {
-      return;
-    }
-    if (this.view.splitPreview("luma-component")) {
-      this.commandGeneratorSplit("luma-component",
-              "50", imageName);
-    }
+    this.applySplitPreview(imageName, "luma-component");
   }
 
   /**
@@ -370,14 +335,7 @@ public class ImageApplicationFeatures implements Features {
    */
   @Override
   public void applyRed(String imageName) {
-    boolean t = this.checkImage(imageName);
-    if (!t) {
-      return;
-    }
-    if (this.view.splitPreview("red-component")) {
-      this.commandGeneratorSplit("red-component",
-              "50", imageName);
-    }
+    this.applySplitPreview(imageName, "red-component");
   }
 
   /**
@@ -391,14 +349,7 @@ public class ImageApplicationFeatures implements Features {
    */
   @Override
   public void applyGreen(String imageName) {
-    boolean t = this.checkImage(imageName);
-    if (!t) {
-      return;
-    }
-    if (this.view.splitPreview("green-component")) {
-      this.commandGeneratorSplit("green-component",
-              "50", imageName);
-    }
+    this.applySplitPreview(imageName, "green-component");
   }
 
   /**
@@ -412,13 +363,27 @@ public class ImageApplicationFeatures implements Features {
    */
   @Override
   public void applyBlue(String imageName) {
+    this.applySplitPreview(imageName, "blue-component");
+  }
+
+  /**
+   * This method basically call an additional frame in the GUI
+   * which provides the support to preview various operations
+   * like sepia, sharpen, blur etc.
+   * This method checks if the image is loaded or not
+   * and then triggers the split preview panel for
+   * the command provided as input effect in the view.
+   *
+   * @param imageName   the image on which operation is to be done.
+   * @param commandName the command to be carried out.
+   */
+  private void applySplitPreview(String imageName, String commandName) {
     boolean t = this.checkImage(imageName);
     if (!t) {
       return;
     }
-    if (this.view.splitPreview("blue-component")) {
-      this.commandGeneratorSplit("blue-component",
-              "50", imageName);
+    if (this.view.splitPreview(commandName, this)) {
+      this.commandGeneratorSplit(commandName, "50", imageName);
     }
   }
 
@@ -481,7 +446,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    this.view.levelAdjust();
+    this.view.levelAdjust(this);
   }
 
   /**
@@ -602,28 +567,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    this.view.compressImage();
-  }
-
-  /**
-   * Applies compression to the specified image with
-   * the given percentage and displays the result.
-   * This method checks the validity of the compression percentage,
-   * constructs a command to compress the image,
-   * executes the command, and then displays the compressed image.
-   *
-   * @param percentage the percentage for image compression
-   * @param imageName  the name of the image to be compressed
-   */
-  @Override
-  public void getCompress(String percentage, String imageName) {
-    if (this.percentageCheck(percentage)) {
-      return;
-    }
-    String command = "compress" + " " + percentage + " " + imageName + " "
-            + imageName + "_Compress";
-    this.commandHandler.readCommand(command.split(" "));
-    this.displaySplitImage(imageName + "_Compress");
+    this.view.compressImage(this);
   }
 
   /**
@@ -635,14 +579,22 @@ public class ImageApplicationFeatures implements Features {
    *
    * @param percentage the percentage for image compression
    * @param imageName  the name of the image to be compressed
+   * @param checker    a boolean value to check if the preview or apply button is pressed.
    * @return true if the compression was applied successfully, false if the percentage is invalid
    */
   @Override
-  public boolean generateCompress(String percentage, String imageName) {
+  public boolean generateCompress(String percentage, String imageName, boolean checker) {
     if (this.percentageCheck(percentage)) {
       return false;
     }
-    this.commandGenerator("compress " + percentage, imageName);
+    if (checker) {
+      String command = "compress" + " " + percentage + " " + imageName + " "
+              + imageName + "_Compress";
+      this.commandHandler.readCommand(command.split(" "));
+      this.displaySplitImage(imageName + "_Compress");
+    } else {
+      this.commandGenerator("compress " + percentage, imageName);
+    }
     return true;
   }
 
@@ -660,30 +612,7 @@ public class ImageApplicationFeatures implements Features {
     if (!t) {
       return;
     }
-    this.view.brightness();
-  }
-
-  /**
-   * Adjusts the brightness of the specified image
-   * based on the provided value.
-   * This method parses the brightness change value,
-   * constructs a command to adjust the brightness,
-   * executes the command, and displays the adjusted image.
-   *
-   * @param imageName the name of the image to be adjusted
-   * @param value     the brightness adjustment value
-   */
-  @Override
-  public void getBright(String imageName, String value) {
-    try {
-      int change = Integer.parseInt(value);
-      String command = "brighten" + " " + change + " " + imageName + " "
-              + imageName + "_Brighten";
-      this.commandHandler.readCommand(command.split(" "));
-      this.displaySplitImage(imageName + "_Brighten");
-    } catch (NumberFormatException e) {
-      this.view.showError("Value entered must be integer value.");
-    }
+    this.view.brightness(this);
   }
 
   /**
@@ -695,13 +624,21 @@ public class ImageApplicationFeatures implements Features {
    *
    * @param imageName the name of the image to be adjusted
    * @param value     the brightness adjustment value
+   * @param checker   a boolean value to check if the preview or apply button is pressed.
    * @return true if the brightness was applied successfully, false if the value is invalid
    */
   @Override
-  public boolean generateBright(String imageName, String value) {
+  public boolean generateBright(String imageName, String value, boolean checker) {
     try {
       int change = Integer.parseInt(value);
-      this.commandGenerator("brighten " + change, imageName);
+      if (checker) {
+        String command = "brighten" + " " + change + " " + imageName + " "
+                + imageName + "_Brighten";
+        this.commandHandler.readCommand(command.split(" "));
+        this.displaySplitImage(imageName + "_Brighten");
+      } else {
+        this.commandGenerator("brighten " + change, imageName);
+      }
       return true;
     } catch (NumberFormatException e) {
       this.view.showError("Value entered must be integer value.");
@@ -724,26 +661,7 @@ public class ImageApplicationFeatures implements Features {
       return;
     }
     int[][][] temp = this.model.saveImage(imageName);
-    this.view.downScale(temp.length, temp[0].length);
-  }
-
-  /**
-   * Applies downscaling to the specified image
-   * based on the provided width and height.
-   * This method checks if the downscaling parameters are valid,
-   * then applies the downscaling and
-   * displays the resulting image in the split view.
-   *
-   * @param imageName the name of the image to be downscaled
-   * @param width     the target width for downscaling
-   * @param height    the target height for downscaling
-   */
-  @Override
-  public void getDown(String imageName, String width, String height) {
-    boolean t = this.checkForDownScale(imageName, width, height);
-    if (t) {
-      this.displaySplitImage(imageName + "_DownScale");
-    }
+    this.view.downScale(temp.length, temp[0].length, this);
   }
 
   /**
@@ -756,15 +674,21 @@ public class ImageApplicationFeatures implements Features {
    * @param imageName the name of the image to be downscaled
    * @param width     the target width for downscaling
    * @param height    the target height for downscaling
+   * @param checker   a boolean value to check if the preview or apply button is pressed.
    * @return true if downscaling was applied successfully, false if the parameters are invalid
    */
   @Override
-  public boolean generateDown(String imageName, String width, String height) {
+  public boolean generateDown(String imageName, String width, String height, boolean checker) {
     boolean t = this.checkForDownScale(imageName, width, height);
-    if (t) {
+    if (!t) {
+      return false;
+    }
+    if (checker) {
+      this.displaySplitImage(imageName + "_DownScale");
+    } else {
       this.displayImage(imageName + "_DownScale");
     }
-    return t;
+    return true;
   }
 
   /**

@@ -103,3 +103,30 @@ levels-adjust -100 -150 -190 man man-level
 #color-correct
 colorcorrect man man-color
 color-correct koala koala-color split -90  
+
+#masking -  mask not loaded
+blur koala mask man
+sharpen koala mask man
+sepia koala mask man
+red-component koala mask man
+blue-component koala mask man
+green-component koala mask man
+intensity-component koala mask man
+value-component koala mask man
+luma-component koala mask man
+
+load images/mask.jpg mask
+
+#masking - dimension different
+
+blur koala mask man
+sharpen koala mask man
+sepia koala mask man
+red-component koala mask man
+blue-component koala mask man
+green-component koala mask man
+intensity-component koala mask man
+value-component koala mask man
+luma-component koala mask man
+
+

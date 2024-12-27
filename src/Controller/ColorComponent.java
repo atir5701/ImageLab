@@ -83,9 +83,12 @@ class ColorComponent extends AbstractCommandExecuter {
    * If the percentage is less than 100, the image is split.
    * The color-component operation is applied on one half,
    * and then the image is recombined with the remaining half.
-   * If a mask image is provided, a masking operation is
-   * applied and then the to the color-component image. First a check is made is
-   * the mask image is present or not.
+   * If a mask image is provided, first a check is made if mask image
+   * is present or not. If present then a temporary image is created
+   * which is obtained as a result of applying respective operation
+   * on original image.
+   * Then the masking operation is called to obtain the final resultant
+   * image.
    *
    * @param operations the instance that provides the methods to perform the
    *                   Color-component, split, and mask operations on the images.

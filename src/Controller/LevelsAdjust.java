@@ -77,7 +77,7 @@ class LevelsAdjust extends AbstractCommandExecuter {
    * half and at end the image is combines with the remaining half.
    *
    * @param operations The operation instance which is
-   *                   used to call the blur method
+   *                   used to call the levels-adjust method
    *                   which is to be executed on the input
    *                   image.
    * @return true if operation done successfully, else false.
